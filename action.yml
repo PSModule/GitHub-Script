@@ -12,12 +12,18 @@ inputs:
   script:
     description: The script to run
     required: true
+  token:
+    description: The GitHub token to use
+    required: false
+    default: ${{ github.token }}
 
 runs:
   using: composite
   steps:
     - name: Install GitHub
       shell: pwsh
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         # Install GitHub
         . "$env:GITHUB_ACTION_PATH\scripts\main.ps1" -Verbose
