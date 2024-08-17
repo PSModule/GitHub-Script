@@ -1,6 +1,6 @@
 # GitHub-Script
 
-A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module
+A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module.
 
 ## Usage
 
