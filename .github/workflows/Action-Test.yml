@@ -28,21 +28,3 @@ jobs:
             LogGroup "Test-PSModule" {
               Get-GitHubZen
             }
-
-      - name: Action-Test 2
-        uses: ./
-        with:
-          Verbose: true
-          script: |
-            LogGroup "Test-PSModule" {
-              Get-GitHubUser
-            }
-
-      - name: Action-Test PAT
-        uses: ./
-        with:
-          Token: ${{ secrets.PAT }}
-          script: |
-            LogGroup "Test-PSModule" {
-              Get-GitHubUser
-            }

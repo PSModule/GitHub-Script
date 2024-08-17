@@ -12,7 +12,6 @@ inputs:
   Token:
     description: The GitHub token to use.
     required: false
-    default: ${{ github.token }}
   Debug:
     description: Enable debug output.
     required: false
@@ -55,6 +54,6 @@ runs:
         if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
           $VerbosePreference = 'Continue'
         }
-        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1"
+        . "${{ github.action_path }}\scripts\main.ps1"
 
         ${{ inputs.Script }}

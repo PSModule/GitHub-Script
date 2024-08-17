@@ -12,32 +12,49 @@ A GitHub Action used for running a PowerShell Script that uses the GitHub PowerS
 | `Token` | The GitHub token to use | false | ${{ github.token }} |
 | `Debug` | Enable debug output | false | 'false' |
 | `Verbose` | Enable verbose output | false | 'false' |
-| `Version` | The version of the GitHub module to install | false | 'latest' |
+| `Version` | Specifies the version of the resource to be returned. The value can be an exact version or a version range using the NuGet versioning syntax. | false | 'latest' |
 | `Prerelease` | Allow prerelease versions if available | false | 'false' |
 | `WorkingDirectory` | The working directory where the script will run from | false | ${{ github.workspace }} |
 
-<!--
-    Token
-    JWT
-    AppID
-    Repos
-    Organization
-    Host -> github.com, *.ghe.com
--->
+### Examples
 
-<!-- ### Secrets -->
+#### Example 1: Run a script that uses the GitHub PowerShell module.
 
-<!--
-    Token
-    JWT
--->
-
-<!-- ### Outputs -->
-
-### Example
+Run a script that uses the GitHub PowerShell module.
+This example runs a non-authenticated script that gets the GitHub Zen message.
 
 ```yaml
-Example here
+jobs:
+  Run-Script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        uses: PSModule/GitHub-Script@v1
+        with:
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
+            }
+```
+
+#### Example 2: Run a script that uses the GitHub PowerShell module with a token.
+
+Run a script that uses the GitHub PowerShell module with a token.
+This example runs an authenticated script that gets the GitHub Zen message.
+
+```yaml
+jobs:
+  Run-Script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        uses: PSModule/GitHub-Script@v1
+        with:
+          Token: ${{ github.token }}
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
+            }
 ```
 
 ### Similar projects
