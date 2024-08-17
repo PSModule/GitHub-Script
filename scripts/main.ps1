@@ -5,8 +5,10 @@ try {
         Name            = 'GitHub'
         Repository      = 'PSGallery'
         TrustRepository = $true
-        Version         = $env:GITHUB_ACTION_INPUT_Version ? $env:GITHUB_ACTION_INPUT_Version : $null
         Prerelease      = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
+    }
+    if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version)) {
+        $params['Version'] = $env:GITHUB_ACTION_INPUT_Version
     }
     Install-PSResource @params
     Import-Module -Name 'GitHub' -Force
