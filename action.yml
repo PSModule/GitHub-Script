@@ -1,32 +1,62 @@
 name: GitHub-Script (by PSModule)
-description: A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module
+description: A GitHub Action used for running a PowerShell script that uses the GitHub PowerShell module
 author: PSModule
 branding:
   icon: upload-cloud
   color: white
 
 inputs:
-  working-directory:
-    description: The working directory where the script will run from
-    required: false
-  script:
+  Script:
     description: The script to run
     required: true
-  token:
+  Token:
     description: The GitHub token to use
     required: false
     default: ${{ github.token }}
+  Debug:
+    description: Enable debug output
+    required: false
+    default: 'false'
+  Verbose:
+    description: Enable verbose output
+    required: false
+    default: 'false'
+  Version:
+    description: The version of the GitHub module to install
+    required: false
+  Prerelease:
+    description: Install prerelease versions of the GitHub module
+    required: false
+    default: 'false'
+  WorkingDirectory:
+    description: The working directory where the script will run from
+    required: false
+    default: ${{ github.workspace }}
 
 runs:
   using: composite
   steps:
     - name: Install GitHub
       shell: pwsh
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.WorkingDirectory }}
       env:
-        GITHUB_TOKEN: ${{ inputs.token }}
+        GITHUB_TOKEN: ${{ inputs.Token }}
+        GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
+        GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
+        GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}
+        GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
+        if ($env:GITHUB_ACTION_INPUT_Debug -eq 'true') {
+          $DebugPreference = 'Continue'
+        }
+        if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
+          $VerbosePreference = 'Continue'
+        }
+        $params = @{
+          Version    = $env:GITHUB_ACTION_INPUT_Version
+          Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
+        }
         . "$env:GITHUB_ACTION_PATH\scripts\main.ps1"
 
-        ${{ inputs.script }}
+        ${{ inputs.Script }}

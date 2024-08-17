@@ -8,7 +8,11 @@ A GitHub Action used for running a PowerShell Script that uses the GitHub PowerS
 
 | Name | Description | Required | Default |
 | - | - | - | - |
-| `script` | The path to the script to run | true | |
+| `Script` | The script to run | true | |
+| `Token` | The GitHub token to use | false | ${{ github.token }} |
+| `Debug` | Enable debug output | false | 'false' |
+| `Verbose` | Enable verbose output | false | 'false' |
+| `WorkingDirectory` | The working directory where the script will run from | false | ${{ github.workspace }} |
 
 <!--
     Token
