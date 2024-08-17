@@ -1,18 +1,12 @@
 [CmdletBinding()]
-param(
-    [Parameter()]
-    [string] $Version,
-
-    [Parameter()]
-    [bool] $Prerelease
-)
+param()
 
 $params = @{
     Name            = 'GitHub'
     Repository      = 'PSGallery'
     TrustRepository = $true
-    Version         = $Version
-    Prerelease      = $Prerelease
+    Version         = $env:GITHUB_ACTION_INPUT_Version ? $env:GITHUB_ACTION_INPUT_Version : $null
+    Prerelease      = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
 }
 Install-PSResource @params
 Import-Module -Name 'GitHub' -Force

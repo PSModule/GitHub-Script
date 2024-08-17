@@ -55,10 +55,6 @@ runs:
         if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
           $VerbosePreference = 'Continue'
         }
-        $params = @{
-          Version    = $env:GITHUB_ACTION_INPUT_Version
-          Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
-        }
         . "$env:GITHUB_ACTION_PATH\scripts\main.ps1"
 
         ${{ inputs.Script }}
