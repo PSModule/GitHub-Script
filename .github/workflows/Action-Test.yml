@@ -24,5 +24,16 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          working-directory: ./tests
-          subject: PSModule
+          script: |
+            LogGroup "Test-PSModule" {
+              Get-GitHubZen
+            }
+
+      - name: Action-Test 2
+        uses: ./
+        with:
+          Verbose: true
+          script: |
+            LogGroup "Test-PSModule" {
+              Get-GitHubZen
+            }

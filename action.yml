@@ -1,27 +1,60 @@
-name: '{{ NAME }}'
-description: '{{ DESCRIPTION }}'
+name: GitHub-Script (by PSModule)
+description: A GitHub Action used for running a PowerShell script that uses the GitHub PowerShell module
 author: PSModule
 branding:
   icon: upload-cloud
   color: white
 
 inputs:
-  working-directory:
-    description: The working directory where Terraform will be executed
+  Script:
+    description: The script to run.
+    required: true
+  Token:
+    description: The GitHub token to use.
     required: false
-  subject:
-    description: The subject to greet
+    default: ${{ github.token }}
+  Debug:
+    description: Enable debug output.
     required: false
-    default: World
+    default: 'false'
+  Verbose:
+    description: Enable verbose output.
+    required: false
+    default: 'false'
+  Version:
+    description: |
+      Specifies the version of the resource to be returned.
+      The value can be an exact version or a version range using the NuGet versioning syntax.
+    required: false
+  Prerelease:
+    description: Allow prerelease versions if available.
+    required: false
+    default: 'false'
+  WorkingDirectory:
+    description: The working directory where the script will run from.
+    required: false
+    default: ${{ github.workspace }}
 
 runs:
   using: composite
   steps:
-    - name: '{{ NAME }}'
+    - name: Install GitHub
       shell: pwsh
-      working-directory: ${{ inputs.working-directory }}
+      working-directory: ${{ inputs.WorkingDirectory }}
       env:
-        GITHUB_ACTION_INPUT_subject: ${{ inputs.subject }}
+        GITHUB_TOKEN: ${{ inputs.Token }}
+        GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
+        GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
+        GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}
+        GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
-        # '{{ NAME }}'
-        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1" -Verbose
+        # GitHub-Script
+        if ($env:GITHUB_ACTION_INPUT_Debug -eq 'true') {
+          $DebugPreference = 'Continue'
+        }
+        if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
+          $VerbosePreference = 'Continue'
+        }
+        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1"
+
+        ${{ inputs.Script }}
