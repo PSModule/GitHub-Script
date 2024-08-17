@@ -27,6 +27,6 @@ runs:
         GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         # GitHub-Script
-        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1" -Verbose
+        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1"
 
         ${{ inputs.script }}
