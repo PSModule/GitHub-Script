@@ -35,7 +35,7 @@ jobs:
           Verbose: true
           script: |
             LogGroup "Test-PSModule" {
-              Get-GitHubZen
+              Get-GitHubUser
             }
 
       - name: Action-Test PAT
@@ -44,5 +44,5 @@ jobs:
           Token: ${{ secrets.PAT }}
           script: |
             LogGroup "Test-PSModule" {
-              Get-GitHubZen
+              Get-GitHubUser
             }
