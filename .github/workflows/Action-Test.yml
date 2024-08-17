@@ -26,6 +26,6 @@ jobs:
         with:
           Token: ${{ github.token }}
           Script: |
-            LogGroup "Test-PSModule" {
+            LogGroup "Get-GitHubZen" {
               Get-GitHubZen
             }

@@ -18,7 +18,7 @@ A GitHub Action used for running a PowerShell Script that uses the GitHub PowerS
 
 ### Examples
 
-#### Example 1: Run a script that uses the GitHub PowerShell module.
+#### Example 1: Run a script that uses the GitHub PowerShell module
 
 Run a script that uses the GitHub PowerShell module.
 This example runs a non-authenticated script that gets the GitHub Zen message.
@@ -37,7 +37,7 @@ jobs:
             }
 ```
 
-#### Example 2: Run a script that uses the GitHub PowerShell module with a token.
+#### Example 2: Run a script that uses the GitHub PowerShell module with a token
 
 Run a script that uses the GitHub PowerShell module with a token.
 This example runs an authenticated script that gets the GitHub Zen message.
@@ -57,7 +57,7 @@ jobs:
             }
 ```
 
-### Similar projects
+## Related projects
 
 - [actions/create-github-app-token](https://github.com/actions/create-github-app-token) -> Functionality will be brought into GitHub PowerShell module.
 - [actions/github-script](https://github.com/actions/github-script)
