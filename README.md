@@ -1,17 +1,26 @@
-# Template-action
+# GitHub-Script
 
-A template repository for GitHub Actions
+A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module
 
 ## Usage
 
 ### Inputs
 
-### Secrets
+| Name | Description | Required | Default |
+| - | - | - | - |
+| `script` | The path to the script to run | true | |
 
-### Outputs
+<!-- ### Secrets -->
+
+<!-- ### Outputs -->
 
 ### Example
 
 ```yaml
 Example here
 ```
+
+### Similar projects
+
+- [actions/github-script](https://github.com/actions/github-script)
+

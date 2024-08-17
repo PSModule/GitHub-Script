@@ -1,7 +1,13 @@
 [CmdletBinding()]
-param(
-    [Parameter()]
-    [string] $Subject = $env:GITHUB_ACTION_INPUT_subject
-)
+param()
 
-Write-Host "Hello, $subject!"
+Write-Host '::group::Install GitHub'
+$params = @{
+    Name            = 'GitHub'
+    Repository      = 'PSGallery'
+    TrustRepository = $true
+    Verbose         = $true
+}
+Install-PSResource @params
+Import-Module -Name 'GitHub' -Force -Verbose
+Write-Host '::endgroup::'

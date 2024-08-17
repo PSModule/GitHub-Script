@@ -25,4 +25,3 @@ jobs:
         uses: ./
         with:
           working-directory: ./tests
-          subject: PSModule

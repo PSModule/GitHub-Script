@@ -1,5 +1,5 @@
-name: '{{ NAME }}'
-description: '{{ DESCRIPTION }}'
+name: GitHub-Script (by PSModule)
+description: A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module
 author: PSModule
 branding:
   icon: upload-cloud
@@ -7,21 +7,23 @@ branding:
 
 inputs:
   working-directory:
-    description: The working directory where Terraform will be executed
+    description: The working directory where the script will run from
     required: false
-  subject:
-    description: The subject to greet
-    required: false
-    default: World
+  script:
+    description: The script to run
+    required: true
 
 runs:
   using: composite
   steps:
-    - name: '{{ NAME }}'
+    - name: Install GitHub
+      shell: pwsh
+      run: |
+        # Install GitHub
+        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1" -Verbose
+
+    - name: GitHub-Script
       shell: pwsh
       working-directory: ${{ inputs.working-directory }}
-      env:
-        GITHUB_ACTION_INPUT_subject: ${{ inputs.subject }}
       run: |
-        # '{{ NAME }}'
-        . "$env:GITHUB_ACTION_PATH\scripts\main.ps1" -Verbose
+        ${{ inputs.script }}
