@@ -7,29 +7,31 @@ branding:
 
 inputs:
   Script:
-    description: The script to run
+    description: The script to run.
     required: true
   Token:
-    description: The GitHub token to use
+    description: The GitHub token to use.
     required: false
     default: ${{ github.token }}
   Debug:
-    description: Enable debug output
+    description: Enable debug output.
     required: false
     default: 'false'
   Verbose:
-    description: Enable verbose output
+    description: Enable verbose output.
     required: false
     default: 'false'
   Version:
-    description: The version of the GitHub module to install
+    description: |
+      Specifies the version of the resource to be returned.
+      The value can be an exact version or a version range using the NuGet versioning syntax.
     required: false
   Prerelease:
-    description: Install prerelease versions of the GitHub module
+    description: Allow prerelease versions if available.
     required: false
     default: 'false'
   WorkingDirectory:
-    description: The working directory where the script will run from
+    description: The working directory where the script will run from.
     required: false
     default: ${{ github.workspace }}
 

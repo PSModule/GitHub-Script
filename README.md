@@ -12,6 +12,8 @@ A GitHub Action used for running a PowerShell Script that uses the GitHub PowerS
 | `Token` | The GitHub token to use | false | ${{ github.token }} |
 | `Debug` | Enable debug output | false | 'false' |
 | `Verbose` | Enable verbose output | false | 'false' |
+| `Version` | The version of the GitHub module to install | false | 'latest' |
+| `Prerelease` | Allow prerelease versions if available | false | 'false' |
 | `WorkingDirectory` | The working directory where the script will run from | false | ${{ github.workspace }} |
 
 <!--
