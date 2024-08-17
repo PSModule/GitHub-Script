@@ -24,4 +24,6 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          working-directory: ./tests
+          script: |
+            Get-GitHubZen
+            Get-GitHubRepository
