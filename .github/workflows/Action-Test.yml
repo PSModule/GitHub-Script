@@ -24,16 +24,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          script: |
-            LogGroup "Test-PSModule" {
-              Get-GitHubZen
-            }
-
-      - name: Action-Test 2
-        uses: ./
-        with:
-          Verbose: true
-          script: |
-            LogGroup "Test-PSModule" {
+          Token: ${{ github.token }}
+          Script: |
+            LogGroup "Get-GitHubZen" {
               Get-GitHubZen
             }
