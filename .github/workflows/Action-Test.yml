@@ -37,3 +37,12 @@ jobs:
             LogGroup "Test-PSModule" {
               Get-GitHubZen
             }
+
+      - name: Action-Test PAT
+        uses: ./
+        with:
+          Token: ${{ secrets.PAT }}
+          script: |
+            LogGroup "Test-PSModule" {
+              Get-GitHubZen
+            }
