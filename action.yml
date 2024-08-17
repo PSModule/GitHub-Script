@@ -22,14 +22,10 @@ runs:
   steps:
     - name: Install GitHub
       shell: pwsh
+      working-directory: ${{ inputs.working-directory }}
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         # Install GitHub
         . "$env:GITHUB_ACTION_PATH\scripts\main.ps1" -Verbose
-
-    - name: GitHub-Script
-      shell: pwsh
-      working-directory: ${{ inputs.working-directory }}
-      run: |
         ${{ inputs.script }}
