@@ -1,25 +1,32 @@
 [CmdletBinding()]
 param()
 
-$params = @{
-    Name = 'GitHub'
-}
-if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version)) {
-    $params['Version'] = $env:GITHUB_ACTION_INPUT_Version
-}
+$Name = 'GitHub'
+$Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
+$Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
 
-$installParams = @{
-    Repository      = 'PSGallery'
-    TrustRepository = $true
-    Prerelease      = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
+$installedModules = Get-InstalledPSResource
+$alreadyInstalled = $installedModules | Where-Object Name -EQ $Name
+if ($Version) {
+    $alreadyInstalled = $alreadyInstalled | Where-Object Version -EQ $Version
 }
-
-$alreadyInstalled = Get-InstalledPSResource @params
+if ($Prerelease) {
+    $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
+}
 if (-not $alreadyInstalled) {
-    Install-PSResource @installParams
+    $params = @{
+        Name            = $Name
+        Repository      = 'PSGallery'
+        TrustRepository = $true
+        Prerelease      = $Prerelease
+    }
+    if ($Version) {
+        $params['Version'] = $Version
+    }
+    Install-PSResource @params
 }
 
-$alreadyImported = Get-Module -Name $params['Name'] -Refresh
+$alreadyImported = Get-Module -Name $Name
 if (-not $alreadyImported) {
-    Import-Module -Name $params['Name']
+    Import-Module -Name $Name
 }
