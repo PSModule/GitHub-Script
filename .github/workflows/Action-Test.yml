@@ -36,7 +36,7 @@ jobs:
         uses: ./
         with:
           Script: |
-            LogGroup "Get-GitHubZen" {
+            LogGroup "My group" {
               "This is a group"
             }
 
