@@ -56,3 +56,7 @@ jobs:
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
             }
+
+            LogGroup "Get-GitHubOctocat" {
+              Get-GitHubOctocat
+            }
