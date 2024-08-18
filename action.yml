@@ -21,9 +21,7 @@ inputs:
     required: false
     default: 'false'
   Version:
-    description: |
-      Specifies the version of the resource to be returned.
-      The value can be an exact version or a version range using the NuGet versioning syntax.
+    description: Specifies the version of the GitHub module to be installed. The value must be an exact version.
     required: false
   Prerelease:
     description: Allow prerelease versions if available.
