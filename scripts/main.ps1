@@ -10,5 +10,13 @@ $params = @{
 if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version)) {
     $params['Version'] = $env:GITHUB_ACTION_INPUT_Version
 }
-Install-PSResource @params
-Import-Module -Name 'GitHub' -Force
+
+$alreadyInstalled = Get-InstalledPSResource -Name $params['Name'] -Version $params['Version']
+if (-not $alreadyInstalled) {
+    Install-PSResource @params
+}
+
+$alreadyImported = Get-Module -Name $params['Name'] -Refresh
+if (-not $alreadyImported) {
+    Import-Module -Name $params['Name']
+}
