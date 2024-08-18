@@ -29,3 +29,19 @@ jobs:
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
             }
+
+  ActionTestNoToken:
+    name: Action-Test - [NoToken]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
+            }
