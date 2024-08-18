@@ -60,3 +60,38 @@ jobs:
             LogGroup "Get-GitHubOctocat" {
               Get-GitHubOctocat
             }
+
+  ActionTestConsecutive:
+    name: Action-Test - [Consecutive]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test 1
+        uses: ./
+        with:
+          Token: ${{ github.token }}
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
+            }
+
+      - name: Action-Test 2
+        uses: ./
+        with:
+          Token: ${{ github.token }}
+          Script: |
+            LogGroup "Get-GitHubOctocat" {
+              Get-GitHubOctocat
+            }
+
+      - name: Action-Test 3
+        uses: ./
+        with:
+          Token: ${{ github.token }}
+          Script: |
+            LogGroup "Get-GitHubRateLimit" {
+              Get-GitHubRateLimit
+            }
