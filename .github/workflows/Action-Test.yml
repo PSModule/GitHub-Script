@@ -23,15 +23,9 @@ jobs:
 
       - name: Action-Test
         uses: ./
-        with:
-          Token: ${{ github.token }}
-          Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
 
-  ActionTestNoToken:
-    name: Action-Test - [NoToken]
+  ActionTestWithScript:
+    name: Action-Test - [WithScript]
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
@@ -41,6 +35,23 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              "This is a group"
+            }
+
+  ActionTestWithToken:
+    name: Action-Test - [WithToken]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
