@@ -2,6 +2,8 @@
 
 A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module.
 
+For more information on the available functions and automatic loaded variables, see the [GitHub PowerShell module documentation](https://psmodule.io/GitHub)
+
 ## Usage
 
 ### Inputs
