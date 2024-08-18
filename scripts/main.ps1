@@ -17,6 +17,7 @@ if ($Prerelease) {
 Write-Verbose "Filtered modules:"
 Write-Verbose ($alreadyInstalled | Format-Table | Out-String)
 if (-not $alreadyInstalled) {
+    Write-Verbose "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
     $params = @{
         Name            = $Name
         Repository      = 'PSGallery'
@@ -30,6 +31,9 @@ if (-not $alreadyInstalled) {
 }
 
 $alreadyImported = Get-Module -Name $Name
+Write-Verbose "Already imported:"
+Write-Verbose ($alreadyImported | Format-Table | Out-String)
 if (-not $alreadyImported) {
+    Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
 }
