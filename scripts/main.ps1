@@ -14,7 +14,7 @@ if ($Prerelease) {
     Write-Verbose "Filtering by prerelease"
     $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
 }
-Write-Verbose "Filtered modules:"
+Write-Verbose "Already installed:"
 Write-Verbose ($alreadyInstalled | Format-Table | Out-String)
 if (-not $alreadyInstalled) {
     Write-Verbose "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
