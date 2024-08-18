@@ -63,6 +63,29 @@ jobs:
               Get-GitHubOctocat
             }
 
+  ActionTestWithVersion:
+    name: Action-Test - [WithVersion]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ github.token }}
+          Verbose: true
+          Version: '0.3.118'
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
+            }
+
+            LogGroup "Get-GitHubOctocat" {
+              Get-GitHubOctocat
+            }
+
   ActionTestConsecutive:
     name: Action-Test - [Consecutive]
     runs-on: ubuntu-latest
