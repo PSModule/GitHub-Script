@@ -8,7 +8,7 @@ branding:
 inputs:
   Script:
     description: The script to run.
-    required: true
+    required: false
   Token:
     description: The GitHub token to use.
     required: false

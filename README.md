@@ -10,13 +10,13 @@ For more information on the available functions and automatic loaded variables, 
 
 | Name | Description | Required | Default |
 | - | - | - | - |
-| `Script` | The script to run | true | |
-| `Token` | The GitHub token to use | false | ${{ github.token }} |
-| `Debug` | Enable debug output | false | 'false' |
-| `Verbose` | Enable verbose output | false | 'false' |
-| `Version` | Specifies the version of the resource to be returned. The value can be an exact version or a version range using the NuGet versioning syntax. | false | 'latest' |
-| `Prerelease` | Allow prerelease versions if available | false | 'false' |
-| `WorkingDirectory` | The working directory where the script will run from | false | ${{ github.workspace }} |
+| `Script` | The script to run | false | |
+| `Token` | The GitHub token to use | false | `${{ github.token }}` |
+| `Debug` | Enable debug output | false | `'false'` |
+| `Verbose` | Enable verbose output | false | `'false'` |
+| `Version` | Specifies the version of the resource to be returned. The value must be an exact version. | false | |
+| `Prerelease` | Allow prerelease versions if available | false | `'false'` |
+| `WorkingDirectory` | The working directory where the script will run from | false | `${{ github.workspace }}` |
 
 ### Examples
 
