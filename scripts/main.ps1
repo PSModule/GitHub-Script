@@ -5,6 +5,11 @@ $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
 $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
 
+if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
+    Write-Verbose "Setting GITHUB_TOKEN to provided input 'Token'"
+    $env:GITHUB_TOKEN = $env:GITHUB_ACTION_INPUT_Token
+}
+
 $alreadyInstalled = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
 if ($Version) {
     Write-Verbose "Filtering by version: $Version"

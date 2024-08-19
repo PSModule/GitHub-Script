@@ -39,7 +39,7 @@ runs:
       shell: pwsh
       working-directory: ${{ inputs.WorkingDirectory }}
       env:
-        GITHUB_TOKEN: ${{ inputs.Token }}
+        GITHUB_ACTION_INPUT_Token: ${{ inputs.Token }}
         GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
         GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
         GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}
