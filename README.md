@@ -11,7 +11,7 @@ For more information on the available functions and automatic loaded variables, 
 | Name | Description | Required | Default |
 | - | - | - | - |
 | `Script` | The script to run | false | |
-| `Token` | The GitHub token to use | false | `${{ github.token }}` |
+| `Token` | The GitHub token to use. This will override the default behavior of using the `GITHUB_TOKEN` environment variable. | false | `${{ github.token }}` |
 | `Debug` | Enable debug output | false | `'false'` |
 | `Verbose` | Enable verbose output | false | `'false'` |
 | `Version` | Specifies the version of the GitHub module to be installed. The value must be an exact version. | false | |

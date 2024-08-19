@@ -41,6 +41,29 @@ jobs:
               "This is a group"
             }
 
+  ActionTestWithGitHubToken:
+    name: Action-Test - [WithGitHubToken]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Verbose: true
+          Script: |
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
+            }
+
+            LogGroup "Get-GitHubOctocat" {
+              Get-GitHubOctocat
+            }
+
   ActionTestWithToken:
     name: Action-Test - [WithToken]
     runs-on: ubuntu-latest
@@ -62,6 +85,7 @@ jobs:
             LogGroup "Get-GitHubOctocat" {
               Get-GitHubOctocat
             }
+
 
   ActionTestWithVersion:
     name: Action-Test - [WithVersion]
