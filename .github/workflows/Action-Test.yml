@@ -90,7 +90,6 @@ jobs:
               Get-GitHubOctocat
             }
 
-
   ActionTestWithVersion:
     name: Action-Test - [WithVersion]
     runs-on: ubuntu-latest
