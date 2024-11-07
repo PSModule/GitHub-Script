@@ -39,55 +39,9 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Verbose: true
           Script: |
             LogGroup "My group" {
               "This is a group"
-            }
-
-  ActionTestWithGitHubToken:
-    name: Action-Test - [WithGitHubToken]
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          Verbose: true
-          Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
-
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
-            }
-
-  ActionTestWithToken:
-    name: Action-Test - [WithToken]
-    runs-on: ubuntu-latest
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          Token: ${{ github.token }}
-          Verbose: true
-          Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
-
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
             }
 
   ActionTestWithVersion:
@@ -101,7 +55,6 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ github.token }}
           Verbose: true
           Version: 0.3.118
           Script: |
@@ -124,8 +77,6 @@ jobs:
       - name: Action-Test 1
         uses: ./
         with:
-          Token: ${{ github.token }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -134,8 +85,6 @@ jobs:
       - name: Action-Test 2
         uses: ./
         with:
-          Token: ${{ github.token }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubOctocat" {
               Get-GitHubOctocat
@@ -144,8 +93,6 @@ jobs:
       - name: Action-Test 3
         uses: ./
         with:
-          Token: ${{ github.token }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubRateLimit" {
               Get-GitHubRateLimit
