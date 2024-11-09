@@ -1,6 +1,15 @@
 [CmdletBinding()]
 param()
 
+if ($env:GITHUB_ACTION_INPUT_Debug -eq 'true') {
+    $DebugPreference = 'Continue'
+}
+if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
+    $VerbosePreference = 'Continue'
+}
+
+Install-PSResource -Name 'Store' -Version 0.2.2 -Repository PSGallery -TrustRepository
+
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
 $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
@@ -16,10 +25,10 @@ if ($Version) {
     $alreadyInstalled = $alreadyInstalled | Where-Object Version -EQ $Version
 }
 if ($Prerelease) {
-    Write-Verbose "Filtering by prerelease"
+    Write-Verbose 'Filtering by prerelease'
     $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
 }
-Write-Verbose "Already installed:"
+Write-Verbose 'Already installed:'
 Write-Verbose ($alreadyInstalled | Format-Table | Out-String)
 if (-not $alreadyInstalled) {
     Write-Verbose "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
@@ -36,7 +45,7 @@ if (-not $alreadyInstalled) {
 }
 
 $alreadyImported = Get-Module -Name $Name
-Write-Verbose "Already imported:"
+Write-Verbose 'Already imported:'
 Write-Verbose ($alreadyImported | Format-Table | Out-String)
 if (-not $alreadyImported) {
     Write-Verbose "Importing module: $Name"
