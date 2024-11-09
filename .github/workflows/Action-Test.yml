@@ -57,7 +57,6 @@ jobs:
         with:
           Verbose: true
           Version: 0.8.4
-          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -78,7 +77,6 @@ jobs:
       - name: Action-Test 1
         uses: ./
         with:
-          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -87,7 +85,6 @@ jobs:
       - name: Action-Test 2
         uses: ./
         with:
-          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubOctocat" {
               Get-GitHubOctocat
@@ -96,7 +93,6 @@ jobs:
       - name: Action-Test 3
         uses: ./
         with:
-          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubRateLimit" {
               Get-GitHubRateLimit
