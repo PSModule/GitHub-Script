@@ -12,7 +12,6 @@ inputs:
   Token:
     description: The GitHub token to use. This will override the default behavior of using the `GITHUB_TOKEN` environment variable.
     required: false
-    default: ${{ github.token }}
   Debug:
     description: Enable debug output.
     required: false
