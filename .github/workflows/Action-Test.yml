@@ -96,6 +96,7 @@ jobs:
       - name: Action-Test 3
         uses: ./
         with:
+          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubRateLimit" {
               Get-GitHubRateLimit
