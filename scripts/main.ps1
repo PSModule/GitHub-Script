@@ -8,8 +8,6 @@ if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
     $VerbosePreference = 'Continue'
 }
 
-Install-PSResource -Name 'Store' -Version 0.2.2 -Repository PSGallery -TrustRepository
-
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
 $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
@@ -51,3 +49,14 @@ if (-not $alreadyImported) {
     Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
 }
+
+
+# Support ClientID and PEM
+# Support JWT
+# Support IAT + GITHUB_TOKEN
+# $params = @{
+#     Owner  = $env:GITHUB_REPOSITORY_OWNER
+#     Repo   = $env:GITHUB_REPOSITORY_NAME
+#     Server = $env:GITHUB_SERVER_URL
+# }
+# Connect-GitHubAccount @params
