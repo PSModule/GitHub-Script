@@ -8,6 +8,8 @@ if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
     $VerbosePreference = 'Continue'
 }
 
+'::group::Setting up GitHub PowerShell module'
+
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
 $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
@@ -44,6 +46,16 @@ if (-not $alreadyImported) {
     Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
 }
+'::endgroup::'
+
+
+$runningOnGitHubActions = $env:GITHUB_ACTIONS -eq 'true'
+$tokenNotProvided = [string]::IsNullOrEmpty($Token)
+$gitHubToken = $env:GH_TOKEN ?? $env:GITHUB_TOKEN
+$gitHubTokenPresent = -not [string]::IsNullOrEmpty($gitHubToken)
+Write-Verbose "GitHub Actions:        [$runningOnGitHubActions]"
+Write-Verbose "Token provided:        [$tokenNotProvided]"
+Write-Verbose "GitHub token present:  [$gitHubTokenPresent]"
 
 LogGroup 'Connect-Github' {
     if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
