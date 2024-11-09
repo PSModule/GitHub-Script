@@ -56,7 +56,7 @@ jobs:
         uses: ./
         with:
           Verbose: true
-          Version: 0.3.118
+          Version: 0.8.4
           Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubZen" {
