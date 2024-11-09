@@ -55,7 +55,7 @@ $gitHubToken = $env:GH_TOKEN ?? $env:GITHUB_TOKEN
 $gitHubTokenPresent = -not [string]::IsNullOrEmpty($gitHubToken)
 Write-Verbose "GitHub Actions:        [$runningOnGitHubActions]"
 Write-Verbose "Token provided:        [$tokenNotProvided]"
-Write-Verbose "GitHub token present:  [$gitHubTokenPresent]"
+Write-Verbose "GitHub token present:  [$gitHubTokenPresent] ($gitHubToken)"
 
 LogGroup 'Connect-Github' {
     if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
