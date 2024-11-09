@@ -8,16 +8,11 @@ if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
     $VerbosePreference = 'Continue'
 }
 
-Install-PSResource -Name 'Store' -Version 0.2.2 -Repository PSGallery -TrustRepository
+'::group::Setting up GitHub PowerShell module'
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
 $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
-
-if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
-    Write-Verbose "Setting GITHUB_TOKEN to provided input 'Token'"
-    $env:GITHUB_TOKEN = $env:GITHUB_ACTION_INPUT_Token
-}
 
 $alreadyInstalled = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
 if ($Version) {
@@ -50,4 +45,18 @@ Write-Verbose ($alreadyImported | Format-Table | Out-String)
 if (-not $alreadyImported) {
     Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
+}
+'::endgroup::'
+
+LogGroup 'Connect-Github' {
+    if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
+        Write-Verbose "Setting GITHUB_TOKEN to provided input 'Token'"
+        Connect-Github -Token $env:GITHUB_ACTION_INPUT_Token
+    } elseif (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID) -and -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)) {
+        Write-Verbose "Setting ClientID and PEM to provided inputs 'ClientID' and 'PEM'"
+        Connect-Github -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey
+    } elseif (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_JWT)) {
+        Write-Verbose "Setting JWT to provided input 'JWT'"
+        Connect-Github -JWT $env:GITHUB_ACTION_INPUT_JWT
+    }
 }
