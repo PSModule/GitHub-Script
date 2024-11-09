@@ -12,6 +12,7 @@ inputs:
   Token:
     description: The access token to use.
     required: false
+    default: ${{ github.token }}
   Debug:
     description: Enable debug output.
     required: false
