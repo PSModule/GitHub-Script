@@ -2,7 +2,11 @@ name: Action-Test
 
 run-name: "Action-Test - [${{ github.event.pull_request.title }} #${{ github.event.pull_request.number }}] by @${{ github.actor }}"
 
-on: [pull_request]
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -35,57 +39,10 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Verbose: true
           Script: |
             LogGroup "My group" {
               "This is a group"
             }
-
-  ActionTestWithGitHubToken:
-    name: Action-Test - [WithGitHubToken]
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ github.token }}
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          Verbose: true
-          Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
-
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
-            }
-
-  ActionTestWithToken:
-    name: Action-Test - [WithToken]
-    runs-on: ubuntu-latest
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          Token: ${{ github.token }}
-          Verbose: true
-          Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
-
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
-            }
-
 
   ActionTestWithVersion:
     name: Action-Test - [WithVersion]
@@ -98,9 +55,9 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ github.token }}
           Verbose: true
           Version: 0.3.118
+          Token: ${{ github.token }}
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -122,7 +79,6 @@ jobs:
         uses: ./
         with:
           Token: ${{ github.token }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -132,7 +88,6 @@ jobs:
         uses: ./
         with:
           Token: ${{ github.token }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubOctocat" {
               Get-GitHubOctocat
@@ -141,8 +96,6 @@ jobs:
       - name: Action-Test 3
         uses: ./
         with:
-          Token: ${{ github.token }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubRateLimit" {
               Get-GitHubRateLimit

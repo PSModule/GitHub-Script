@@ -10,8 +10,9 @@ inputs:
     description: The script to run.
     required: false
   Token:
-    description: The GitHub token to use. This will override the default behavior of using the `GITHUB_TOKEN` environment variable.
+    description: The access token to use.
     required: false
+    default: ${{ github.token }}
   Debug:
     description: Enable debug output.
     required: false
@@ -46,12 +47,6 @@ runs:
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
-        if ($env:GITHUB_ACTION_INPUT_Debug -eq 'true') {
-          $DebugPreference = 'Continue'
-        }
-        if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
-          $VerbosePreference = 'Continue'
-        }
         . "${{ github.action_path }}\scripts\main.ps1"
 
         ${{ inputs.Script }}
