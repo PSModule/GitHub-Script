@@ -45,17 +45,17 @@ if (-not $alreadyImported) {
     Import-Module -Name $Name
 }
 
-if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
-    Write-Verbose "Setting GITHUB_TOKEN to provided input 'Token'"
-    Connect-Github -Token $env:GITHUB_ACTION_INPUT_Token
+LogGroup 'Connect-Github' {
+    if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
+        Write-Verbose "Setting GITHUB_TOKEN to provided input 'Token'"
+        Connect-Github -Token $env:GITHUB_ACTION_INPUT_Token
+    } elseif (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID) -and -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PEM)) {
+        Write-Verbose "Setting ClientID and PEM to provided inputs 'ClientID' and 'PEM'"
+        Connect-Github -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey
+    } elseif (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_JWT)) {
+        Write-Verbose "Setting JWT to provided input 'JWT'"
+        Connect-Github -JWT $env:GITHUB_ACTION_INPUT_JWT
+    } else {
+        Connect-GitHub
+    }
 }
-
-# Support ClientID and PEM
-# Support JWT
-# Support IAT + GITHUB_TOKEN
-# $params = @{
-#     Owner  = $env:GITHUB_REPOSITORY_OWNER
-#     Repo   = $env:GITHUB_REPOSITORY_NAME
-#     Server = $env:GITHUB_SERVER_URL
-# }
-# Connect-GitHubAccount @params
