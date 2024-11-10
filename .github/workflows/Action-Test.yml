@@ -40,8 +40,8 @@ jobs:
         uses: ./
         with:
           Script: |
-            LogGroup "My group" {
-              "This is a group"
+            LogGroup "Get-GitHubZen" {
+              Get-GitHubZen
             }
 
   ActionTestWithoutToken:
@@ -57,12 +57,25 @@ jobs:
         with:
           Token: ''
           Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
+            LogGroup "My group" {
+              "This is a group"
             }
 
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
+  ActionTestWithPAT:
+    name: Action-Test - [WithPAT]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ secrets.TEST_PAT }}
+          Script: |
+            LogGroup "Get-GitHubUser" {
+              Get-GitHubUser
             }
 
   ActionTestWithGitHubApp:
