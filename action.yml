@@ -10,9 +10,15 @@ inputs:
     description: The script to run.
     required: false
   Token:
-    description: The access token to use.
+    description: Log in using an Installation Access Token (IAT).
     required: false
     default: ${{ github.token }}
+  ClientID:
+    description: Log in using a GitHub App, using the App's Client ID and Private Key.
+    required: false
+  PrivateKey:
+    description: Log in using a GitHub App, using the App's Client ID and Private Key.
+    required: false
   Debug:
     description: Enable debug output.
     required: false
@@ -41,6 +47,8 @@ runs:
       working-directory: ${{ inputs.WorkingDirectory }}
       env:
         GITHUB_ACTION_INPUT_Token: ${{ inputs.Token }}
+        GITHUB_ACTION_INPUT_ClientID: ${{ inputs.ClientID }}
+        GITHUB_ACTION_INPUT_PrivateKey: ${{ inputs.PrivateKey }}
         GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
         GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
         GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}

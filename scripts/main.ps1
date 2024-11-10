@@ -48,15 +48,20 @@ if (-not $alreadyImported) {
 }
 '::endgroup::'
 
-LogGroup 'Connect-Github' {
-    if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
-        Write-Verbose "Setting GITHUB_TOKEN to provided input 'Token'"
-        Connect-Github -Token $env:GITHUB_ACTION_INPUT_Token
-    } elseif (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID) -and -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)) {
-        Write-Verbose "Setting ClientID and PEM to provided inputs 'ClientID' and 'PEM'"
+$providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
+$providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
+$providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
+Write-Verbose "Provided authentication info:"
+Write-Verbose "Token:      [$providedToken]"
+Write-Verbose "ClientID:   [$providedClientID]"
+Write-Verbose "PrivateKey: [$providedPrivateKey]"
+
+if ($providedClientID -and $providedPrivateKey) {
+    LogGroup 'Connect-Github - GitHub App' {
         Connect-Github -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey
-    } elseif (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_JWT)) {
-        Write-Verbose "Setting JWT to provided input 'JWT'"
-        Connect-Github -JWT $env:GITHUB_ACTION_INPUT_JWT
+    }
+} elseif ($providedToken) {
+    LogGroup 'Connect-Github - Token' {
+        Connect-Github -Token $env:GITHUB_ACTION_INPUT_Token
     }
 }

@@ -40,12 +40,16 @@ jobs:
         uses: ./
         with:
           Script: |
-            LogGroup "My group" {
-              "This is a group"
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
             }
 
-  ActionTestWithVersion:
-    name: Action-Test - [WithVersion]
+            LogGroup 'Get-GitHubZen' {
+              Get-GitHubZen
+            }
+
+  ActionTestWithoutToken:
+    name: Action-Test - [WithoutToken]
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
@@ -55,45 +59,59 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Verbose: true
-          Version: 0.8.4
+          Token: ''
           Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
             }
 
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
+            LogGroup 'My group' {
+              'This is a group'
             }
 
-  ActionTestConsecutive:
-    name: Action-Test - [Consecutive]
+  ActionTestWithPAT:
+    name: Action-Test - [WithPAT]
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Action-Test 1
+      - name: Action-Test
         uses: ./
         with:
+          Token: ${{ secrets.TEST_PAT }}
           Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
             }
 
-      - name: Action-Test 2
-        uses: ./
-        with:
-          Script: |
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
+            LogGroup 'Get-GitHubUser' {
+              Get-GitHubUser
             }
 
-      - name: Action-Test 3
+  ActionTestWithGitHubApp:
+    name: Action-Test - [GitHubApp]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
         uses: ./
         with:
+          ClientID: ${{ secrets.TEST_APP_CLIENT_ID }}
+          PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           Script: |
-            LogGroup "Get-GitHubRateLimit" {
-              Get-GitHubRateLimit
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
+            }
+
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp
+            }
+
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation
             }
