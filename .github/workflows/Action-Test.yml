@@ -48,6 +48,23 @@ jobs:
               Get-GitHubZen
             }
 
+            LogGroup 'Get-GitHubViewer' {
+              $query = @"
+            query {
+              viewer {
+                login
+                id
+                databaseId
+              }
+            }
+            "@
+
+              $results = Invoke-GitHubGraphQLQuery -Query $query
+              $results
+              $results.data
+              $results.data.viewer
+            }
+
   ActionTestWithoutToken:
     name: Action-Test - [WithoutToken]
     runs-on: ubuntu-latest
@@ -174,5 +191,22 @@ jobs:
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
                 Connect-GitHub -Token $_.token
+
+                LogGroup 'Get-GitHubViewer' {
+                  $query = @"
+            query {
+              viewer {
+                login
+                id
+                databaseId
+              }
+            }
+            "@
+
+                  $results = Invoke-GitHubGraphQLQuery -Query $query
+                  $results
+                  $results.data
+                  $results.data.viewer
+                }
               }
             }
