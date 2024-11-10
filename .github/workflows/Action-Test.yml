@@ -90,6 +90,27 @@ jobs:
               Get-GitHubUser
             }
 
+  ActionTestWithFGPAT:
+    name: Action-Test - [WithFGPAT]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ secrets.TEST_FG_PAT }}
+          Script: |
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
+            }
+
+            LogGroup 'Get-GitHubUser' {
+              Get-GitHubUser
+            }
+
   ActionTestWithGitHubApp:
     name: Action-Test - [GitHubApp]
     runs-on: ubuntu-latest
@@ -114,4 +135,10 @@ jobs:
 
             LogGroup 'Get-GitHubAppInstallation' {
               Get-GitHubAppInstallation
+            }
+
+            LogGroup 'Do something as an installation' {
+              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
+                Connect-GitHub -Token $_.token
+              }
             }
