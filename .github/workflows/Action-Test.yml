@@ -40,7 +40,11 @@ jobs:
         uses: ./
         with:
           Script: |
-            LogGroup "Get-GitHubZen" {
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
+            }
+
+            LogGroup 'Get-GitHubZen' {
               Get-GitHubZen
             }
 
@@ -57,8 +61,12 @@ jobs:
         with:
           Token: ''
           Script: |
-            LogGroup "My group" {
-              "This is a group"
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
+            }
+
+            LogGroup 'My group' {
+              'This is a group'
             }
 
   ActionTestWithPAT:
@@ -74,7 +82,11 @@ jobs:
         with:
           Token: ${{ secrets.TEST_PAT }}
           Script: |
-            LogGroup "Get-GitHubUser" {
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
+            }
+
+            LogGroup 'Get-GitHubUser' {
               Get-GitHubUser
             }
 
@@ -92,10 +104,14 @@ jobs:
           ClientID: ${{ secrets.TEST_APP_CLIENT_ID }}
           PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           Script: |
-            LogGroup "Get-GitHubApp" {
+            LogGroup 'Get-GitHubContext' {
+              Get-GitHubContext
+            }
+
+            LogGroup 'Get-GitHubApp' {
               Get-GitHubApp
             }
 
-            LogGroup "Get-GitHubAppInstallation" {
+            LogGroup 'Get-GitHubAppInstallation' {
               Get-GitHubAppInstallation
             }
