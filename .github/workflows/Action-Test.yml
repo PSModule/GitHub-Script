@@ -39,6 +39,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Verbose: true
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -56,6 +57,7 @@ jobs:
         uses: ./
         with:
           Token: ''
+          Verbose: true
           Script: |
             LogGroup "My group" {
               "This is a group"
