@@ -39,7 +39,6 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -57,7 +56,6 @@ jobs:
         uses: ./
         with:
           Token: ''
-          Verbose: true
           Script: |
             LogGroup "My group" {
               "This is a group"
@@ -75,7 +73,6 @@ jobs:
         uses: ./
         with:
           Token: ${{ secrets.TEST_PAT }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubUser" {
               Get-GitHubUser
@@ -94,7 +91,6 @@ jobs:
         with:
           ClientID: ${{ secrets.TEST_APP_CLIENT_ID }}
           PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
-          Verbose: true
           Script: |
             LogGroup "Get-GitHubApp" {
               Get-GitHubApp
