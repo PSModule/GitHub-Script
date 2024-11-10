@@ -96,10 +96,6 @@ jobs:
               Get-GitHubApp
             }
 
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
-
-            LogGroup "Get-GitHubOctocat" {
-              Get-GitHubOctocat
+            LogGroup "Get-GitHubAppInstallation" {
+              Get-GitHubAppInstallation
             }
