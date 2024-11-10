@@ -44,8 +44,8 @@ jobs:
               "This is a group"
             }
 
-  ActionTestWithVersion:
-    name: Action-Test - [WithVersion]
+  ActionTestWithoutToken:
+    name: Action-Test - [WithoutToken]
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
@@ -55,8 +55,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Verbose: true
-          Version: 0.8.4
+          Token: ''
           Script: |
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
@@ -66,34 +65,28 @@ jobs:
               Get-GitHubOctocat
             }
 
-  ActionTestConsecutive:
-    name: Action-Test - [Consecutive]
+  ActionTestWithGitHubApp:
+    name: Action-Test - [GitHubApp]
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Action-Test 1
+      - name: Action-Test
         uses: ./
         with:
+          ClientID: ${{ secrets.TEST_APP_CLIENT_ID }}
+          PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           Script: |
+            LogGroup "Get-GitHubApp" {
+              Get-GitHubApp
+            }
+
             LogGroup "Get-GitHubZen" {
               Get-GitHubZen
             }
 
-      - name: Action-Test 2
-        uses: ./
-        with:
-          Script: |
             LogGroup "Get-GitHubOctocat" {
               Get-GitHubOctocat
-            }
-
-      - name: Action-Test 3
-        uses: ./
-        with:
-          Script: |
-            LogGroup "Get-GitHubRateLimit" {
-              Get-GitHubRateLimit
             }
