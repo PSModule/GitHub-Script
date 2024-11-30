@@ -51,7 +51,7 @@ Write-Host "Installed modules:"
 Write-Host (Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize | Out-String)
 
 Write-Host "GitHub module configuration:"
-Write-Host (Get-GitHubGitConfig | Out-String)
+Write-Host (Get-GitHubConfig | Out-String)
 
 '::endgroup::'
 
