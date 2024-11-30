@@ -44,6 +44,10 @@ jobs:
               Get-GitHubContext
             }
 
+            LogGroup 'Get-GitHubGitConfig' {
+              Get-GitHubGitConfig
+            }
+
             LogGroup 'Get-GitHubZen' {
               Get-GitHubZen
             }
@@ -127,6 +131,10 @@ jobs:
           Script: |
             LogGroup 'Get-GitHubContext' {
               Get-GitHubContext
+            }
+
+            LogGroup 'Get-GitHubGitConfig' {
+              Get-GitHubGitConfig
             }
 
             LogGroup 'Get-GitHubApp' {
