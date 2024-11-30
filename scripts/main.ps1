@@ -48,10 +48,10 @@ if (-not $alreadyImported) {
 }
 
 Write-Host 'Installed modules:'
-Write-Host (Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize | Out-String)
+Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
 
 Write-Host 'GitHub module configuration:'
-Write-Host (Get-GitHubConfig | Select-Object Name, ID, RunEnv | Out-String)
+Get-GitHubConfig | Select-Object Name, ID, RunEnv | Format-Table -AutoSize
 
 '::endgroup::'
 
@@ -66,11 +66,11 @@ Write-Verbose "PrivateKey: [$providedPrivateKey]"
 if ($providedClientID -and $providedPrivateKey) {
     LogGroup 'Connecting using provided GitHub App' {
         Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
-        Write-Host (Get-GitHubContext | Out-String)
+        Get-GitHubContext | Format-Table -AutoSize
     }
 } elseif ($providedToken) {
     LogGroup 'Connecting using provided Token' {
         Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
-        Write-Host (Get-GitHubContext | Out-String)
+        Get-GitHubContext | Format-Table -AutoSize
     }
 }

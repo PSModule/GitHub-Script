@@ -75,7 +75,7 @@ jobs:
           Token: ${{ secrets.TEST_PAT }}
           Script: |
             LogGroup 'Get-GitHubUser' {
-              Write-Host (Get-GitHubUser | Out-String)
+              Get-GitHubUser | Format-Table -AutoSize
             }
 
   ActionTestWithFGPAT:
@@ -92,7 +92,7 @@ jobs:
           Token: ${{ secrets.TEST_FG_PAT }}
           Script: |
             LogGroup 'Get-GitHubUser' {
-              Write-Host (Get-GitHubUser | Out-String)
+              Get-GitHubUser | Format-Table -AutoSize
             }
 
   ActionTestWithGitHubApp:
@@ -110,17 +110,17 @@ jobs:
           PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp
+              Get-GitHubApp | Format-Table -AutoSize
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
-              Get-GitHubAppInstallation
+              Get-GitHubAppInstallation | Format-Table -AutoSize
             }
 
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
                 Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext
-                Write-Host (Get-GitHubGitConfig | Format-Table -AutoSize | Out-String)
+                Get-GitHubContext | Format-Table -AutoSize
+                Get-GitHubGitConfig | Format-Table -AutoSize
               }
             }
