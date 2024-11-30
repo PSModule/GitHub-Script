@@ -69,7 +69,7 @@ if ($providedClientID -and $providedPrivateKey) {
         Get-GitHubContext | Format-Table -AutoSize
     }
 } elseif ($providedToken) {
-    LogGroup 'Connecting using provided Token' {
+    LogGroup 'Connecting using provided token' {
         Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
         Get-GitHubContext | Format-Table -AutoSize
     }
