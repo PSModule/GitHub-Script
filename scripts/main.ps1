@@ -64,12 +64,12 @@ Write-Verbose "ClientID:   [$providedClientID]"
 Write-Verbose "PrivateKey: [$providedPrivateKey]"
 
 if ($providedClientID -and $providedPrivateKey) {
-    LogGroup 'Connect-Github using provided GitHub App' {
+    LogGroup 'Connecting using provided GitHub App' {
         Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey
         Write-Host (Get-GitHubContext | Out-String)
     }
 } elseif ($providedToken) {
-    LogGroup 'Connect-Github using provided Token' {
+    LogGroup 'Connecting using provided Token' {
         Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token
         Write-Host (Get-GitHubContext | Out-String)
     }
