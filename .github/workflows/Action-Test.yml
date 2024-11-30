@@ -133,10 +133,6 @@ jobs:
               Get-GitHubContext
             }
 
-            LogGroup 'Get-GitHubGitConfig' {
-              Get-GitHubGitConfig
-            }
-
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp
             }
@@ -148,5 +144,6 @@ jobs:
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
                 Connect-GitHub -Token $_.token
+                Get-GitHubGitConfig
               }
             }
