@@ -110,7 +110,7 @@ jobs:
           PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Write-Host (Get-GitHubApp | Out-String)
+              Get-GitHubApp
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
@@ -120,7 +120,7 @@ jobs:
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
                 Connect-GitHub -Token $_.token -Silent
-                Write-Host (Get-GitHubContext | Out-String)
+                Get-GitHubContext
                 Write-Host (Get-GitHubGitConfig | Format-Table -AutoSize | Out-String)
               }
             }
