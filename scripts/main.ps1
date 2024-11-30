@@ -46,6 +46,9 @@ if (-not $alreadyImported) {
     Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
 }
+
+Write-Host (Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize | Out-String)
+
 '::endgroup::'
 
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
@@ -59,9 +62,11 @@ Write-Verbose "PrivateKey: [$providedPrivateKey]"
 if ($providedClientID -and $providedPrivateKey) {
     LogGroup 'Connect-Github - GitHub App' {
         Connect-Github -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey
+        Write-Host (Get-GitHubContext | Out-String)
     }
 } elseif ($providedToken) {
     LogGroup 'Connect-Github - Token' {
         Connect-Github -Token $env:GITHUB_ACTION_INPUT_Token
+        Write-Host (Get-GitHubContext | Out-String)
     }
 }
