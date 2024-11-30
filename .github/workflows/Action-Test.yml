@@ -119,7 +119,8 @@ jobs:
 
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token
-                Get-GitHubGitConfig
+                Connect-GitHub -Token $_.token -Silent
+                Write-Host (Get-GitHubContext | Out-String)
+                Write-Host (Get-GitHubGitConfig | Format-Table -AutoSize | Out-String)
               }
             }
