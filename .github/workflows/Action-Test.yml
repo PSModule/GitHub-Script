@@ -44,6 +44,33 @@ jobs:
               Get-GitHubZen
             }
 
+  ActionTestCommands:
+    name: Action-Test - [Commands]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        id: action-test
+        with:
+          Script: |
+            $cat = Get-GitHubOctocat
+            Set-Content -Path 'octocat.md' -Value $cat
+            Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
+            Set-GitHubOutput -Name 'octocat' -Value $cat
+            Set-GitHubStepSummary -Summary $cat
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Script: |
+            "${{ steps.action-test.outputs.octocat }}"
+            "${{ env.OCTOCAT }}"
+
+
   ActionTestWithoutToken:
     name: Action-Test - [WithoutToken]
     runs-on: ubuntu-latest
