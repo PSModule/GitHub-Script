@@ -71,6 +71,7 @@ jobs:
             'EOF' >> $env:GITHUB_OUTPUT
             Set-GitHubStepSummary -Summary $cat
 
+            $env:GITHUB_ACTION
             $env:GITHUB_OUTPUT
             Get-Content $env:GITHUB_OUTPUT
 
