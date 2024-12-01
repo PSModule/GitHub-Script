@@ -63,13 +63,14 @@ jobs:
             $zen = Get-GitHubZen
             Set-Content -Path 'octocat.md' -Value $cat
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
-            # Set-GitHubOutput -Name 'WISECAT' -Value $cat -Verbose
+            Set-GitHubOutput -Name 'WISECAT' -Value $cat
+            Set-GitHubOutput -Name 'Zen' -Value $zen
 
-            "ZEN=$zen" >> $env:GITHUB_OUTPUT
+            # "ZEN=$zen" >> $env:GITHUB_OUTPUT
+            # 'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
+            # $cat >> $env:GITHUB_OUTPUT
+            # 'EOF' >> $env:GITHUB_OUTPUT
 
-            'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
-            $cat >> $env:GITHUB_OUTPUT
-            'EOF' >> $env:GITHUB_OUTPUT
             Set-GitHubStepSummary -Summary $cat
 
             $env:GITHUB_ACTION
