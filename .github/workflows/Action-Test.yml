@@ -66,10 +66,10 @@ jobs:
             Set-GitHubOutput -Name 'WISECAT' -Value $cat
             Set-GitHubOutput -Name 'Zen' -Value $zen
 
-            # "ZEN=$zen" >> $env:GITHUB_OUTPUT
-            # 'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
-            # $cat >> $env:GITHUB_OUTPUT
-            # 'EOF' >> $env:GITHUB_OUTPUT
+            "ZEN=$zen" >> $env:GITHUB_OUTPUT
+            'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
+            $cat >> $env:GITHUB_OUTPUT
+            'EOF' >> $env:GITHUB_OUTPUT
 
             Set-GitHubStepSummary -Summary $cat
 
