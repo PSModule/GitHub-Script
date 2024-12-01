@@ -40,9 +40,9 @@ inputs:
     default: ${{ github.workspace }}
 
 outputs:
-  return:
+  result:
     description: The output of the script.
-    value: ${{ steps.RunGitGubScript.outputs.return }}
+    value: ${{ steps.RunGitGubScript.outputs.result }}
 
 runs:
   using: composite
@@ -63,3 +63,4 @@ runs:
         # GitHub-Script
         . "${{ github.action_path }}\scripts\main.ps1"
         ${{ inputs.Script }}
+        . "${{ github.action_path }}\scripts\outputs.ps1"
