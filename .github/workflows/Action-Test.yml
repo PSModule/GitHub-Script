@@ -64,11 +64,19 @@ jobs:
             Set-GitHubOutput -Name 'octocat' -Value $cat
             Set-GitHubStepSummary -Summary $cat
 
-      - name: Action-Test
+      - name: Action-Test-Env
         uses: ./
         with:
           Script: |
             $env:OCTOCAT
+
+      - name: Action-Test-Output
+        uses: ./
+        env:
+          wisecat: ${{ steps.action-test.outputs.octocat }}
+        with:
+          Script: |
+            $env:wisecat
 
 
   ActionTestWithoutToken:
