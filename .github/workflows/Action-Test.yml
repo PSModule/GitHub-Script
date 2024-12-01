@@ -54,7 +54,7 @@ jobs:
 
       - name: Action-Test
         uses: ./
-        id: action_test
+        id: test
         with:
           Prerelease: true
           Script: |
@@ -63,6 +63,8 @@ jobs:
             Set-Content -Path 'octocat.md' -Value $cat
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             # Set-GitHubOutput -Name 'WISECAT' -Value $cat -Verbose
+
+            "ZEN=$zen" >> $env:GITHUB_OUTPUT
 
             'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
             $cat >> $env:GITHUB_OUTPUT
@@ -78,10 +80,14 @@ jobs:
       - name: Action-Test-Output
         uses: ./
         env:
-          WISECAT2: ${{ steps.action_test.outputs.WISECAT2 }}
+          WISECAT: ${{ steps.test.outputs.WISECAT }}
+          ZEN: ${{ steps.test.outputs.ZEN }}
         with:
           Script: |
-            $env:WISECAT2
+            "Wisecat"
+            $env:WISECAT
+            "Zen"
+            $env:ZEN
 
   ActionTestWithoutToken:
     name: Action-Test - [WithoutToken]
