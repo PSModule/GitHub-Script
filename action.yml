@@ -7,7 +7,7 @@ branding:
 
 inputs:
   Script:
-    description: The script to run.
+    description: The script to run. Can be inline, multi-line or a path to a script file.
     required: false
   Token:
     description: Log in using an Installation Access Token (IAT).
@@ -41,7 +41,7 @@ inputs:
 
 outputs:
   result:
-    description: The output of the script.
+    description: The output of the script as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`.
     value: ${{ steps.RunGitGubScript.outputs.result }}
 
 runs:
