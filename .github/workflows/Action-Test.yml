@@ -64,6 +64,8 @@ jobs:
             Set-GitHubOutput -Name 'octocat' -Value $cat -Verbose
             Set-GitHubStepSummary -Summary $cat
 
+            Get-Content -Path $env:GITHUB_OUTPUT
+
       - name: Action-Test-Env
         uses: ./
         with:
