@@ -61,7 +61,7 @@ jobs:
             $cat = Get-GitHubOctocat
             Set-Content -Path 'octocat.md' -Value $cat
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
-            Set-GitHubOutput -Name 'octocat' -Value $cat
+            Set-GitHubOutput -Name 'octocat' -Value $cat -Verbose
             Set-GitHubStepSummary -Summary $cat
 
       - name: Action-Test-Env
@@ -77,7 +77,6 @@ jobs:
         with:
           Script: |
             $env:wisecat
-
 
   ActionTestWithoutToken:
     name: Action-Test - [WithoutToken]
