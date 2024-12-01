@@ -63,7 +63,7 @@ jobs:
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             # Set-GitHubOutput -Name 'WISECAT' -Value $cat -Verbose
             $guid = (New-Guid).Guid
-            "wisecat2<<$guid" >> $env:GITHUB_OUTPUT
+            "WISECAT2<<$guid" >> $env:GITHUB_OUTPUT
             $cat.split("`n") | ForEach-Object {
               $_ >> $env:GITHUB_OUTPUT
             }
@@ -79,10 +79,10 @@ jobs:
       - name: Action-Test-Output
         uses: ./
         env:
-          WISECAT: ${{ steps.action-test.outputs.WISECAT }}
+          WISECAT2: ${{ steps.action-test.outputs.WISECAT2 }}
         with:
           Script: |
-            $env:WISECAT
+            $env:WISECAT2
 
   ActionTestWithoutToken:
     name: Action-Test - [WithoutToken]
