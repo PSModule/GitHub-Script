@@ -54,20 +54,19 @@ jobs:
 
       - name: Action-Test
         uses: ./
-        id: action-test
+        id: action_test
         with:
           Prerelease: true
           Script: |
             $cat = Get-GitHubOctocat
+            $zen = Get-GitHubZen
             Set-Content -Path 'octocat.md' -Value $cat
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             # Set-GitHubOutput -Name 'WISECAT' -Value $cat -Verbose
 
-            "WISECAT2<<EOF" >> $env:GITHUB_OUTPUT
-            $cat.split("`n") | ForEach-Object {
-              $_ >> $env:GITHUB_OUTPUT
-            }
-            "EOF" >> $env:GITHUB_OUTPUT
+            'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
+            $cat >> $env:GITHUB_OUTPUT
+            'EOF' >> $env:GITHUB_OUTPUT
             Set-GitHubStepSummary -Summary $cat
 
       - name: Action-Test-Env
@@ -79,7 +78,7 @@ jobs:
       - name: Action-Test-Output
         uses: ./
         env:
-          WISECAT2: ${{ steps.action-test.outputs.WISECAT2 }}
+          WISECAT2: ${{ steps.action_test.outputs.WISECAT2 }}
         with:
           Script: |
             $env:WISECAT2
