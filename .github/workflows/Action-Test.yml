@@ -72,7 +72,9 @@ jobs:
         with:
           Script: |
             "result"
-            $env:result
+            $result = $env:result | ConvertFrom-Json
+            $result.WISECAT
+            $result.Zen
 
   # ActionTestWithoutToken:
   #   name: Action-Test - [WithoutToken]
