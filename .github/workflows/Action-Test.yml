@@ -71,6 +71,8 @@ jobs:
             'EOF' >> $env:GITHUB_OUTPUT
             Set-GitHubStepSummary -Summary $cat
 
+            $env:GITHUB_OUTPUT
+
       - name: Action-Test-Env
         uses: ./
         with:
