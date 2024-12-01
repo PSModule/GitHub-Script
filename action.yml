@@ -39,11 +39,17 @@ inputs:
     required: false
     default: ${{ github.workspace }}
 
+outputs:
+  return:
+    description: The output of the script.
+    value: ${{ steps.RunGitGubScript.outputs.return }}
+
 runs:
   using: composite
   steps:
     - name: Install GitHub
       shell: pwsh
+      id: RunGitGubScript
       working-directory: ${{ inputs.WorkingDirectory }}
       env:
         GITHUB_ACTION_INPUT_Token: ${{ inputs.Token }}

@@ -58,22 +58,23 @@ jobs:
         with:
           Prerelease: true
           Script: |
-            $cat = Get-GitHubOctocat
-            $zen = Get-GitHubZen
-            Set-Content -Path 'octocat.md' -Value $cat
-            Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
-            # Set-GitHubOutput -Name 'WISECAT' -Value $cat -Verbose
+            Get-ChildItem env: | Format-Table -AutoSize
+            # $cat = Get-GitHubOctocat
+            # $zen = Get-GitHubZen
+            # Set-Content -Path 'octocat.md' -Value $cat
+            # Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
+            # # Set-GitHubOutput -Name 'WISECAT' -Value $cat -Verbose
 
-            "ZEN=$zen" >> $env:GITHUB_OUTPUT
+            # "ZEN=$zen" >> $env:GITHUB_OUTPUT
 
-            'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
-            $cat >> $env:GITHUB_OUTPUT
-            'EOF' >> $env:GITHUB_OUTPUT
-            Set-GitHubStepSummary -Summary $cat
+            # 'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
+            # $cat >> $env:GITHUB_OUTPUT
+            # 'EOF' >> $env:GITHUB_OUTPUT
+            # Set-GitHubStepSummary -Summary $cat
 
-            $env:GITHUB_ACTION
-            $env:GITHUB_OUTPUT
-            Get-Content $env:GITHUB_OUTPUT
+            # $env:GITHUB_ACTION
+            # $env:GITHUB_OUTPUT
+            # Get-Content $env:GITHUB_OUTPUT
 
       - name: test
         id: test2
