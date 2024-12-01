@@ -9,6 +9,7 @@ if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
 }
 
 '::group::Setting up GitHub PowerShell module'
+$env:PSMODULE_GITHUB_SCRIPT = $true
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
