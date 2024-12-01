@@ -75,6 +75,13 @@ jobs:
             $env:GITHUB_OUTPUT
             Get-Content $env:GITHUB_OUTPUT
 
+      - name: test
+        id: test2
+        shell: pwsh
+        run: |
+          $env:GITHUB_ACTION
+          "ZEN=WhatIsThis" >> $env:GITHUB_OUTPUT
+
       - name: Action-Test-Env
         uses: ./
         with:
@@ -85,7 +92,7 @@ jobs:
         uses: ./
         env:
           WISECAT: ${{ steps.test.outputs.WISECAT }}
-          ZEN: ${{ steps.test.outputs.ZEN }}
+          ZEN: ${{ steps.test2.outputs.ZEN }}
         with:
           Script: |
             "Wisecat"
