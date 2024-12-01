@@ -69,7 +69,7 @@ jobs:
         with:
           Script: |
             "${{ steps.action-test.outputs.octocat }}"
-            "${{ env.OCTOCAT }}"
+            "$env:OCTOCAT"
 
 
   ActionTestWithoutToken:
