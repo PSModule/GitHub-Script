@@ -67,7 +67,7 @@ jobs:
             $cat.split("`n") | ForEach-Object {
               $_ >> $env:GITHUB_OUTPUT
             }
-            EOF >> $env:GITHUB_OUTPUT
+            "EOF" >> $env:GITHUB_OUTPUT
             Set-GitHubStepSummary -Summary $cat
 
       - name: Action-Test-Env
