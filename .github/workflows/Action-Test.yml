@@ -80,8 +80,7 @@ jobs:
         id: test2
         shell: pwsh
         run: |
-          $env:GITHUB_ACTION
-          "ZEN=WhatIsThis" >> $env:GITHUB_OUTPUT
+          Get-ChildItem env: | Format-Table -AutoSize
 
       - name: Action-Test-Env
         uses: ./
