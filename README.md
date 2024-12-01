@@ -20,6 +20,12 @@ For more information on the available functions and automatic loaded variables, 
 | `Prerelease` | Allow prerelease versions if available | false | `'false'` |
 | `WorkingDirectory` | The working directory where the script will run from | false | `${{ github.workspace }}` |
 
+### Outputs
+
+| Name | Description |
+| - | - |
+| `result` | The output of the script as a JSON object. To create outputs in `result` use [`Set-GitHubOutput`](https://psmodule.io/GitHub/Functions/Set-GitHubOutput/) |
+
 ### Examples
 
 #### Example 1: Run a GitHub PowerShell script
@@ -100,6 +106,31 @@ jobs:
             LogGroup "Get-GitHubApp" {
               Get-GitHubApp
             }
+```
+
+#### Example 5: Using the outputs from the script
+
+Run a script that uses the GitHub PowerShell module and outputs the result.
+
+```yaml
+- name: Run GitHub Script
+  uses: PSModule/GitHub-Script@v1
+  id: outputs
+  with:
+    Script: |
+      $cat = Get-GitHubOctocat
+      $zen = Get-GitHubZen
+      Set-GitHubOutput -Name 'Octocat' -Value $cat
+      Set-GitHubOutput -Name 'Zen' -Value $zen
+
+- name: Use outputs
+  shell: pwsh
+  env:
+    result: ${{ steps.test.outputs.result }}
+  run: |
+      $result = $env:result | ConvertFrom-Json
+      Set-GitHubStepSummary -Summary $result.WISECAT
+      Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 ```
 
 ## Related projects

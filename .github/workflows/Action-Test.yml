@@ -56,7 +56,6 @@ jobs:
         uses: ./
         id: test
         with:
-          Prerelease: true
           Script: |
             $cat = Get-GitHubOctocat
             $zen = Get-GitHubZen
