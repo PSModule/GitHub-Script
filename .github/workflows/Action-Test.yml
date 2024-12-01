@@ -63,36 +63,16 @@ jobs:
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             Set-GitHubOutput -Name 'WISECAT' -Value $cat
             Set-GitHubOutput -Name 'Zen' -Value $zen
-
-            "ZEN=$zen" >> $env:GITHUB_OUTPUT
-            'WISECAT2<<EOF' >> $env:GITHUB_OUTPUT
-            $cat >> $env:GITHUB_OUTPUT
-            'EOF' >> $env:GITHUB_OUTPUT
-
             Set-GitHubStepSummary -Summary $cat
-
-      - name: test
-        id: test2
-        shell: pwsh
-        run: |
-          Get-ChildItem env: | Format-Table -AutoSize
-
-      - name: Action-Test-Env
-        uses: ./
-        with:
-          Script: |
-            $env:OCTOCAT
 
       - name: Action-Test-Output
         uses: ./
         env:
-          result: ${{ steps.test.outputs.WISECAT }}
+          result: ${{ steps.test.outputs.result }}
         with:
           Script: |
-            "Wisecat"
-            $env:WISECAT
-            "Zen"
-            $env:ZEN
+            "result"
+            $env:result
 
   # ActionTestWithoutToken:
   #   name: Action-Test - [WithoutToken]
