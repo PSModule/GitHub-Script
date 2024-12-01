@@ -10,22 +10,27 @@ For more information on the available functions and automatic loaded variables, 
 
 | Name | Description | Required | Default |
 | - | - | - | - |
-| `Script` | The script to run | false | |
-| `Token` | Log in using an Installation Access Token (IAT) | false | `${{ github.token }}` |
-| `ClientID` | Log in using a GitHub App, using the App's Client ID and Private Key | false | |
-| `PrivateKey` | Log in using a GitHub App, using the App's Client ID and Private Key | false | |
-| `Debug` | Enable debug output | false | `'false'` |
-| `Verbose` | Enable verbose output | false | `'false'` |
+| `Script` | The script to run. Can be inline, multi-line or a path to a script file. | false | |
+| `Token` | Log in using an Installation Access Token (IAT). | false | `${{ github.token }}` |
+| `ClientID` | Log in using a GitHub App, using the App's Client ID and Private Key. | false | |
+| `PrivateKey` | Log in using a GitHub App, using the App's Client ID and Private Key. | false | |
+| `Debug` | Enable debug output. | false | `'false'` |
+| `Verbose` | Enable verbose output. | false | `'false'` |
 | `Version` | Specifies the version of the GitHub module to be installed. The value must be an exact version. | false | |
-| `Prerelease` | Allow prerelease versions if available | false | `'false'` |
-| `WorkingDirectory` | The working directory where the script will run from | false | `${{ github.workspace }}` |
+| `Prerelease` | Allow prerelease versions if available. | false | `'false'` |
+| `WorkingDirectory` | The working directory where the script will run from. | false | `${{ github.workspace }}` |
+
+### Outputs
+
+| Name | Description |
+| - | - |
+| `result` | The output of the script as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`. |
 
 ### Examples
 
 #### Example 1: Run a GitHub PowerShell script
 
-Run a script that uses the GitHub PowerShell module.
-This example runs an authenticated script using the `GITHUB_TOKEN` and gets the GitHub Zen message.
+Run a script (`scripts/main.ps1`) that uses the GitHub PowerShell module, authenticated using the `GITHUB_TOKEN`.
 
 ```yaml
 jobs:
@@ -35,10 +40,7 @@ jobs:
       - name: Run script
         uses: PSModule/GitHub-Script@v1
         with:
-          Script: |
-            LogGroup "Get-GitHubZen" {
-              Get-GitHubZen
-            }
+          Script: "scripts/main.ps1"
 ```
 
 #### Example 2: Run a GitHub PowerShell script without a token
@@ -100,6 +102,31 @@ jobs:
             LogGroup "Get-GitHubApp" {
               Get-GitHubApp
             }
+```
+
+#### Example 5: Using the outputs from the script
+
+Run a script that uses the GitHub PowerShell module and outputs the result.
+
+```yaml
+- name: Run GitHub Script
+  uses: PSModule/GitHub-Script@v1
+  id: outputs
+  with:
+    Script: |
+      $cat = Get-GitHubOctocat
+      $zen = Get-GitHubZen
+      Set-GitHubOutput -Name 'Octocat' -Value $cat
+      Set-GitHubOutput -Name 'Zen' -Value $zen
+
+- name: Use outputs
+  shell: pwsh
+  env:
+    result: ${{ steps.test.outputs.result }}
+  run: |
+      $result = $env:result | ConvertFrom-Json
+      Set-GitHubStepSummary -Summary $result.WISECAT
+      Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 ```
 
 ## Related projects

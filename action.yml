@@ -7,7 +7,7 @@ branding:
 
 inputs:
   Script:
-    description: The script to run.
+    description: The script to run. Can be inline, multi-line or a path to a script file.
     required: false
   Token:
     description: Log in using an Installation Access Token (IAT).
@@ -39,11 +39,17 @@ inputs:
     required: false
     default: ${{ github.workspace }}
 
+outputs:
+  result:
+    description: The output of the script as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`.
+    value: ${{ steps.RunGitGubScript.outputs.result }}
+
 runs:
   using: composite
   steps:
     - name: Install GitHub
       shell: pwsh
+      id: RunGitGubScript
       working-directory: ${{ inputs.WorkingDirectory }}
       env:
         GITHUB_ACTION_INPUT_Token: ${{ inputs.Token }}

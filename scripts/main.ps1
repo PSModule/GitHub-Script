@@ -9,6 +9,7 @@ if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
 }
 
 '::group::Setting up GitHub PowerShell module'
+$env:PSMODULE_GITHUB_SCRIPT = $true
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -47,10 +48,10 @@ if (-not $alreadyImported) {
     Import-Module -Name $Name
 }
 
-Write-Host 'Installed modules:'
+Write-Output 'Installed modules:'
 Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
 
-Write-Host 'GitHub module configuration:'
+Write-Output 'GitHub module configuration:'
 Get-GitHubConfig | Select-Object Name, ID, RunEnv | Format-Table -AutoSize
 
 '::endgroup::'

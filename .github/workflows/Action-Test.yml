@@ -44,6 +44,35 @@ jobs:
               Get-GitHubZen
             }
 
+  ActionTestCommands:
+    name: Action-Test - [Commands]
+    runs-on: ubuntu-latest
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        id: test
+        with:
+          Prerelease: true
+          Script: |
+            $cat = Get-GitHubOctocat
+            $zen = Get-GitHubZen
+            Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
+            Set-GitHubOutput -Name 'WISECAT' -Value $cat
+            Set-GitHubOutput -Name 'Zen' -Value $zen
+
+      - name: Run-test
+        shell: pwsh
+        env:
+          result: ${{ steps.test.outputs.result }}
+        run: |
+          $result = $env:result | ConvertFrom-Json
+          Set-GitHubStepSummary -Summary $result.WISECAT
+          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+
   ActionTestWithoutToken:
     name: Action-Test - [WithoutToken]
     runs-on: ubuntu-latest
