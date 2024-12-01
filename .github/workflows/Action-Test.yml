@@ -71,6 +71,7 @@ jobs:
         run: |
           $result = $env:result | ConvertFrom-Json
           Set-GitHubStepSummary -Summary $result.WISECAT
+          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 
   # ActionTestWithoutToken:
   #   name: Action-Test - [WithoutToken]
