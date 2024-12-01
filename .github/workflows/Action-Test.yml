@@ -58,10 +58,8 @@ jobs:
         with:
           Prerelease: true
           Script: |
-            Get-ChildItem env: | Format-Table -AutoSize
             $cat = Get-GitHubOctocat
             $zen = Get-GitHubZen
-            Set-Content -Path 'octocat.md' -Value $cat
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             Set-GitHubOutput -Name 'WISECAT' -Value $cat
             Set-GitHubOutput -Name 'Zen' -Value $zen
@@ -88,8 +86,7 @@ jobs:
       - name: Action-Test-Output
         uses: ./
         env:
-          WISECAT: ${{ steps.test.outputs.WISECAT }}
-          ZEN: ${{ steps.test2.outputs.ZEN }}
+          result: ${{ steps.test.outputs.WISECAT }}
         with:
           Script: |
             "Wisecat"
