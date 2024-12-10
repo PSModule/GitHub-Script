@@ -50,6 +50,10 @@ jobs:
               Get-GitHubZen
             }
 
+            LogGroup 'Get-GitHubViewer' {
+              Get-GitHubViewer
+            }
+
   ActionTestCommands:
     name: Action-Test - [Commands]
     runs-on: ubuntu-latest
