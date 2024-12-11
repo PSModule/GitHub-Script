@@ -50,7 +50,7 @@ jobs:
             }
 
             LogGroup 'Get-GitHubViewer' {
-              Get-GitHubViewer -Fields name, login, id, databaseID
+              Get-GitHubViewer
             }
 
   ActionTestCommands:
