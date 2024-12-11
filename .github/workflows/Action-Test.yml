@@ -45,6 +45,8 @@ jobs:
           Debug: true
           Verbose: true
           Script: |
+            Get-Content -Path $env:GITHUB_EVENT_PATH
+
             LogGroup 'Get-GitHubZen' {
               Get-GitHubZen
             }
