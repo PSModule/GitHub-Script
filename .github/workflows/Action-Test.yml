@@ -97,7 +97,7 @@ jobs:
         with:
           Token: ''
           Script: |
-            Get-Content -Path $env:GITHUB_EVENT_PATH
+            Get-Content -Path $env:GITHUB_EVENT_PATH | ConvertFrom-Json
 
             LogGroup 'My group' {
               'This is a group'
