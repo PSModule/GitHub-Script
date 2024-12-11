@@ -31,7 +31,6 @@ jobs:
           Debug: true
           Verbose: true
 
-
   ActionTestWithScript:
     name: Action-Test - [WithScript]
     runs-on: ubuntu-latest
