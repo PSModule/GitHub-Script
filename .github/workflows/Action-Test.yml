@@ -50,7 +50,8 @@ jobs:
             }
 
             LogGroup 'Get-GitHubViewer' {
-              Get-GitHubViewer
+              $viewer = Get-GitHubViewer
+              Get-GitHubApp -AppSlug ($viewer.login -replace '\[bot\]')
             }
 
   ActionTestCommands:
