@@ -173,3 +173,8 @@ jobs:
                 Get-GitHubGitConfig | Format-Table -AutoSize
               }
             }
+
+            LogGroup 'Get-GitHubViewer' {
+              $viewer = Get-GitHubViewer
+              Get-GitHubApp -AppSlug ($viewer.login -replace '\[bot\]')
+            }
