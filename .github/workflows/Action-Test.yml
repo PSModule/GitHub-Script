@@ -28,6 +28,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Prerelease: true
           Debug: true
           Verbose: true
 
@@ -42,6 +43,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Prerelease: true
           Debug: true
           Verbose: true
           Script: |
@@ -97,6 +99,7 @@ jobs:
         uses: ./
         with:
           Token: ''
+          Prerelease: true
           Script: |
             $gitHubEvent = Get-Content -Path $env:GITHUB_EVENT_PATH -Raw | ConvertFrom-Json
             "Enterprise:            " + $gitHubEvent.enterprise.slug
@@ -122,6 +125,7 @@ jobs:
         uses: ./
         with:
           Token: ${{ secrets.TEST_PAT }}
+          Prerelease: true
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize
@@ -138,6 +142,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Prerelease: true
           Token: ${{ secrets.TEST_FG_PAT }}
           Script: |
             LogGroup 'Get-GitHubUser' {
@@ -155,6 +160,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Prerelease: true
           ClientID: ${{ secrets.TEST_APP_CLIENT_ID }}
           PrivateKey: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           Script: |
