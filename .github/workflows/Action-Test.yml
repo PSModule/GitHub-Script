@@ -45,8 +45,6 @@ jobs:
           Debug: true
           Verbose: true
           Script: |
-            Get-Content -Path $env:GITHUB_EVENT_PATH
-
             LogGroup 'Get-GitHubZen' {
               Get-GitHubZen
             }
@@ -99,6 +97,8 @@ jobs:
         with:
           Token: ''
           Script: |
+            Get-Content -Path $env:GITHUB_EVENT_PATH
+
             LogGroup 'My group' {
               'This is a group'
             }
