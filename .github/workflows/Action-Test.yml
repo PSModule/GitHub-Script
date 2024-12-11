@@ -27,6 +27,9 @@ jobs:
 
       - name: Action-Test
         uses: ./
+        with:
+          Debug: true
+          Verbose: true
 
   ActionTestWithScript:
     name: Action-Test - [WithScript]
@@ -39,9 +42,15 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Debug: true
+          Verbose: true
           Script: |
             LogGroup 'Get-GitHubZen' {
               Get-GitHubZen
+            }
+
+            LogGroup 'Get-GitHubViewer' {
+              Get-GitHubViewer -Fields name, login, id, databaseID
             }
 
   ActionTestCommands:
@@ -56,6 +65,8 @@ jobs:
         uses: ./
         id: test
         with:
+          Debug: true
+          Verbose: true
           Prerelease: true
           Script: |
             $cat = Get-GitHubOctocat

@@ -1,12 +1,8 @@
 [CmdletBinding()]
 param()
 
-if ($env:GITHUB_ACTION_INPUT_Debug -eq 'true') {
-    $DebugPreference = 'Continue'
-}
-if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
-    $VerbosePreference = 'Continue'
-}
+$DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+$VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 
 '::group::Setting up GitHub PowerShell module'
 $env:PSMODULE_GITHUB_SCRIPT = $true
