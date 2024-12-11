@@ -1,12 +1,8 @@
 [CmdletBinding()]
 param()
 
-if ($env:GITHUB_ACTION_INPUT_Debug -eq 'true') {
-    $DebugPreference = 'Continue'
-}
-if ($env:GITHUB_ACTION_INPUT_Verbose -eq 'true') {
-    $VerbosePreference = 'Continue'
-}
+$DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+$VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 
 '::group::Setting up GitHub PowerShell module'
 $env:PSMODULE_GITHUB_SCRIPT = $true
@@ -55,9 +51,14 @@ Write-Output 'GitHub module configuration:'
 Get-GitHubConfig | Select-Object Name, ID, RunEnv | Format-Table -AutoSize
 
 '::endgroup::'
+
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
+Write-Verbose 'Provided authentication info:'
+Write-Verbose "Token:      [$providedToken]"
+Write-Verbose "ClientID:   [$providedClientID]"
+Write-Verbose "PrivateKey: [$providedPrivateKey]"
 
 if ($providedClientID -and $providedPrivateKey) {
     LogGroup 'Connecting using provided GitHub App' {
