@@ -123,9 +123,9 @@ jobs:
       matrix:
         include:
           - name: Action-Test - [WithUserFGPAT]
-            Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+            Token: TEST_USER_USER_FG_PAT
           - name: Action-Test - [WithOrgFGPAT]
-            Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+            Token: TEST_USER_ORG_FG_PAT
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     steps:
@@ -136,7 +136,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ matrix.Token }}
+          Token: ${{ secrets[matrix.Token] }}
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize
@@ -147,11 +147,11 @@ jobs:
       matrix:
         include:
           - name: Action-Test - [GitHubAppEnt]
-            clientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
-            privateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+            clientID: TEST_APP_ENT_CLIENT_ID
+            privateKey: TEST_APP_ENT_PRIVATE_KEY
           - name: Action-Test - [GitHubAppOrg]
-            clientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
-            privateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+            clientID: TEST_APP_ORG_CLIENT_ID
+            privateKey: TEST_APP_ORG_PRIVATE_KEY
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     steps:
@@ -162,8 +162,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          ClientID: ${{ matrix.clientID }}
-          PrivateKey: ${{ matrix.privateKey }}
+          ClientID: ${{ secrets[matrix.clientID] }}
+          PrivateKey: ${{ secrets[matrix.privateKey] }}
           Script: |
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp | Format-Table -AutoSize
