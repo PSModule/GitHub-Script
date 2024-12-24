@@ -118,8 +118,15 @@ jobs:
               Get-GitHubUser | Format-Table -AutoSize
             }
 
-  ActionTestWithUserFGPAT:
-    name: Action-Test - [WithUserFGPAT]
+  ActionTestWithFGPAT:
+    strategy:
+      matrix:
+        include:
+          - name: Action-Test - [WithUserFGPAT]
+            Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          - name: Action-Test - [WithOrgFGPAT]
+            Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
@@ -129,14 +136,23 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          Token: ${{ matrix.Token }}
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize
             }
 
-  ActionTestWithOrgFGPAT:
-    name: Action-Test - [WithOrgFGPAT]
+  ActionTestWithGitHubApp:
+    strategy:
+      matrix:
+        include:
+          - name: Action-Test - [GitHubAppEnt]
+            clientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
+            privateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+          - name: Action-Test - [GitHubAppOrg]
+            clientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+            privateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     steps:
       # Need to check out as part of the test, as its a local action
@@ -146,55 +162,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
-          Script: |
-            LogGroup 'Get-GitHubUser' {
-              Get-GitHubUser | Format-Table -AutoSize
-            }
-
-  ActionTestWithGitHubAppEnt:
-    name: Action-Test - [GitHubAppEnt]
-    runs-on: ubuntu-latest
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
-          PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
-          Script: |
-            LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize
-            }
-
-            LogGroup 'Get-GitHubAppInstallation' {
-              Get-GitHubAppInstallation | Format-Table -AutoSize
-            }
-
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize
-                Get-GitHubGitConfig | Format-Table -AutoSize
-              }
-            }
-
-  ActionTestWithGitHubAppOrg:
-    name: Action-Test - [GitHubAppOrg]
-    runs-on: ubuntu-latest
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
-          PrivateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+          ClientID: ${{ matrix.clientID }}
+          PrivateKey: ${{ matrix.privateKey }}
           Script: |
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp | Format-Table -AutoSize
