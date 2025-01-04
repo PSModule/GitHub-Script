@@ -46,10 +46,10 @@ $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Client
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
 [pscustomobject]@{
     Name                  = $Name
-    Version               = $Version
+    Version               = [string]::IsNullOrEmpty($Version) ? 'latest' : $Version
     Prerelease            = $Prerelease
-    'Already installed'   = $alreadyInstalled
-    'Already imported'    = $alreadyImported
+    'Already installed'   = $null -ne $alreadyInstalled
+    'Already imported'    = $null -ne $alreadyImported
     'Provided Token'      = $providedToken
     'Provided ClientID'   = $providedClientID
     'Provided PrivateKey' = $providedPrivateKey
