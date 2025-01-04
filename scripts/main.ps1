@@ -2,9 +2,8 @@
 param()
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
-$zwsp = [char]0x200B
-Write-Host "$zwsp━━━━━━━━━━━━━━━━┃━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-Write-Host '::group::GitHub-Script ┃ Setup GitHub PowerShell'
+Write-Host "┏━━━━━━━━━┫ GitHub-Script ┣━━━━━━━━━┓"
+Write-Host '::group:: Setup GitHub PowerShell'
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -57,11 +56,11 @@ $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Priv
 } | Format-List
 Write-Host '::endgroup::'
 
-LogGroup 'GitHub-Script ┃ Installed modules' {
+LogGroup ' Installed modules' {
     Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
 }
 
-LogGroup 'GitHub-Script ┃ Connected to GitHub' {
+LogGroup ' Connected to GitHub' {
     if ($providedClientID -and $providedPrivateKey) {
         Write-Verbose 'Connected using provided GitHub App'
         Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
@@ -72,11 +71,11 @@ LogGroup 'GitHub-Script ┃ Connected to GitHub' {
     Get-GitHubContext | Format-List
 }
 
-LogGroup 'GitHub-Script ┃ Configuration' {
+LogGroup ' Configuration' {
     Get-GitHubConfig | Format-List
 }
 
-Write-Host '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+Write-Host '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
 
 $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
