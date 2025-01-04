@@ -2,18 +2,6 @@
 param()
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
-# Black right-pointing pointer (U+25BA)
-$BigRight = [char]0x25BA
-Write-Host $BigRight
-
-# Black down-pointing triangle (U+25BC)
-$BigDown = [char]0x25BC
-Write-Host $BigDown
-
-# Black right-pointing triangle (U+23F5)
-$LargerRight = [char]0x23F5
-Write-Host $LargerRight
-
 Write-Host '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
 Write-Host '::group::GitHub-Script ┃ Setup GitHub PowerShell'
 
