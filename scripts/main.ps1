@@ -63,13 +63,13 @@ LogGroup 'GitHub-Script - Installed modules' {
 }
 
 if ($providedClientID -and $providedPrivateKey) {
-    LogGroup "$(Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey)" {
-        Write-Host 'GitHub-Script - Connected using provided GitHub App'
+    LogGroup 'GitHub-Script - Connected using provided GitHub App' {
+        Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
         Get-GitHubContext | Select-Object -Property * | Format-List
     }
 } elseif ($providedToken) {
-    LogGroup "$(Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token)" {
-        Write-Host 'GitHub-Script - Connected using provided token'
+    LogGroup 'GitHub-Script - Connected using provided token' {
+        Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
         Get-GitHubContext | Select-Object -Property * | Format-List
     }
 }
