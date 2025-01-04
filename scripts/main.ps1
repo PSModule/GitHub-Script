@@ -43,19 +43,24 @@ if (-not $alreadyImported) {
     Write-Host "Importing module: $Name"
     Import-Module -Name $Name
 }
-'::endgroup::'
-
-LogGroup 'GitHub-Script - Installed modules' {
-    Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
-}
 
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
 Write-Host 'Provided authentication info:'
-Write-Host "Token:      [$providedToken]"
-Write-Host "ClientID:   [$providedClientID]"
-Write-Host "PrivateKey: [$providedPrivateKey]"
+@{
+    Token      = $providedToken
+    ClientID   = $providedClientID
+    PrivateKey = $providedPrivateKey
+} | Format-List
+$providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
+$providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
+$providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
+'::endgroup::'
+
+LogGroup 'GitHub-Script - Installed modules' {
+    Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
+}
 
 if ($providedClientID -and $providedPrivateKey) {
     LogGroup 'GitHub-Script - Connected using provided GitHub App' {
@@ -73,4 +78,4 @@ LogGroup 'GitHub-Script - GitHub module configuration' {
     Get-GitHubConfig | Format-List
 }
 
-Write-Host '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+Write-Host '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
