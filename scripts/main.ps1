@@ -3,7 +3,7 @@ param()
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
 Write-Host '━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
-'::group::GitHub-Script ┃ Setup GitHub PowerShell'
+Write-Host '::group::GitHub-Script ┃ Setup GitHub PowerShell'
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -54,22 +54,21 @@ $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Priv
     'Provided ClientID'   = $providedClientID
     'Provided PrivateKey' = $providedPrivateKey
 } | Format-List
-'::endgroup::'
+Write-Host '::endgroup::'
 
 LogGroup 'GitHub-Script ┃ Installed modules' {
     Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
 }
 
-if ($providedClientID -and $providedPrivateKey) {
-    LogGroup 'GitHub-Script ┃ Connected using provided GitHub App' {
+LogGroup 'GitHub-Script ┃ Connected to GitHub' {
+    if ($providedClientID -and $providedPrivateKey) {
+        Write-Verbose 'Connected using provided GitHub App'
         Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
-        Get-GitHubContext | Format-List
-    }
-} elseif ($providedToken) {
-    LogGroup 'GitHub-Script ┃ Connected using provided token' {
+    } elseif ($providedToken) {
+        Write-Verbose 'Connected using provided token'
         Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
-        Get-GitHubContext | Format-List
     }
+    Get-GitHubContext | Format-List
 }
 
 LogGroup 'GitHub-Script ┃ GitHub module configuration' {
