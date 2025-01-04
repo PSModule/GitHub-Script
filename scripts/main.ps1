@@ -73,4 +73,4 @@ LogGroup 'GitHub-Script - GitHub module configuration' {
     Get-GitHubConfig | Format-List
 }
 
-Write-Host '-----------------------------------------------'
+Write-Host '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
