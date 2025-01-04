@@ -71,7 +71,7 @@ LogGroup 'GitHub-Script ┃ Connected to GitHub' {
     Get-GitHubContext | Format-List
 }
 
-LogGroup 'GitHub-Script ┃ GitHub module configuration' {
+LogGroup 'GitHub-Script ┃ Configuration' {
     Get-GitHubConfig | Format-List
 }
 
