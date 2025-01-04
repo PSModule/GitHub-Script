@@ -13,17 +13,16 @@ $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
 
 $alreadyInstalled = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
 if ($Version) {
-    Write-Host "Filtering by version: $Version"
+    Write-Verbose "Filtering by version: $Version"
     $alreadyInstalled = $alreadyInstalled | Where-Object Version -EQ $Version
 }
 if ($Prerelease) {
-    Write-Host 'Filtering by prerelease'
+    Write-Verbose 'Filtering by prerelease'
     $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
 }
-Write-Host 'Already installed:'
+Write-Verbose 'Already installed:'
 $alreadyInstalled | Format-Table
 if (-not $alreadyInstalled) {
-    Write-Host "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
     $params = @{
         Name            = $Name
         Repository      = 'PSGallery'
@@ -37,25 +36,26 @@ if (-not $alreadyInstalled) {
 }
 
 $alreadyImported = Get-Module -Name $Name
-Write-Host 'Already imported:'
+Write-Verbose 'Already imported:'
 $alreadyImported | Format-Table
 if (-not $alreadyImported) {
-    Write-Host "Importing module: $Name"
+    Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
 }
 
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
-Write-Host 'Provided authentication info:'
 [pscustomobject]@{
-    Token      = $providedToken
-    ClientID   = $providedClientID
-    PrivateKey = $providedPrivateKey
-} | Format-List -Property Name, Value
-$providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
-$providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
-$providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
+    Name                  = $Name
+    Version               = $Version
+    Prerelease            = $Prerelease
+    'Already installed'   = $alreadyInstalled
+    'Already imported'    = $alreadyImported
+    'Provided Token'      = $providedToken
+    'Provided ClientID'   = $providedClientID
+    'Provided PrivateKey' = $providedPrivateKey
+} | Format-List
 '::endgroup::'
 
 LogGroup 'GitHub-Script ┃ Installed modules' {
