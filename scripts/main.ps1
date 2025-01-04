@@ -5,7 +5,7 @@ $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'Sil
 $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $env:PSMODULE_GITHUB_SCRIPT = $true
 
-'::group::GitHub-Script | Setup GitHub PowerShell'
+'::group::GitHub-Script ┃ Setup GitHub PowerShell'
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -58,17 +58,17 @@ $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Client
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
 '::endgroup::'
 
-LogGroup 'GitHub-Script | Installed modules' {
+LogGroup 'GitHub-Script ┃ Installed modules' {
     Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
 }
 
 if ($providedClientID -and $providedPrivateKey) {
-    LogGroup 'GitHub-Script | Connected using provided GitHub App' {
+    LogGroup 'GitHub-Script ┃ Connected using provided GitHub App' {
         Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
         Get-GitHubContext | Format-List
     }
 } elseif ($providedToken) {
-    LogGroup 'GitHub-Script | Connected using provided token' {
+    LogGroup 'GitHub-Script ┃ Connected using provided token' {
         Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
         Get-GitHubContext | Format-List
     }
