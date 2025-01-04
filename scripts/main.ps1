@@ -59,7 +59,7 @@ $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Priv
 '::endgroup::'
 
 LogGroup 'GitHub-Script - Installed modules' {
-    Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
+    Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
 }
 
 if ($providedClientID -and $providedPrivateKey) {
