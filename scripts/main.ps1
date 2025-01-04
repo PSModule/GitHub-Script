@@ -4,7 +4,7 @@ param()
 $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $env:PSMODULE_GITHUB_SCRIPT = $true
-
+Write-Host '━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
 '::group::GitHub-Script | Setup GitHub PowerShell'
 
 $Name = 'GitHub'
@@ -78,4 +78,4 @@ LogGroup 'GitHub-Script | GitHub module configuration' {
     Get-GitHubConfig | Format-List
 }
 
-Write-Host '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+Write-Host '━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
