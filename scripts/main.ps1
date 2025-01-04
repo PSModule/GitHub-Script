@@ -52,7 +52,7 @@ Write-Host 'Provided authentication info:'
     Token      = $providedToken
     ClientID   = $providedClientID
     PrivateKey = $providedPrivateKey
-} | Format-List
+} | Format-List -Property Name, Value
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
