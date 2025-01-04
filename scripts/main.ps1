@@ -2,7 +2,7 @@
 param()
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
-Write-Host '━━┳━━━━━━━━━━━━━━━━━━┫ GitHub-Script ┣━━━━━━━━━━━━━━━━━━━━━'
+Write-Host '━━━┳━━━━━━━━━━━━━━━━━━┫ GitHub-Script ┣━━━━━━━━━━━━━━━━━━━━━'
 Write-Host '::group:: ┃ Setup GitHub PowerShell'
 
 $Name = 'GitHub'
@@ -75,7 +75,7 @@ LogGroup ' ┃ Configuration' {
     Get-GitHubConfig | Format-List
 }
 
-Write-Host '━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+Write-Host '━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
 
 $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
