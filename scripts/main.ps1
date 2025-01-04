@@ -2,6 +2,12 @@
 param()
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
+Write-Host '▶'
+Write-Host '▷'
+Write-Host '▸'
+Write-Host '▹'
+Write-Host '►'
+Write-Host '▻'
 Write-Host '▷━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' {}
 Write-Host '::group::GitHub-Script ┃ Setup GitHub PowerShell'
 
