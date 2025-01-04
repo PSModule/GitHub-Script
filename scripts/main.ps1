@@ -2,13 +2,9 @@
 param()
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
-Write-Host '▶'
-Write-Host '▷'
-Write-Host '▸'
-Write-Host '▹'
-Write-Host '►'
-Write-Host '▻'
-Write-Host '▷━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' {}
+$arrow = [char]0x25B8
+Write-Host $arrow
+Write-Host "$arrow━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 Write-Host '::group::GitHub-Script ┃ Setup GitHub PowerShell'
 
 $Name = 'GitHub'
@@ -81,7 +77,7 @@ LogGroup 'GitHub-Script ┃ Configuration' {
     Get-GitHubConfig | Format-List
 }
 
-Write-Host '▷━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' {}
+Write-Host "$arrow━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
