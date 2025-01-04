@@ -3,9 +3,9 @@ param()
 
 $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
-
-'::group::GitHub-Script - Setting up GitHub PowerShell module'
 $env:PSMODULE_GITHUB_SCRIPT = $true
+
+'::group::GitHub-Script - Setup GitHub PowerShell'
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -13,17 +13,17 @@ $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
 
 $alreadyInstalled = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
 if ($Version) {
-    Write-Verbose "Filtering by version: $Version"
+    Write-Host "Filtering by version: $Version"
     $alreadyInstalled = $alreadyInstalled | Where-Object Version -EQ $Version
 }
 if ($Prerelease) {
-    Write-Verbose 'Filtering by prerelease'
+    Write-Host 'Filtering by prerelease'
     $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
 }
-Write-Verbose 'Already installed:'
-Write-Verbose ($alreadyInstalled | Format-Table | Out-String)
+Write-Host 'Already installed:'
+$alreadyInstalled | Format-Table
 if (-not $alreadyInstalled) {
-    Write-Verbose "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
+    Write-Host "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
     $params = @{
         Name            = $Name
         Repository      = 'PSGallery'
@@ -37,24 +37,25 @@ if (-not $alreadyInstalled) {
 }
 
 $alreadyImported = Get-Module -Name $Name
-Write-Verbose 'Already imported:'
-Write-Verbose ($alreadyImported | Format-Table | Out-String)
+Write-Host 'Already imported:'
+$alreadyImported | Format-Table
 if (-not $alreadyImported) {
-    Write-Verbose "Importing module: $Name"
+    Write-Host "Importing module: $Name"
     Import-Module -Name $Name
 }
+'::endgroup::'
 
-Write-Output 'Installed modules:'
-Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
+LogGroup 'GitHub-Script - Installed modules' {
+    Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
+}
 
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
-Write-Verbose 'Provided authentication info:'
-Write-Verbose "Token:      [$providedToken]"
-Write-Verbose "ClientID:   [$providedClientID]"
-Write-Verbose "PrivateKey: [$providedPrivateKey]"
-'::endgroup::'
+Write-Host 'Provided authentication info:'
+Write-Host "Token:      [$providedToken]"
+Write-Host "ClientID:   [$providedClientID]"
+Write-Host "PrivateKey: [$providedPrivateKey]"
 
 if ($providedClientID -and $providedPrivateKey) {
     LogGroup 'GitHub-Script - Connected using provided GitHub App' {
