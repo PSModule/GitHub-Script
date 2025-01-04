@@ -48,7 +48,7 @@ $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
 Write-Host 'Provided authentication info:'
-@{
+[pscustomobject]@{
     Token      = $providedToken
     ClientID   = $providedClientID
     PrivateKey = $providedPrivateKey
@@ -63,13 +63,13 @@ LogGroup 'GitHub-Script - Installed modules' {
 }
 
 if ($providedClientID -and $providedPrivateKey) {
-    LogGroup 'GitHub-Script - Connected using provided GitHub App' {
-        Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
+    LogGroup "$(Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey)" {
+        Write-Host 'GitHub-Script - Connected using provided GitHub App'
         Get-GitHubContext | Select-Object -Property * | Format-List
     }
 } elseif ($providedToken) {
-    LogGroup 'GitHub-Script - Connected using provided token' {
-        Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
+    LogGroup "$(Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token)" {
+        Write-Host 'GitHub-Script - Connected using provided token'
         Get-GitHubContext | Select-Object -Property * | Format-List
     }
 }
