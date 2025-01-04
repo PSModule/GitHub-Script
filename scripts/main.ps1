@@ -1,8 +1,6 @@
 [CmdletBinding()]
 param()
 
-$DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-$VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 $env:PSMODULE_GITHUB_SCRIPT = $true
 Write-Host '━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
 '::group::GitHub-Script ┃ Setup GitHub PowerShell'
@@ -79,3 +77,6 @@ LogGroup 'GitHub-Script ┃ GitHub module configuration' {
 }
 
 Write-Host '━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+
+$DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+$VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
