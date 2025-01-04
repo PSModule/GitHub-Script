@@ -47,9 +47,6 @@ if (-not $alreadyImported) {
 Write-Output 'Installed modules:'
 Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
 
-Write-Output 'GitHub module configuration:'
-Get-GitHubConfig | Format-List
-
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
@@ -59,15 +56,18 @@ Write-Verbose "ClientID:   [$providedClientID]"
 Write-Verbose "PrivateKey: [$providedPrivateKey]"
 '::endgroup::'
 
-
 if ($providedClientID -and $providedPrivateKey) {
-    LogGroup 'Connecting using provided GitHub App' {
+    LogGroup 'Connected using provided GitHub App' {
         Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
-        Get-GitHubContext | Format-List
+        Get-GitHubContext | Select-Object -Property * | Format-List
     }
 } elseif ($providedToken) {
-    LogGroup 'Connecting using provided token' {
+    LogGroup 'Connected using provided token' {
         Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
-        Get-GitHubContext | Format-List
+        Get-GitHubContext | Select-Object -Property * | Format-List
     }
+}
+
+LogGroup 'GitHub module configuration' {
+    Get-GitHubConfig | Format-List
 }
