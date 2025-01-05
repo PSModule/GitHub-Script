@@ -15,7 +15,7 @@ LogGroup ' - Outputs' {
         Write-Warning "File not found: $env:GITHUB_OUTPUT"
     }
 
-    Get-GitHubOutput | Format-List
+    (Get-GitHubOutput).result | Format-List
     Write-Host "Access outputs using `${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).<output-name> }}"
 }
 
