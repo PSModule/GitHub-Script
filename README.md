@@ -2,7 +2,8 @@
 
 A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module.
 
-For more information on the available functions and automatic loaded variables, see the [GitHub PowerShell module documentation](https://psmodule.io/GitHub)
+For more information on the available functions and automatic loaded variables, see the
+[GitHub PowerShell module documentation](https://psmodule.io/GitHub)
 
 ## Usage
 
@@ -18,6 +19,7 @@ For more information on the available functions and automatic loaded variables, 
 | `Verbose` | Enable verbose output. | false | `'false'` |
 | `Version` | Specifies the version of the GitHub module to be installed. The value must be an exact version. | false | |
 | `Prerelease` | Allow prerelease versions if available. | false | `'false'` |
+| `ShowOutput` | Show the output of the script. | false | `'false'` |
 | `WorkingDirectory` | The working directory where the script will run from. | false | `${{ github.workspace }}` |
 
 ### Outputs

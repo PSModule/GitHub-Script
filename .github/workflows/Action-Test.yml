@@ -68,6 +68,7 @@ jobs:
           Debug: true
           Verbose: true
           Prerelease: true
+          ShowOutput: true
           Script: |
             $cat = Get-GitHubOctocat
             $zen = Get-GitHubZen
@@ -79,9 +80,10 @@ jobs:
         shell: pwsh
         env:
           result: ${{ steps.test.outputs.result }}
+          WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
         run: |
           $result = $env:result | ConvertFrom-Json
-          Set-GitHubStepSummary -Summary $result.WISECAT
+          Set-GitHubStepSummary -Summary $env:WISECAT
           Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 
   ActionTestWithoutToken:
