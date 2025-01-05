@@ -4,6 +4,10 @@ param()
 $DebugPreference = 'SilentlyContinue'
 $VerbosePreference = 'SilentlyContinue'
 
+if ($env:GITHUB_ACTION_INPUT_ShowOutput -ne 'true') {
+    return
+}
+
 $result = (Get-GitHubOutput).result
 if (-not $result) {
     return
