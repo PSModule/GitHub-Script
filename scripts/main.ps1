@@ -1,6 +1,9 @@
 [CmdletBinding()]
 param()
 
+$rawUI = $Host.UI.RawUI
+$rawUI
+
 $env:PSMODULE_GITHUB_SCRIPT = $true
 Write-Host "┏━━━━━┫ GitHub-Script ┣━━━━━┓"
 Write-Host '::group:: - Setup GitHub PowerShell'
