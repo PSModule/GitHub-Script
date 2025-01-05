@@ -1,11 +1,9 @@
 [CmdletBinding()]
 param()
 
-$DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-$VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
-
-'::group::Setting up GitHub PowerShell module'
 $env:PSMODULE_GITHUB_SCRIPT = $true
+Write-Host "┏━━━━━┫ GitHub-Script ┣━━━━━┓"
+Write-Host '::group:: - Setup GitHub PowerShell'
 
 $Name = 'GitHub'
 $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -21,9 +19,8 @@ if ($Prerelease) {
     $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
 }
 Write-Verbose 'Already installed:'
-Write-Verbose ($alreadyInstalled | Format-Table | Out-String)
+$alreadyInstalled | Format-Table
 if (-not $alreadyInstalled) {
-    Write-Verbose "Installing module. Name: [$Name], Version: [$Version], Prerelease: [$Prerelease]"
     $params = @{
         Name            = $Name
         Repository      = 'PSGallery'
@@ -38,36 +35,47 @@ if (-not $alreadyInstalled) {
 
 $alreadyImported = Get-Module -Name $Name
 Write-Verbose 'Already imported:'
-Write-Verbose ($alreadyImported | Format-Table | Out-String)
+$alreadyImported | Format-Table
 if (-not $alreadyImported) {
     Write-Verbose "Importing module: $Name"
     Import-Module -Name $Name
 }
 
-Write-Output 'Installed modules:'
-Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Format-Table -AutoSize
-
-Write-Output 'GitHub module configuration:'
-Get-GitHubConfig | Select-Object Name, ID, RunEnv | Format-Table -AutoSize
-
-'::endgroup::'
-
 $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
 $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
 $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
-Write-Verbose 'Provided authentication info:'
-Write-Verbose "Token:      [$providedToken]"
-Write-Verbose "ClientID:   [$providedClientID]"
-Write-Verbose "PrivateKey: [$providedPrivateKey]"
+[pscustomobject]@{
+    Name                  = $Name
+    Version               = [string]::IsNullOrEmpty($Version) ? 'latest' : $Version
+    Prerelease            = $Prerelease
+    'Already installed'   = $null -ne $alreadyInstalled
+    'Already imported'    = $null -ne $alreadyImported
+    'Provided Token'      = $providedToken
+    'Provided ClientID'   = $providedClientID
+    'Provided PrivateKey' = $providedPrivateKey
+} | Format-List
+Write-Host '::endgroup::'
 
-if ($providedClientID -and $providedPrivateKey) {
-    LogGroup 'Connecting using provided GitHub App' {
-        Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
-        Get-GitHubContext | Format-Table -AutoSize
-    }
-} elseif ($providedToken) {
-    LogGroup 'Connecting using provided token' {
-        Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
-        Get-GitHubContext | Format-Table -AutoSize
-    }
+LogGroup ' - Installed modules' {
+    Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
 }
+
+LogGroup ' - GitHub connection' {
+    if ($providedClientID -and $providedPrivateKey) {
+        Write-Verbose 'Connected using provided GitHub App'
+        Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
+    } elseif ($providedToken) {
+        Write-Verbose 'Connected using provided token'
+        Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
+    }
+    Get-GitHubContext | Format-List
+}
+
+LogGroup ' - Configuration' {
+    Get-GitHubConfig | Format-List
+}
+
+Write-Host '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
+
+$DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+$VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'

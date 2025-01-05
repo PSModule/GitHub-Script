@@ -26,6 +26,30 @@ For more information on the available functions and automatic loaded variables, 
 | - | - |
 | `result` | The output of the script as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`. |
 
+To use the outputs in a subsequent step, you can use the following syntax:
+
+```yaml
+- uses: PSModule/GitHub-Script@v1
+  id: set-output
+  with:
+    Script: |
+      Set-GitHubOutput -Name 'Octocat' -Value @{
+        Name = 'Octocat'
+        Image = 'https://octodex.github.com/images/original.png'
+      }
+
+- name: Use outputs
+  shell: pwsh
+  env:
+    result: ${{ steps.set-output.outputs.result }} # = '{"Octocat":{"Name":"Octocat","Image":"https://octodex.github.com/images/original.png"}}'
+    name: ${{ fromJson(steps.set-output.outputs.result).Octocat.Name }} # = 'Octocat'
+  run: |
+    $result = $env:result | ConvertFrom-Json
+    Write-Output $env:name
+    Write-Output $result.Octocat.Image
+```
+
+
 ### Examples
 
 #### Example 1: Run a GitHub PowerShell script
