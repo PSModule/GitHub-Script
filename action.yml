@@ -61,5 +61,6 @@ runs:
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
-        . "${{ github.action_path }}\scripts\main.ps1"
+        . '${{ github.action_path }}\scripts\main.ps1'
         ${{ inputs.Script }}
+        . '${{ github.action_path }}\scripts\outputs.ps1'
