@@ -1,11 +1,8 @@
 [CmdletBinding()]
 param()
 
-$rawUI = $Host.UI.RawUI
-$rawUI
-
-$rawUI.WindowSize
-$rawUI.BufferSize
+$rawUI.WindowSize.Width = 500
+$rawUI.BufferSize.Width = 500
 
 $env:PSMODULE_GITHUB_SCRIPT = $true
 Write-Host "┏━━━━━┫ GitHub-Script ┣━━━━━┓"
