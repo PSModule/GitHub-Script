@@ -86,9 +86,12 @@ jobs:
           Prerelease: true
           ShowOutput: true
           Script: |
-            $cat = Get-GitHubOctocat
-            $zen = Get-GitHubZen
-            Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
+            LogGroup 'Get-GitHubZen' {
+              $cat = Get-GitHubOctocat
+              $zen = Get-GitHubZen
+              Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
+            }
+
             LogGroup 'Set outputs WISECAT' {
               Set-GitHubOutput -Name 'WISECAT' -Value $cat
             }
