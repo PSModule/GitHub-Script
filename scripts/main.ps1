@@ -37,11 +37,9 @@ if (-not $alreadyInstalled) {
             Install-PSResource @params
             break
         } catch {
-            Write-Warning "Installing $name failed with error: $_"
             if ($i -eq $Count - 1) {
-                throw
+                throw $_
             }
-            Write-Warning "Retrying in $Delay seconds..."
             Start-Sleep -Seconds $Delay
         }
     }
