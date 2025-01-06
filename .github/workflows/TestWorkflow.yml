@@ -34,7 +34,7 @@ permissions:
 
 jobs:
   ActionTestBasic:
-    name: Action-Test - [Basic] - [${{ inputs.runs-on }}]
+    name: Basic
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -48,7 +48,7 @@ jobs:
           Verbose: true
 
   ActionTestWithScript:
-    name: Action-Test - [WithScript] - [${{ inputs.runs-on }}]
+    name: WithScript
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -70,7 +70,7 @@ jobs:
             }
 
   ActionTestCommands:
-    name: Action-Test - [Commands] - [${{ inputs.runs-on }}]
+    name: Commands
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -103,7 +103,7 @@ jobs:
           Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 
   ActionTestWithoutToken:
-    name: Action-Test - [WithoutToken] - [${{ inputs.runs-on }}]
+    name: WithoutToken
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -120,7 +120,7 @@ jobs:
             }
 
   ActionTestWithPAT:
-    name: Action-Test - [WithPAT] - [${{ inputs.runs-on }}]
+    name: WithPAT
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -137,7 +137,7 @@ jobs:
             }
 
   ActionTestWithUSERFGPAT:
-    name: Action-Test - [WithUserFGPAT] - [${{ inputs.runs-on }}]
+    name: WithUserFGPAT
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -154,7 +154,7 @@ jobs:
             }
 
   ActionTestWithORGFGPAT:
-    name: Action-Test - [WithOrgFGPAT] - [${{ inputs.runs-on }}]
+    name: WithOrgFGPAT
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -171,7 +171,7 @@ jobs:
             }
 
   ActionTestWithGitHubAppEnt:
-    name: Action-Test - [GitHubAppEnt] - [${{ inputs.runs-on }}]
+    name: GitHubAppEnt
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -201,7 +201,7 @@ jobs:
             }
 
   ActionTestWithGitHubAppOrg:
-    name: Action-Test - [GitHubAppOrg] - [${{ inputs.runs-on }}]
+    name: GitHubAppOrg
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
