@@ -89,8 +89,13 @@ jobs:
             $cat = Get-GitHubOctocat
             $zen = Get-GitHubZen
             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
-            Set-GitHubOutput -Name 'WISECAT' -Value $cat
-            Set-GitHubOutput -Name 'Zen' -Value $zen
+            LogGroup 'Set outputs WISECAT' {
+              Set-GitHubOutput -Name 'WISECAT' -Value $cat
+            }
+
+            LogGroup 'Set outputs Zen' {
+              Set-GitHubOutput -Name 'Zen' -Value $zen
+            }
 
       - name: Run-test
         shell: pwsh
