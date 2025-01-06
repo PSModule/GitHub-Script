@@ -66,6 +66,8 @@ runs:
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
+        $Host.UI.RawUI.WindowSize.Width = 500
+        $Host.UI.RawUI.BufferSize.Width = 500
         . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
         ${{ inputs.Script }}
         . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
