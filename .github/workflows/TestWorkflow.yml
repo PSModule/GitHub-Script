@@ -70,7 +70,7 @@ jobs:
             }
 
   ActionTestCommands:
-    name: Commands
+    name: Commands + Outputs
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
