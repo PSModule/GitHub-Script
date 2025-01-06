@@ -1,11 +1,8 @@
 [CmdletBinding()]
 param()
 
-$Host.UI.RawUI.WindowSize.Width = 500
-$Host.UI.RawUI.BufferSize.Width = 500
-
 $env:PSMODULE_GITHUB_SCRIPT = $true
-Write-Host "┏━━━━━┫ GitHub-Script ┣━━━━━┓"
+Write-Host '┏━━━━━┫ GitHub-Script ┣━━━━━┓'
 Write-Host '::group:: - Setup GitHub PowerShell'
 
 $Name = 'GitHub'
@@ -33,7 +30,19 @@ if (-not $alreadyInstalled) {
     if ($Version) {
         $params['Version'] = $Version
     }
-    Install-PSResource @params
+    $Count = 5
+    $Delay = 10
+    for ($i = 0; $i -lt $Count; $i++) {
+        try {
+            Install-PSResource @params
+            break
+        } catch {
+            if ($i -eq $Count - 1) {
+                throw $_
+            }
+            Start-Sleep -Seconds $Delay
+        }
+    }
 }
 
 $alreadyImported = Get-Module -Name $Name
