@@ -1,7 +1,5 @@
 name: Action-Test
 
-run-name: "Action-Test - [${{ github.event.pull_request.title }} #${{ github.event.pull_request.number }}] by @${{ github.actor }}"
-
 on:
   workflow_call:
     inputs:
@@ -31,10 +29,6 @@ on:
       TEST_APP_ORG_PRIVATE_KEY:
         description: 'Private Key for the test GitHub App for the organization'
         required: true
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 permissions:
   contents: read
