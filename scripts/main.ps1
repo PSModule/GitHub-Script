@@ -32,7 +32,7 @@ if (-not $alreadyInstalled) {
     }
     $Count = 5
     $Delay = 10
-    for ($i = 1; $i -lt $Count; $i++) {
+    for ($i = 1; $i -le $Count; $i++) {
         try {
             Install-PSResource @params
             break
