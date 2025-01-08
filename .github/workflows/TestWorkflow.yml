@@ -121,9 +121,9 @@ jobs:
           $result = $env:result | ConvertFrom-Json
           Set-GitHubStepSummary -Summary $env:WISECAT
           Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
-          $result.Context | Format-Table -AutoSize
-          $result.GitConfig | Format-Table -AutoSize
           Write-Host ($result.Zen2)
+          $result.Context | Format-List
+          $result.GitConfig | Format-List
 
   ActionTestWithoutToken:
     name: WithoutToken
