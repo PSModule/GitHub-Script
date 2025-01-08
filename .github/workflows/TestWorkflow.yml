@@ -105,7 +105,7 @@ jobs:
             }
 
             LogGroup 'Set outputs - GitConfig' {
-              Set-GitHubOutput -Name 'GitConfig' -Value (Get-GitHubGitConfig)
+              Set-GitHubOutput -Name 'GitConfig' -Value (Get-GitHubGitConfig | Where-Object { $_.Key -eq 'user.name' -or $_.Key -eq 'user.email' })
             }
 
             LogGroup 'Set outputs - Zen2' {
