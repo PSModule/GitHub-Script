@@ -92,12 +92,24 @@ jobs:
               Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             }
 
-            LogGroup 'Set outputs WISECAT' {
+            LogGroup 'Set outputs - WISECAT' {
               Set-GitHubOutput -Name 'WISECAT' -Value $cat
             }
 
-            LogGroup 'Set outputs Zen' {
+            LogGroup 'Set outputs - Zen' {
               Set-GitHubOutput -Name 'Zen' -Value $zen
+            }
+
+            LogGroup 'Set outputs - Context' {
+              Set-GitHubOutput -Name 'Context' -Value (Get-GitHubContext)
+            }
+
+            LogGroup 'Set outputs - GitConfig' {
+              Set-GitHubOutput -Name 'GitConfig' -Value (Get-GitHubGitConfig | Where-Object { $_.Name -in 'user.name','user.email' })
+            }
+
+            LogGroup 'Set outputs - Zen2' {
+              Set-GitHubOutput -Name 'Zen2' -Value $zen
             }
 
       - name: Run-test
@@ -109,6 +121,9 @@ jobs:
           $result = $env:result | ConvertFrom-Json
           Set-GitHubStepSummary -Summary $env:WISECAT
           Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+          Write-Host ($result.Zen2)
+          $result.Context | Format-List
+          $result.GitConfig | Format-List
 
   ActionTestWithoutToken:
     name: WithoutToken
