@@ -80,16 +80,15 @@ process {
             Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
         }
 
-        if ($providedToken -or ($providedClientID -and $providedPrivateKey)) {
-            LogGroup ' - GitHub connection' {
-                if ($providedClientID -and $providedPrivateKey) {
-                    Write-Verbose 'Connected using provided GitHub App'
-                    Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
-                } elseif ($providedToken) {
-                    Write-Verbose 'Connected using provided token'
-                    Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
-                }
-                Get-GitHubContext | Format-List
+        if ($providedClientID -and $providedPrivateKey) {
+            LogGroup ' - GitHub connection - GitHub App' {
+                Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent -PassThru |
+                    Format-List
+            }
+        } elseif ($providedToken) {
+            LogGroup ' - GitHub connection - Token' {
+                Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent -PassThru |
+                    Format-List
             }
         }
 
