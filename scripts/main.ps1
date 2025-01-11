@@ -2,6 +2,8 @@
 param()
 
 begin {
+    $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+    $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
     Write-Debug "[main] - Start"
 }
 
@@ -94,8 +96,6 @@ process {
 
     Write-Host '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
 
-    $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-    $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 }
 
 end {
