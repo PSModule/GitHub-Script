@@ -42,7 +42,7 @@ process {
             $Delay = 10
             for ($i = 1; $i -le $Count; $i++) {
                 try {
-                    Install-PSResource @params
+                    Install-PSResource @params -ErrorAction Stop
                     break
                 } catch {
                     if ($i -eq $Count) {
