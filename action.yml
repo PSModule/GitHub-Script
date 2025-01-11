@@ -66,12 +66,8 @@ runs:
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
-        # try {
-        #   $exit = . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
-        # } catch {
-        #   Write-Error $_
-        #   exit 2
-        # }
+        . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
+
         ${{ inputs.Script }}
         # try {
         #   $exit = . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
