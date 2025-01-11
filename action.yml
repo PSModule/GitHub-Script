@@ -70,12 +70,12 @@ runs:
           . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
         } catch {
           Write-Error $_
-          exit 1
+          exit 2
         }
         ${{ inputs.Script }}
         try {
           . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
         } catch {
           Write-Error $_
-          exit 1
+          exit 3
         }
