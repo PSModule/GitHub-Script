@@ -67,15 +67,17 @@ runs:
       run: |
         # GitHub-Script
         try {
-          . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
+          $exit = . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
         } catch {
           Write-Error $_
           exit 2
         }
         ${{ inputs.Script }}
         try {
-          . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
+          $exit = . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
         } catch {
           Write-Error $_
           exit 3
         }
+        $exit
+        Write-Host 'What about this'
