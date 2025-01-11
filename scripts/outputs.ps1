@@ -2,8 +2,7 @@
 param()
 
 begin {
-    $stackPath = Get-PSCallStackPath
-    Write-Debug "[$stackPath] - Start"
+    Write-Debug "[outputs] - Start"
 }
 
 process {
@@ -35,5 +34,5 @@ process {
 }
 
 end {
-    Write-Debug "[$stackPath] - End"
+    Write-Debug "[outputs] - End"
 }
