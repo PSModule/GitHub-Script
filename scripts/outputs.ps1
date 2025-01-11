@@ -2,14 +2,13 @@
 param()
 
 begin {
+    $DebugPreference = 'SilentlyContinue'
+    $VerbosePreference = 'SilentlyContinue'
     Write-Debug '[outputs] - Start'
 }
 
 process {
     try {
-        $DebugPreference = 'SilentlyContinue'
-        $VerbosePreference = 'SilentlyContinue'
-
         Write-Debug "[outputs] - ShowOutput: $env:GITHUB_ACTION_INPUT_ShowOutput"
         if ($env:GITHUB_ACTION_INPUT_ShowOutput -ne 'true') {
             return

@@ -2,8 +2,6 @@
 param()
 
 begin {
-    $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-    $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
     Write-Debug '[main] - Start'
 }
 
@@ -45,6 +43,7 @@ process {
                     Install-PSResource @params -ErrorAction Stop
                     break
                 } catch {
+                    Write-Warning $_.Exception.Message
                     if ($i -eq $Count) {
                         throw $_
                     }
@@ -104,4 +103,6 @@ process {
 
 end {
     Write-Debug '[main] - End'
+    $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+    $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 }
