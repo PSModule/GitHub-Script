@@ -66,6 +66,16 @@ runs:
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
-        . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
+        try {
+          . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\main.ps1')
+        } catch {
+          Write-Error $_
+          exit 1
+        }
         ${{ inputs.Script }}
-        . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
+        try {
+          . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
+        } catch {
+          Write-Error $_
+          exit 1
+        }
