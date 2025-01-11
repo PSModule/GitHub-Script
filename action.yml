@@ -73,11 +73,11 @@ runs:
           exit 2
         }
         ${{ inputs.Script }}
-        try {
-          $exit = . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
-        } catch {
-          Write-Error $_
-          exit 3
-        }
-        $exit
+        # try {
+        #   $exit = . $(Join-Path -Path '${{ github.action_path }}' -ChildPath 'scripts\outputs.ps1')
+        # } catch {
+        #   Write-Error $_
+        #   exit 3
+        # }
+        # $exit
         Write-Host 'What about this'
