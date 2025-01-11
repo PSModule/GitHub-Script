@@ -76,9 +76,9 @@ process {
         } | Format-List
         Write-Host '::endgroup::'
 
-        # LogGroup ' - Installed modules' {
-        #     Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
-        # }
+        LogGroup ' - Installed modules' {
+            Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
+        }
 
         # LogGroup ' - GitHub connection' {
         #     if ($providedClientID -and $providedPrivateKey) {
