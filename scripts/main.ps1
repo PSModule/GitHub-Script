@@ -95,6 +95,10 @@ process {
             Get-GitHubConfig | Format-List
         }
 
+        LogGroup ' - Git Configuration' {
+            Get-GitHubGitConfig | Format-List
+        }
+
         Write-Host '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
     } catch {
         throw $_
