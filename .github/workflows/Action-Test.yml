@@ -48,7 +48,7 @@ jobs:
                   $config = @()
                   $configList = $configList | Sort-Object
                   $configList | ForEach-Object {
-                    $name, $value += $_ -split '='
+                    $name, $value = $_ -split '='
                     $config += @{
                       $name = $value
                     }
