@@ -37,20 +37,11 @@ jobs:
         uses: ./
         with:
           Script: |
-            LogGroup 'GitConfig - Local' {
-              $configList = git config --local --list 2>&1
+          $scopes = 'local', 'global', 'system'
+          $scopes | ForEach-Object {
+            LogGroup "GitConfig - $_" {
+              $configList = git config --$_ --list 2>&1
               $configList
               $LASTEXITCODE
             }
-
-            LogGroup 'GitConfig - Global' {
-              $configList = git config --global --list 2>&1
-              $configList
-              $LASTEXITCODE
-            }
-
-            LogGroup 'GitConfig - System' {
-              $configList = git config --system --list 2>&1
-              $configList
-              $LASTEXITCODE
-            }
+          }
