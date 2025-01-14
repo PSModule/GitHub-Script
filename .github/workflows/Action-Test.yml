@@ -44,7 +44,7 @@ jobs:
                 if ($LASTEXITCODE -ne 0) {
                   $global:LASTEXITCODE = 0
                   $configList = $null
-                } else {¨
+                } else {
                   $config = @()
                   $configList = $configList | Sort-Object
                   $configList | ForEach-Object {
