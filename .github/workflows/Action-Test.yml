@@ -58,7 +58,7 @@ jobs:
                       ($name.Trim()) = ($value.Trim())
                     }
                   }
-                  $config
+                  $config | Format-List
                 }
               }
             }
