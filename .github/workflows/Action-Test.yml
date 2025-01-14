@@ -41,7 +41,11 @@ jobs:
             $scopes | ForEach-Object {
               LogGroup "GitConfig - $_" {
                 $configList = git config --$_ --list 2>&1
+                if ($LASTEXITCODE -ne 0) {
+                  $global:LASTEXITCODE = 0
+                  $configList = $null
+                }
+                $configList = $configList | Sort-Object
                 $configList
-                $LASTEXITCODE
               }
             }
