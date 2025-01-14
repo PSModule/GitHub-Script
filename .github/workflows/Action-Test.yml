@@ -57,7 +57,7 @@ jobs:
                       ($name.Trim()) = ($value.Trim())
                     }
                   }
-                  $config | Format-Table -Property Name, Value -AutoSize
+                  $config | Format-Table -Property Name, Value
                 }
               }
             }
