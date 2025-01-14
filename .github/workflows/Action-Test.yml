@@ -53,7 +53,9 @@ jobs:
                       $name = $value
                     }
                   }
-                  $config.GetEnumerator() | Format-List
+                  $config | ForEach-Object {
+                    $_.GetEnumerator()
+                  } | Format-List
                 }
               }
             }
