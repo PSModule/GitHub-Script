@@ -53,7 +53,7 @@ jobs:
                       $name = $value
                     }
                   }
-                  $config
+                  $config | Format-Table -AutoSize
                 }
               }
             }
