@@ -53,7 +53,7 @@ jobs:
                       $name = $value
                     }
                   }
-                  $config | Format-Table -AutoSize
+                  $config | Select-Object Name,Value | Format-List
                 }
               }
             }
