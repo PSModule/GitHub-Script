@@ -60,7 +60,7 @@ jobs:
                       ($name.Trim()) = ($value.Trim())
                     }
                   }
-                  $config | Format-List
+                  $config | Format-Table
                 }
               }
             }
