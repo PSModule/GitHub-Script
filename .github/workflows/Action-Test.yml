@@ -44,10 +44,11 @@ jobs:
                 if ($LASTEXITCODE -ne 0) {
                   $global:LASTEXITCODE = 0
                   $configList = $null
+                } else {
+                  $configList = $configList | Sort-Object
+                  $configList | Get-Member
+                  $configList.GetType()
+                  $configList
                 }
-                $configList = $configList | Sort-Object
-                $configList | Get-Member
-                $configList.GetType()
-                $configList
               }
             }
