@@ -40,7 +40,8 @@ jobs:
             $scopes = 'local', 'global', 'system'
             $scopes | ForEach-Object {
               LogGroup "GitConfig - $_" {
-                $configList = git config --$_ --list 2>&1
+                $Scope = $_
+                $configList = git config --$Scope --list 2>&1
                 if ($LASTEXITCODE -ne 0) {
                   $global:LASTEXITCODE = 0
                   $configList = $null
@@ -48,14 +49,16 @@ jobs:
                   $config = @()
                   $configList = $configList | Sort-Object
                   $configList | ForEach-Object {
-                    $name, $value = $_ -split '='
+                    $name, $value = $_ -split '=', 2
+                    if ($value -match '(?i)AUTHORIZATION:\s*(?<scheme>[^\s]+)\s+(?<token>.*)') {
+                      $secret = $matches['token']
+                      Add-GitHubMask -Value $secret
+                    }
                     $config += @{
-                      $name = $value
+                      ($name.Trim()) = ($value.Trim())
                     }
                   }
-                  $config | ForEach-Object {
-                    $_.GetEnumerator()
-                  } | Format-List
+                  $config
                 }
               }
             }
