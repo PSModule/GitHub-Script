@@ -49,11 +49,11 @@ jobs:
                   $configList = $configList | Sort-Object
                   $configList | ForEach-Object {
                     $name, $value = $_ -split '='
-                    $config += @{
+                    $config += [pscustomobject]@{
                       $name = $value
                     }
                   }
-                  $config | Select-Object Name,Value | Format-List
+                  $config | Format-List
                 }
               }
             }
