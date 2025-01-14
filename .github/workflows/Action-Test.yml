@@ -48,7 +48,7 @@ jobs:
                   $configList = $configList | Sort-Object
                   $configList | Get-Member | Format-Table -AutoSize
                   $configList.GetType() | Format-Table -AutoSize
-                  $configList | Format-Table -AutoSize
+                  Write-Host $configList
                 }
               }
             }
