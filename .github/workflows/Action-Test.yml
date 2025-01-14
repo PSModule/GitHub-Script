@@ -54,8 +54,7 @@ jobs:
                     Write-Debug "Name:  $name"
                     Write-Debug "Value: $value"
                     if ($value -match '(?i)AUTHORIZATION:\s*(?<scheme>[^\s]+)\s+(?<token>.*)') {
-                      $secret = $matches['token']
-                      Add-GitHubMask -Value $secret
+                      Add-GitHubMask -Value $matches['token']
                     }
                     $config += @{
                       ($name.Trim()) = ($value.Trim())
