@@ -17,12 +17,40 @@ permissions:
   pull-requests: read
 
 jobs:
+  # ActionTest:
+  #   uses: ./.github/workflows/TestWorkflow.yml
+  #   secrets: inherit
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest, windows-latest]
+  #   with:
+  #     runs-on: ${{ matrix.os }}
+
   ActionTest:
-    uses: ./.github/workflows/TestWorkflow.yml
-    secrets: inherit
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    with:
-      runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Script: |
+            LogGroup 'GitConfig - Local' {
+              $configList = git config --local --list 2>&1
+              $configList
+              $LASTEXITCODE
+            }
+
+            LogGroup 'GitConfig - Global' {
+              $configList = git config --global --list 2>&1
+              $configList
+              $LASTEXITCODE
+            }
+
+            LogGroup 'GitConfig - System' {
+              $configList = git config --system --list 2>&1
+              $configList
+              $LASTEXITCODE
+            }
