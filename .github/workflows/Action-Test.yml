@@ -46,6 +46,8 @@ jobs:
                   $configList = $null
                 }
                 $configList = $configList | Sort-Object
+                $configList | Get-Member
+                $configList.GetType()
                 $configList
               }
             }
