@@ -36,6 +36,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Debug: true
           Script: |
             $scopes = 'local', 'global', 'system'
             $scopes | ForEach-Object {
@@ -50,6 +51,8 @@ jobs:
                   $configList = $configList | Sort-Object
                   $configList | ForEach-Object {
                     $name, $value = $_ -split '=', 2
+                    Write-Debug "Name:  $name"
+                    Write-Debug "Value: $value"
                     if ($value -match '(?i)AUTHORIZATION:\s*(?<scheme>[^\s]+)\s+(?<token>.*)') {
                       $secret = $matches['token']
                       Add-GitHubMask -Value $secret
