@@ -95,18 +95,6 @@ process {
             Get-GitHubConfig | Format-List
         }
 
-        LogGroup ' - Git Configuration - System' {
-            Get-GitHubGitConfig -Scope system | Format-List
-        }
-
-        LogGroup ' - Git Configuration - Global' {
-            Get-GitHubGitConfig -Scope global | Format-List
-        }
-
-        LogGroup ' - Git Configuration - Local' {
-            Get-GitHubGitConfig | Format-List
-        }
-
         Write-Host '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
     } catch {
         throw $_

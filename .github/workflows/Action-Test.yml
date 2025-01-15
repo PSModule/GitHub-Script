@@ -17,47 +17,12 @@ permissions:
   pull-requests: read
 
 jobs:
-  # ActionTest:
-  #   uses: ./.github/workflows/TestWorkflow.yml
-  #   secrets: inherit
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [ubuntu-latest, macos-latest, windows-latest]
-  #   with:
-  #     runs-on: ${{ matrix.os }}
-
   ActionTest:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          Script: |
-            $scopes = 'local', 'global', 'system'
-            $scopes | ForEach-Object {
-              LogGroup "GitConfig - $_" {
-                $Scope = $_
-                $configList = git config --$Scope --list 2>&1
-                if ($LASTEXITCODE -ne 0) {
-                  $global:LASTEXITCODE = 0
-                  $configList = $null
-                } else {
-                  $config = @()
-                  $configList = $configList | Sort-Object
-                  $configList | ForEach-Object {
-                    $name, $value = $_ -split '=', 2
-                    if ($value -match '(?i)AUTHORIZATION:\s*(?<scheme>[^\s]+)\s+(?<token>.*)') {
-                      Add-GitHubMask -Value $matches['token']
-                    }
-                    $config += @{
-                      ($name.Trim()) = ($value.Trim())
-                    }
-                  }
-                  $config | Format-Table -Property Name, Value
-                }
-              }
-            }
+    uses: ./.github/workflows/TestWorkflow.yml
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    with:
+      runs-on: ${{ matrix.os }}
