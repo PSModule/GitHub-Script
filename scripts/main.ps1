@@ -114,7 +114,8 @@ process {
                 Sender       = $gitHubEvent.sender
                 Enterprise   = $gitHubEvent.enterprise
                 Organization = $gitHubEvent.organization
-                Repository   = $gitHubEvent.repository
+                Owner        = $gitHubEvent.repository.owner
+                Repository   = $gitHubEvent.repository | Select-Object -ExcludeProperty owner
             } | Format-List
         }
     } catch {
