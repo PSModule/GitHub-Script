@@ -97,51 +97,38 @@ process {
 
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
 
-        LogGroup 'EventInfo - JSON' {
+        LogGroup 'EventInfo' {
             $gitHubEventJson = Get-Content -Path $env:GITHUB_EVENT_PATH
-            Write-Output $gitHubEventJson
-        }
-
-        LogGroup 'EventInfo - Object' {
             $gitHubEvent = $gitHubEventJson | ConvertFrom-Json
+
+            $eventAction = $gitHubEvent.action
+            $eventSender = $gitHubEvent.sender | Select-Object -Property login, type, id, node_id, html_url
+            $eventEnterprise = $gitHubEvent.enterprise | Select-Object -Property name, slug, id, node_id, html_url
+            $eventOrganization = $gitHubEvent.organization | Select-Object -Property login, id, node_id
+            $eventOwner = $gitHubEvent.repository.owner | Select-Object -Property login, type, id, node_id, html_url
+            $eventRepository = $gitHubEvent.repository | Select-Object -Property name, full_name, html_url, id, node_id, default_branch
+
+            $gitHubEvent = $gitHubEvent | Select-Object -ExcludeProperty action, sender, enterprise, organization, repository
+            $gitHubEvent | Add-Member -MemberType NoteProperty -Name Name -Value $env:GITHUB_EVENT_NAME -Force
+            if ($eventAction) {
+                $gitHubEvent | Add-Member -MemberType NoteProperty -Name Action -Value $eventAction -Force
+            }
+            if ($eventSender) {
+                $gitHubEvent | Add-Member -MemberType NoteProperty -Name Sender -Value $eventSender -Force
+            }
+            if ($eventEnterprise) {
+                $gitHubEvent | Add-Member -MemberType NoteProperty -Name Enterprise -Value $eventEnterprise -Force
+            }
+            if ($eventOrganization) {
+                $gitHubEvent | Add-Member -MemberType NoteProperty -Name Organization -Value $eventOrganization -Force
+            }
+            if ($eventOwner) {
+                $gitHubEvent | Add-Member -MemberType NoteProperty -Name Owner -Value $eventOwner -Force
+            }
+            if ($eventRepository) {
+                $gitHubEvent | Add-Member -MemberType NoteProperty -Name Repository -Value $eventRepository -Force
+            }
             $gitHubEvent | Format-List
-        }
-
-        LogGroup 'EventInfo - Sender' {
-            $Sender = $gitHubEvent.sender | Select-Object -Property login, type, id, node_id, html_url
-            $Sender | Format-List
-        }
-
-        LogGroup 'EventInfo - Enterprise' {
-            $Enterprise = $gitHubEvent.enterprise | Select-Object -Property name, slug, id, node_id, html_url
-            $Enterprise | Format-List
-        }
-
-        LogGroup 'EventInfo - Organization' {
-            $Organization = $gitHubEvent.organization | Select-Object -Property login, id, node_id
-            $Organization | Format-List
-        }
-
-        LogGroup 'EventInfo - Owner' {
-            $Owner = $gitHubEvent.repository.owner | Select-Object -Property login, type, id, node_id, html_url
-            $Owner | Format-List
-        }
-
-        LogGroup 'EventInfo - Repository' {
-            $Repository = $gitHubEvent.repository | Select-Object -Property name, full_name, html_url, id, node_id, default_branch
-            $Repository | Format-List
-        }
-
-        LogGroup 'Object' {
-            [pscustomobject]@{
-                Type         = $env:GITHUB_EVENT_NAME
-                Action       = $gitHubEvent.action
-                Sender       = $gitHubEvent.sender
-                Enterprise   = $gitHubEvent.enterprise
-                Organization = $gitHubEvent.organization
-                Owner        = $gitHubEvent.repository.owner
-                Repository   = $gitHubEvent.repository | Select-Object -ExcludeProperty owner
-            } | Format-List
         }
     } catch {
         throw $_
