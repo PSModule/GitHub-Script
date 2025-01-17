@@ -108,27 +108,27 @@ process {
         }
 
         LogGroup 'EventInfo - Sender' {
-            $Sender = $gitHubEvent.sender
+            $Sender = $gitHubEvent.sender | Select-Object -Property login, type, id, node_id, html_url
             $Sender | Format-List
         }
 
         LogGroup 'EventInfo - Enterprise' {
-            $Enterprise = $gitHubEvent.enterprise
+            $Enterprise = $gitHubEvent.enterprise | Select-Object -Property name, slug, id, node_id, html_url
             $Enterprise | Format-List
         }
 
         LogGroup 'EventInfo - Organization' {
-            $Organization = $gitHubEvent.organization
+            $Organization = $gitHubEvent.organization | Select-Object -Property login, id, node_id
             $Organization | Format-List
         }
 
         LogGroup 'EventInfo - Owner' {
-            $Owner = $gitHubEvent.repository.owner
+            $Owner = $gitHubEvent.repository.owner | Select-Object -Property login, type, id, node_id, html_url
             $Owner | Format-List
         }
 
         LogGroup 'EventInfo - Repository' {
-            $Repository = $gitHubEvent.repository | Select-Object -ExcludeProperty owner
+            $Repository = $gitHubEvent.repository | Select-Object -Property name, full_name, html_url, id, node_id, default_branch
             $Repository | Format-List
         }
 
