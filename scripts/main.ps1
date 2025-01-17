@@ -115,7 +115,7 @@ process {
                 Enterprise   = $gitHubEvent.enterprise
                 Organization = $gitHubEvent.organization
                 Repository   = $gitHubEvent.repository
-            }
+            } | Format-List
         }
     } catch {
         throw $_
