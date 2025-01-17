@@ -8,8 +8,8 @@ begin {
 process {
     try {
         $env:PSMODULE_GITHUB_SCRIPT = $true
-        Write-Host '┏━━━━━┫ GitHub-Script ┣━━━━━┓'
-        Write-Host '::group:: - Setup GitHub PowerShell'
+        Write-Output '┏━━━━━┫ GitHub-Script ┣━━━━━┓'
+        Write-Output '::group:: - Setup GitHub PowerShell'
 
         $Name = 'GitHub'
         $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -73,21 +73,21 @@ process {
             'Provided ClientID'   = $providedClientID
             'Provided PrivateKey' = $providedPrivateKey
         } | Format-List
-        Write-Host '::endgroup::'
+        Write-Output '::endgroup::'
 
         LogGroup ' - Installed modules' {
             Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
         }
 
-        if ($providedClientID -and $providedPrivateKey) {
-            LogGroup ' - GitHub connection - GitHub App' {
+        LogGroup ' - GitHub connection' {
+            if ($providedClientID -and $providedPrivateKey) {
                 Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent -PassThru |
-                    Format-List
-            }
-        } elseif ($providedToken) {
-            LogGroup ' - GitHub connection - Token' {
+                    Select-Object * | Format-List
+            } elseif ($providedToken) {
                 Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent -PassThru |
-                    Format-List
+                    Select-Object * | Format-List
+            } else {
+                Write-Output 'No connection provided'
             }
         }
 
@@ -95,7 +95,7 @@ process {
             Get-GitHubConfig | Format-List
         }
 
-        Write-Host '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
+        Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
     } catch {
         throw $_
     }
