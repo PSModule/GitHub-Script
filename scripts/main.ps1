@@ -107,6 +107,31 @@ process {
             $gitHubEvent | Format-List
         }
 
+        LogGroup 'EventInfo - Sender' {
+            $Sender = $gitHubEvent.sender
+            $Sender | Format-List
+        }
+
+        LogGroup 'EventInfo - Enterprise' {
+            $Enterprise = $gitHubEvent.enterprise
+            $Enterprise | Format-List
+        }
+
+        LogGroup 'EventInfo - Organization' {
+            $Organization = $gitHubEvent.organization
+            $Organization | Format-List
+        }
+
+        LogGroup 'EventInfo - Owner' {
+            $Owner = $gitHubEvent.repository.owner
+            $Owner | Format-List
+        }
+
+        LogGroup 'EventInfo - Repository' {
+            $Repository = $gitHubEvent.repository | Select-Object -ExcludeProperty owner
+            $Repository | Format-List
+        }
+
         LogGroup 'Object' {
             [pscustomobject]@{
                 Type         = $env:GITHUB_EVENT_NAME
