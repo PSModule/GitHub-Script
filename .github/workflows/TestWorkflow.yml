@@ -62,13 +62,18 @@ jobs:
           Verbose: true
           Script: |
             LogGroup 'EventInfo' {
-              Get-Content -Path $env:GITHUB_EVENT_PATH | ConvertFrom-Json | Format-List
+              $gitHubEvent = Get-Content -Path $env:GITHUB_EVENT_PATH | ConvertFrom-Json
+              $gitHubEvent | Format-List
             }
 
             LogGroup 'Object' {
               [pscustomobject]@{
                 Type = $env:GITHUB_EVENT_NAME
-                Action = $env:GITHUB_EVENT_PATH
+                Action = $gitHubEvent.action
+                Sender = $gitHubEvent.sender
+                Enterprise = $gitHubEvent.enterprise
+                Organization = $gitHubEvent.organization
+                Repository = $gitHubEvent.repository
               }
             }
 
