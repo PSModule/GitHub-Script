@@ -33,8 +33,22 @@ permissions:
   pull-requests: read
 
 jobs:
-  # ActionTestBasic:
-  #   name: Basic
+  ActionTestBasic:
+    name: Basic
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        # with:
+        #   Debug: true
+        #   Verbose: true
+
+  # ActionTestWithScript:
+  #   name: WithScript
   #   runs-on: ${{ inputs.runs-on }}
   #   steps:
   #     # Need to check out as part of the test, as its a local action
@@ -46,36 +60,14 @@ jobs:
   #       with:
   #         Debug: true
   #         Verbose: true
+  #         Script: |
+  #           LogGroup 'Get-GitHubZen' {
+  #             Get-GitHubZen
+  #           }
 
-  ActionTestWithScript:
-    name: WithScript
-    runs-on: ${{ inputs.runs-on }}
-    steps:
-      # Need to check out as part of the test, as its a local action
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Action-Test
-        uses: ./
-        with:
-          Debug: true
-          Verbose: true
-          Script: |
-            LogGroup 'EventInfo' {
-              $gitHubEvent = Get-Content -Path $env:GITHUB_EVENT_PATH | ConvertFrom-Json
-              $gitHubEvent | Format-List
-            }
-
-            LogGroup 'Object' {
-              [pscustomobject]@{
-                Type = $env:GITHUB_EVENT_NAME
-                Action = $gitHubEvent.action
-                Sender = $gitHubEvent.sender
-                Enterprise = $gitHubEvent.enterprise
-                Organization = $gitHubEvent.organization
-                Repository = $gitHubEvent.repository
-              }
-            }
+  #           LogGroup 'Get-GitHubViewer' {
+  #             Get-GitHubViewer -Fields name, login, id, databaseID
+  #           }
 
   # ActionTestCommands:
   #   name: Commands + Outputs

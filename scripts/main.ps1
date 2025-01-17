@@ -96,6 +96,27 @@ process {
         }
 
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
+
+        LogGroup 'EventInfo - JSON' {
+            $gitHubEventJson = Get-Content -Path $env:GITHUB_EVENT_PATH
+            Write-Output $gitHubEventJson
+        }
+
+        LogGroup 'EventInfo - Object' {
+            $gitHubEvent = $gitHubEventJson | ConvertFrom-Json
+            $gitHubEvent | Format-List
+        }
+
+        LogGroup 'Object' {
+            [pscustomobject]@{
+                Type         = $env:GITHUB_EVENT_NAME
+                Action       = $gitHubEvent.action
+                Sender       = $gitHubEvent.sender
+                Enterprise   = $gitHubEvent.enterprise
+                Organization = $gitHubEvent.organization
+                Repository   = $gitHubEvent.repository
+            }
+        }
     } catch {
         throw $_
     }
