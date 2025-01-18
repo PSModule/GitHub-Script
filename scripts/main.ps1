@@ -119,7 +119,9 @@ process {
             $props = @{}
 
             Get-ChildItem Env: | Where-Object { $_.Name -like 'RUNNER_*' } | ForEach-Object {
-                $props[$_.Name] = $_.Value
+                $name = $_.Name
+                $name = $name -replace '^RUNNER_'
+                $props[$name] = $_.Value
             }
 
             $customObject = [PSCustomObject]$props
