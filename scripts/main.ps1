@@ -115,6 +115,19 @@ process {
             Get-Content -Path $env:GITHUB_STATE
         }
 
+        LogGroup ' - Environment Variables' {
+            $props = @{}
+
+            Get-ChildItem Env: | Where-Object { $_.Name -like 'RUNNER_*' } | ForEach-Object {
+                $props[$_.Name] = $_.Value
+            }
+
+            $customObject = [PSCustomObject]$props
+
+            $customObject | Format-List
+        }
+
+
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
 
     } catch {
