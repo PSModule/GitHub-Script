@@ -100,35 +100,8 @@ process {
         }
 
         LogGroup ' - Runner Info' {
-            [pscustomobject]@{
-                Name        = $env:RUNNER_NAME
-                OS          = $env:RUNNER_OS
-                Arch        = $env:RUNNER_ARCH
-                Environment = $env:RUNNER_ENVIRONMENT
-                Temp        = $env:RUNNER_TEMP
-                Perflog     = $env:RUNNER_PERFLOG
-                ToolCache   = $env:RUNNER_TOOL_CACHE
-                TrackingID  = $env:RUNNER_TRACKING_ID
-                Workspace   = $env:RUNNER_WORKSPACE
-                Processors  = [System.Environment]::ProcessorCount
-            } | Format-List
-            Get-Content -Path $env:GITHUB_STATE
+            Get-GithubRunnerData | Format-List
         }
-
-        LogGroup ' - Environment Variables' {
-            $props = @{}
-
-            Get-ChildItem Env: | Where-Object { $_.Name -like 'RUNNER_*' } | ForEach-Object {
-                $name = $_.Name
-                $name = $name -replace '^RUNNER_'
-                $props[$name] = $_.Value
-            }
-
-            $customObject = [PSCustomObject]$props
-
-            $customObject | Format-List
-        }
-
 
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
 
