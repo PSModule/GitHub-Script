@@ -96,7 +96,7 @@ process {
         }
 
         LogGroup ' - Event Info' {
-            Get-GithubEventData | Format-List
+            $GithubEvent | Format-List
         }
 
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
