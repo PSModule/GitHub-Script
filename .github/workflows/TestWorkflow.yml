@@ -43,7 +43,8 @@ jobs:
 
       - name: Action-Test
         uses: ./
-        # with:
+        with:
+          Prerelease: true
         #   Debug: true
         #   Verbose: true
 
