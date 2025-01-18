@@ -112,26 +112,7 @@ process {
                 Workspace   = $env:RUNNER_WORKSPACE
                 Processors  = [System.Environment]::ProcessorCount
             } | Format-List
-
-            # Create an empty hashtable to store property name/value pairs.
-            $props = @{}
-
-            # Enumerate each static property on [System.Environment].
-            [System.Environment] |
-                Get-Member -Static -MemberType Property |
-                ForEach-Object {
-                    # Store the value of each static property in the hashtable,
-                    # keyed by the property name.
-                    $props[$_.Name] = [System.Environment]::$($_.Name)
-                }
-
-            # Cast the hashtable to a PSCustomObject so you get a single object
-            # with all property/value pairs.
-            $EnvironmentObject = [PSCustomObject]$props
-
-            # Display the custom object.
-            $EnvironmentObject | Format-List
-
+            Get-Content -Path $env:GITHUB_STATE
         }
 
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
