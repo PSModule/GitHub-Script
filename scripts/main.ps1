@@ -95,11 +95,12 @@ process {
             Get-GitHubConfig | Format-List
         }
 
+        LogGroup ' - Event Info' {
+            Get-GithubEventData | Format-List
+        }
+
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
 
-        LogGroup 'EventInfo' {
-            Get-GithubWorkflowData | Format-List
-        }
     } catch {
         throw $_
     }
