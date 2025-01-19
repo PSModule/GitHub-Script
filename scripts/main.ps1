@@ -95,16 +95,7 @@ process {
             Get-GitHubConfig | Format-List
         }
 
-        LogGroup ' - Event Info' {
-            Get-GithubEventData | Format-List
-        }
-
-        LogGroup ' - Runner Info' {
-            Get-GithubRunnerData | Format-List
-        }
-
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
-
     } catch {
         throw $_
     }

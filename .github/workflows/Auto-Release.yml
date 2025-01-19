@@ -2,7 +2,16 @@ name: Auto-Release
 
 run-name: "Auto-Release - [${{ github.event.pull_request.title }} #${{ github.event.pull_request.number }}] by @${{ github.actor }}"
 
-on: workflow_dispatch
+on:
+  pull_request_target:
+    branches:
+      - main
+    types:
+      - closed
+      - opened
+      - reopened
+      - synchronize
+      - labeled
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

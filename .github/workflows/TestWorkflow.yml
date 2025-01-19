@@ -44,212 +44,204 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Debug: true
+          Verbose: true
+
+  ActionTestWithScript:
+    name: WithScript
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        with:
+          Debug: true
+          Verbose: true
+          Script: . '.\Tests\Script.ps1'
+
+  ActionTestCommands:
+    name: Commands + Outputs
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        id: test
+        with:
+          Debug: true
+          Verbose: true
           Prerelease: true
-        #   Debug: true
-        #   Verbose: true
+          ShowOutput: true
+          Script: |
+            LogGroup 'Get-GitHubZen' {
+              $cat = Get-GitHubOctocat
+              $zen = Get-GitHubZen
+              Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
+            }
 
-  # ActionTestWithScript:
-  #   name: WithScript
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+            LogGroup 'Set outputs - WISECAT' {
+              Set-GitHubOutput -Name 'WISECAT' -Value $cat
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         Debug: true
-  #         Verbose: true
-  #         Script: |
-  #           LogGroup 'Get-GitHubZen' {
-  #             Get-GitHubZen
-  #           }
+            LogGroup 'Set outputs - Zen' {
+              Set-GitHubOutput -Name 'Zen' -Value $zen
+            }
 
-  #           LogGroup 'Get-GitHubViewer' {
-  #             Get-GitHubViewer -Fields name, login, id, databaseID
-  #           }
+            LogGroup 'Set outputs - Context' {
+              Set-GitHubOutput -Name 'Context' -Value (Get-GitHubContext)
+            }
 
-  # ActionTestCommands:
-  #   name: Commands + Outputs
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+            LogGroup 'Set outputs - GitConfig' {
+              Set-GitHubOutput -Name 'GitConfig' -Value (Get-GitHubGitConfig -Scope system)
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       id: test
-  #       with:
-  #         Debug: true
-  #         Verbose: true
-  #         Prerelease: true
-  #         ShowOutput: true
-  #         Script: |
-  #           LogGroup 'Get-GitHubZen' {
-  #             $cat = Get-GitHubOctocat
-  #             $zen = Get-GitHubZen
-  #             Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
-  #           }
+            LogGroup 'Set outputs - Zen2' {
+              Set-GitHubOutput -Name 'Zen2' -Value $zen
+            }
 
-  #           LogGroup 'Set outputs - WISECAT' {
-  #             Set-GitHubOutput -Name 'WISECAT' -Value $cat
-  #           }
+      - name: Run-test
+        shell: pwsh
+        env:
+          result: ${{ steps.test.outputs.result }}
+          WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
+        run: |
+          $result = $env:result | ConvertFrom-Json
+          Set-GitHubStepSummary -Summary $env:WISECAT
+          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+          Write-Host ($result.Zen2)
+          $result.Context | Format-List
+          $result.GitConfig | Format-List
 
-  #           LogGroup 'Set outputs - Zen' {
-  #             Set-GitHubOutput -Name 'Zen' -Value $zen
-  #           }
+  ActionTestWithoutToken:
+    name: WithoutToken
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  #           LogGroup 'Set outputs - Context' {
-  #             Set-GitHubOutput -Name 'Context' -Value (Get-GitHubContext)
-  #           }
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ''
+          Script: |
+            LogGroup 'My group' {
+              'This is a group'
+            }
 
-  #           LogGroup 'Set outputs - GitConfig' {
-  #             Set-GitHubOutput -Name 'GitConfig' -Value (Get-GitHubGitConfig -Scope system)
-  #           }
+  ActionTestWithPAT:
+    name: WithPAT
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  #           LogGroup 'Set outputs - Zen2' {
-  #             Set-GitHubOutput -Name 'Zen2' -Value $zen
-  #           }
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ secrets.TEST_USER_PAT }}
+          Script: |
+            LogGroup 'Get-GitHubUser' {
+              Get-GitHubUser | Format-Table -AutoSize
+            }
 
-  #     - name: Run-test
-  #       shell: pwsh
-  #       env:
-  #         result: ${{ steps.test.outputs.result }}
-  #         WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
-  #       run: |
-  #         $result = $env:result | ConvertFrom-Json
-  #         Set-GitHubStepSummary -Summary $env:WISECAT
-  #         Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
-  #         Write-Host ($result.Zen2)
-  #         $result.Context | Format-List
-  #         $result.GitConfig | Format-List
+  ActionTestWithUSERFGPAT:
+    name: WithUserFGPAT
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  # ActionTestWithoutToken:
-  #   name: WithoutToken
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          Script: |
+            LogGroup 'Get-GitHubUser' {
+              Get-GitHubUser | Format-Table -AutoSize
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         Token: ''
-  #         Script: |
-  #           LogGroup 'My group' {
-  #             'This is a group'
-  #           }
+  ActionTestWithORGFGPAT:
+    name: WithOrgFGPAT
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  # ActionTestWithPAT:
-  #   name: WithPAT
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+      - name: Action-Test
+        uses: ./
+        with:
+          Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+          Script: |
+            LogGroup 'Get-GitHubUser' {
+              Get-GitHubUser | Format-Table -AutoSize
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         Token: ${{ secrets.TEST_USER_PAT }}
-  #         Script: |
-  #           LogGroup 'Get-GitHubUser' {
-  #             Get-GitHubUser | Format-Table -AutoSize
-  #           }
+  ActionTestWithGitHubAppEnt:
+    name: GitHubAppEnt
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  # ActionTestWithUSERFGPAT:
-  #   name: WithUserFGPAT
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+      - name: Action-Test
+        uses: ./
+        with:
+          ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
+          PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+          Script: |
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp | Format-Table -AutoSize
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
-  #         Script: |
-  #           LogGroup 'Get-GitHubUser' {
-  #             Get-GitHubUser | Format-Table -AutoSize
-  #           }
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation | Format-Table -AutoSize
+            }
 
-  # ActionTestWithORGFGPAT:
-  #   name: WithOrgFGPAT
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+            LogGroup 'Do something as an installation' {
+              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
+                Connect-GitHub -Token $_.token -Silent
+                Get-GitHubContext | Format-Table -AutoSize
+                Get-GitHubGitConfig | Format-Table -AutoSize
+              }
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
-  #         Script: |
-  #           LogGroup 'Get-GitHubUser' {
-  #             Get-GitHubUser | Format-Table -AutoSize
-  #           }
+  ActionTestWithGitHubAppOrg:
+    name: GitHubAppOrg
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-  # ActionTestWithGitHubAppEnt:
-  #   name: GitHubAppEnt
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
+      - name: Action-Test
+        uses: ./
+        with:
+          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          PrivateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+          Script: |
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp | Format-Table -AutoSize
+            }
 
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
-  #         PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
-  #         Script: |
-  #           LogGroup 'Get-GitHubApp' {
-  #             Get-GitHubApp | Format-Table -AutoSize
-  #           }
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation | Format-Table -AutoSize
+            }
 
-  #           LogGroup 'Get-GitHubAppInstallation' {
-  #             Get-GitHubAppInstallation | Format-Table -AutoSize
-  #           }
-
-  #           LogGroup 'Do something as an installation' {
-  #             Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-  #               Connect-GitHub -Token $_.token -Silent
-  #               Get-GitHubContext | Format-Table -AutoSize
-  #               Get-GitHubGitConfig | Format-Table -AutoSize
-  #             }
-  #           }
-
-  # ActionTestWithGitHubAppOrg:
-  #   name: GitHubAppOrg
-  #   runs-on: ${{ inputs.runs-on }}
-  #   steps:
-  #     # Need to check out as part of the test, as its a local action
-  #     - name: Checkout repo
-  #       uses: actions/checkout@v4
-
-  #     - name: Action-Test
-  #       uses: ./
-  #       with:
-  #         ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
-  #         PrivateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
-  #         Script: |
-  #           LogGroup 'Get-GitHubApp' {
-  #             Get-GitHubApp | Format-Table -AutoSize
-  #           }
-
-  #           LogGroup 'Get-GitHubAppInstallation' {
-  #             Get-GitHubAppInstallation | Format-Table -AutoSize
-  #           }
-
-  #           LogGroup 'Do something as an installation' {
-  #             Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-  #               Connect-GitHub -Token $_.token -Silent
-  #               Get-GitHubContext | Format-Table -AutoSize
-  #               Get-GitHubGitConfig | Format-Table -AutoSize
-  #             }
-  #           }
+            LogGroup 'Do something as an installation' {
+              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
+                Connect-GitHub -Token $_.token -Silent
+                Get-GitHubContext | Format-Table -AutoSize
+                Get-GitHubGitConfig | Format-Table -AutoSize
+              }
+            }
