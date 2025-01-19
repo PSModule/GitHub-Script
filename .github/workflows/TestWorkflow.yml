@@ -60,14 +60,7 @@ jobs:
         with:
           Debug: true
           Verbose: true
-          Script: |
-            LogGroup 'Get-GitHubZen' {
-              Get-GitHubZen
-            }
-
-            LogGroup 'Get-GitHubViewer' {
-              Get-GitHubViewer -Fields name, login, id, databaseID
-            }
+          Script: . '.\tests\info.ps1'
 
   ActionTestCommands:
     name: Commands + Outputs
