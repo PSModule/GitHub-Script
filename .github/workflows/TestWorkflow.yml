@@ -60,7 +60,7 @@ jobs:
         with:
           Debug: true
           Verbose: true
-          Script: . '.\Tests\Script.ps1'
+          Script: . '.\tests\info.ps1'
 
   ActionTestCommands:
     name: Commands + Outputs
