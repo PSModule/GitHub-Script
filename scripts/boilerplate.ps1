@@ -16,16 +16,12 @@ try {
         Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
     }
 
-    LogGroup ' - GitHub connection' {
-        if ($providedClientID -and $providedPrivateKey) {
-            Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent -PassThru |
-                Select-Object * | Format-List
-        } elseif ($providedToken) {
-            Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent -PassThru |
-                Select-Object * | Format-List
-        } else {
-            Write-Output 'No connection provided'
-        }
+    LogGroup ' - GitHub connection - Default' {
+        Get-GitHubContext | Format-List
+    }
+
+    LogGroup ' - GitHub connection - List' {
+        Get-GitHubContext -ListAvailable | Format-Table
     }
 
     LogGroup ' - Configuration' {

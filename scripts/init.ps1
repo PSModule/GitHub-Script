@@ -1,5 +1,7 @@
 ﻿[CmdletBinding()]
-param()
+param(
+    [string]$Name = 'GitHub-Script - Init'
+)
 
 $scriptName = $MyInvocation.MyCommand.Name
 Write-Debug "[$scriptName] - Start"
@@ -8,7 +10,8 @@ try {
     $env:PSMODULE_GITHUB_SCRIPT = $true
 
     if ($VerbosePreference -eq 'Continue') {
-        Write-Output '┏━━━━━┫ GitHub-Script - Init ┣━━━━━┓'
+        $title = "┏━━━━━┫ $Name ┣━━━━━┓"
+        Write-Output $title
         Write-Output '::group:: - SetupGitHub PowerShell module'
     }
     $Name = 'GitHub'
@@ -76,7 +79,17 @@ try {
     Write-Verbose "$($moduleStatus | Format-List)"
     if ($VerbosePreference -eq 'Continue') {
         Write-Output '::endgroup::'
-        Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
+        Write-Output '::group:: - GitHub connection'
+    }
+    if ($providedClientID -and $providedPrivateKey) {
+        Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
+    } elseif ($providedToken) {
+        Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
+    }
+    if ($VerbosePreference -eq 'Continue') {
+        Write-Output '::endgroup::'
+        $endingFence = '┗' + ('━' * ($title.Length - 2)) + '┛'
+        Write-Output $endingFence
     }
 } catch {
     throw $_
