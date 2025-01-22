@@ -62,6 +62,14 @@ jobs:
           Verbose: true
           Script: .\tests\info.ps1
 
+
+      - name: Action-Test 2
+        uses: ./
+        with:
+          Debug: true
+          Verbose: true
+          Script: . '.\tests\info.ps1'
+
   ActionTestCommands:
     name: Commands + Outputs
     runs-on: ${{ inputs.runs-on }}
