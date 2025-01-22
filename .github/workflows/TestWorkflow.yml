@@ -55,13 +55,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Action-Test [tests\info.ps1]
-        if: success() || failure()
-        uses: ./
-        with:
-          Debug: true
-          Verbose: true
-          Script: tests\info.ps1
+      # # Not a supported way of running the action
+      # # This syntax is specifically for using a function in a specific module
+      # # i.e.: moduleName\functionName
+      # - name: Action-Test [tests\info.ps1]
+      #   if: success() || failure()
+      #   uses: ./
+      #   with:
+      #     Debug: true
+      #     Verbose: true
+      #     Script: tests\info.ps1
+
       - name: Action-Test [tests/info.ps1]
         if: success() || failure()
         uses: ./
@@ -77,6 +81,7 @@ jobs:
           Debug: true
           Verbose: true
           Script: .\tests\info.ps1
+
       - name: Action-Test [./tests/info.ps1]
         if: success() || failure()
         uses: ./
@@ -92,6 +97,7 @@ jobs:
           Debug: true
           Verbose: true
           Script: . '.\tests\info.ps1'
+
       - name: Action-Test [. './tests/info.ps1']
         if: success() || failure()
         uses: ./
