@@ -129,6 +129,7 @@ jobs:
           Verbose: true
           Prerelease: true
           ShowInit: true
+          ShowOutput: true
           Script: |
             LogGroup 'Get-GitHubZen' {
               $cat = Get-GitHubOctocat
