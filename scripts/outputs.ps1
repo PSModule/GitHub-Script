@@ -7,6 +7,8 @@ $scriptName = $MyInvocation.MyCommand.Name
 Write-Debug "[$scriptName] - Start"
 
 try {
+    $fenceTitle = 'GitHub-Script'
+
     Write-Debug "[$scriptName] - ShowOutput: $env:GITHUB_ACTION_INPUT_ShowOutput"
     if ($env:GITHUB_ACTION_INPUT_ShowOutput -ne 'true') {
         return
@@ -17,7 +19,7 @@ try {
     if (-not $result) {
         return
     }
-    $fenceStart = "┏━━━━━┫ $Name ┣━━━━━┓"
+    $fenceStart = "┏━━━━━┫ $fenceTitle - Outputs ┣━━━━━┓"
     Write-Output $fenceStart
     LogGroup ' - Outputs' {
         if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {

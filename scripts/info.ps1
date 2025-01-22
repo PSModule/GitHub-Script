@@ -8,12 +8,14 @@ begin {
 
 process {
     try {
+        $fenceTitle = 'GitHub-Script'
+
         Write-Debug "[$scriptName] - ShowInfo: $env:GITHUB_ACTION_INPUT_ShowInfo"
         if ($env:GITHUB_ACTION_INPUT_ShowInfo -ne 'true') {
             return
         }
 
-        $fenceStart = "┏━━━━━┫ $Name - Info ┣━━━━━┓"
+        $fenceStart = "┏━━━━━┫ $fenceTitle - Info ┣━━━━━┓"
         Write-Output $fenceStart
 
         LogGroup ' - Installed modules' {

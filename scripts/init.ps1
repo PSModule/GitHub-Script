@@ -9,9 +9,14 @@ begin {
 process {
     try {
         $env:PSMODULE_GITHUB_SCRIPT = $true
+        $fenceTitle = 'GitHub-Script'
+
+        Write-Debug "[$scriptName] - ShowInit: $env:GITHUB_ACTION_INPUT_ShowInit"
+        if ($env:GITHUB_ACTION_INPUT_ShowInit -ne 'true') {
+        }
 
         if ($VerbosePreference -eq 'Continue') {
-            $fenceStart = "┏━━━━━┫ $Name - Init ┣━━━━━┓"
+            $fenceStart = "┏━━━━━┫ $fenceTitle - Init ┣━━━━━┓"
             Write-Output $fenceStart
             Write-Output '::group:: - SetupGitHub PowerShell module'
         }

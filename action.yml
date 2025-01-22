@@ -38,6 +38,10 @@ inputs:
     description: Show information about the environment.
     required: false
     default: 'true'
+  ShowInit:
+    description: Show information about the initialization.
+    required: false
+    default: 'false'
   ShowOutput:
     description: Show the output of the script.
     required: false
