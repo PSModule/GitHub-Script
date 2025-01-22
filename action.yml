@@ -45,7 +45,7 @@ inputs:
   ShowOutput:
     description: Show the output of the script.
     required: false
-    default: 'true'
+    default: 'false'
   WorkingDirectory:
     description: The working directory where the script will run from.
     required: false
