@@ -9,18 +9,18 @@ For more information on available functions and automatically loaded variables, 
 
 ### Inputs
 
-| Name              | Description                                                                               | Required | Default                      |
-|-------------------|-------------------------------------------------------------------------------------------|----------|------------------------------|
-| `Script`          | The script to run. Can be inline, multi-line, or a path to a script file.                 | false    |                              |
-| `Token`           | Log in using an Installation Access Token (IAT).                                          | false    | `${{ github.token }}`        |
-| `ClientID`        | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
-| `PrivateKey`      | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
-| `Debug`           | Enable debug output.                                                                      | false    | `'false'`                    |
-| `Verbose`         | Enable verbose output.                                                                    | false    | `'false'`                    |
-| `Version`         | Specifies the exact version of the GitHub module to install.                              | false    |                              |
-| `Prerelease`      | Allow pre-release versions if available.                                                 | false    | `'false'`                    |
-| `ShowOutput`      | Show the script's output.                                                                 | false    | `'false'`                    |
-| `WorkingDirectory`| The working directory where the script runs.                                             | false    | `${{ github.workspace }}`    |
+| Name               | Description                                                                               | Required | Default                      |
+|--------------------|-------------------------------------------------------------------------------------------|----------|------------------------------|
+| `Script`           | The script to run. Can be inline, multi-line, or a path to a script file.                 | false    |                              |
+| `Token`            | Log in using an Installation Access Token (IAT).                                          | false    | `${{ github.token }}`        |
+| `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
+| `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
+| `Debug`            | Enable debug output.                                                                      | false    | `'false'`                    |
+| `Verbose`          | Enable verbose output.                                                                    | false    | `'false'`                    |
+| `Version`          | Specifies the exact version of the GitHub module to install.                              | false    |                              |
+| `Prerelease`       | Allow pre-release versions if available.                                                 | false    | `'false'`                    |
+| `ShowOutput`       | Show the script's output.                                                                 | false    | `'false'`                    |
+| `WorkingDirectory` | The working directory where the script runs.                                             | false    | `${{ github.workspace }}`    |
 
 ### Outputs
 
@@ -50,7 +50,6 @@ To use the outputs in a subsequent step, reference them as follows:
     Write-Output $env:name
     Write-Output $result.Octocat.Image
 ```
-
 
 ### Examples
 
@@ -88,18 +87,16 @@ jobs:
 ```
 
 > [!IMPORTANT]
-> Use `${{ github.action_path }}/<pathToScript.ps1>` if you are creation an action of your own using this action as a step. This will ensure that
-> the path to the script is from the calling action, and not the `GitHub-Script` action repo. Using `$env:GITHUB_ACTION_PATH` may have mixed results
-> when you nest actions inside one another. The context syntax will be expanded to the correct path when the job is evaluted by GitHub before it is
-> processed by the runner.
->
+> Use `${{ github.action_path }}/<pathToScript.ps1>` if you are creating an action of your own that uses this action as a step. This ensures
+> the path references your action rather than the `GitHub-Script` action repository. Using `$env:GITHUB_ACTION_PATH` can lead to mixed results
+> when nesting actions. The context syntax will expand to the correct path when the job is evaluated by GitHub before being processed by the runner.
 
-The `Script` input supports the following formats:
+The `Script` input supports these formats:
 
 - Inline script:
   - Single-line
   - Multi-line
-- Path to a script file. (recommended)
+- Path to a script file (recommended):
   - `scripts/main.ps1`
   - `.\scripts\main.ps1`
   - `./scripts/main.ps1`
@@ -109,19 +106,16 @@ The `Script` input supports the following formats:
   - `. './scripts/main.ps1'`
 
 > [!WARNING]
-> Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
->
+> Using `tests\info.ps1` is PowerShell syntax for calling a function from a specific module (e.g., `Microsoft.PowerShell.Management\Get-ChildItem`).
 
 
 > [!TIP]
-> Use script files instead of inline scripts for better tooling support and linting capabilities. The PowerShell extension for Visual Studio Code and
-> PowerShell linters like PSScriptAnalyzer will work natively with script files.
->
+> Use script files instead of inline scripts for better tooling support and linting. The PowerShell extension for Visual Studio Code and
+> linters like PSScriptAnalyzer work natively with script files.
 
 #### Example 2: Run a GitHub PowerShell script without a token
 
-Run a script that uses the GitHub PowerShell module.
-This example runs a non-authenticated script that gets the GitHub Zen message.
+Runs a non-authenticated script that retrieves the GitHub Zen message.
 
 ```yaml
 jobs:
@@ -140,8 +134,8 @@ jobs:
 
 #### Example 3: Run a GitHub PowerShell script with a custom token
 
-Run a script that uses the GitHub PowerShell module with a token. The token can be both a personal access token (PAT) or
-an installation access token (IAT). This example runs an authenticated script that gets the GitHub Zen message.
+Runs a script that uses the GitHub PowerShell module with a token. The token can be a personal access token (PAT) or
+an installation access token (IAT). This example retrieves the GitHub Zen message.
 
 ```yaml
 jobs:
@@ -160,8 +154,7 @@ jobs:
 
 #### Example 4: Run a GitHub PowerShell script with a GitHub App using a Client ID and Private Key
 
-Run a script that uses the GitHub PowerShell module with a GitHub App.
-This example runs an authenticated script that gets the GitHub App.
+Runs a script that uses the GitHub PowerShell module with a GitHub App. This example retrieves the GitHub App details.
 
 ```yaml
 jobs:
@@ -179,9 +172,9 @@ jobs:
             }
 ```
 
-#### Example 5: Using the outputs from the script
+#### Example 5: Using outputs from the script
 
-Run a script that uses the GitHub PowerShell module and outputs the result.
+Runs a script that uses the GitHub PowerShell module and outputs the result.
 
 ```yaml
 - name: Run GitHub Script
@@ -199,13 +192,13 @@ Run a script that uses the GitHub PowerShell module and outputs the result.
   env:
     result: ${{ steps.test.outputs.result }}
   run: |
-      $result = $env:result | ConvertFrom-Json
-      Set-GitHubStepSummary -Summary $result.WISECAT
-      Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+    $result = $env:result | ConvertFrom-Json
+    Set-GitHubStepSummary -Summary $result.WISECAT
+    Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 ```
 
-## Related projects
+## Related Projects
 
-- [actions/create-github-app-token](https://github.com/actions/create-github-app-token) -> Functionality will be brought into GitHub PowerShell module.
+- [actions/create-github-app-token](https://github.com/actions/create-github-app-token) – Functionality will be incorporated into the GitHub PowerShell module.
 - [actions/github-script](https://github.com/actions/github-script)
 - [PSModule/GitHub](https://github.com/PSModule/GitHub)
