@@ -24,7 +24,7 @@ try {
         Write-Verbose 'Filtering by prerelease'
         $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
     }
-    Write-Verbose "Already installed:"
+    Write-Verbose 'Already installed:'
     Write-Verbose "$($alreadyInstalled | Format-List)"
     if (-not $alreadyInstalled) {
         $params = @{
@@ -73,7 +73,7 @@ try {
         'Provided ClientID'   = $providedClientID
         'Provided PrivateKey' = $providedPrivateKey
     }
-    Write-Verbose ($moduleStatus | Format-List)
+    Write-Verbose "$($moduleStatus | Format-List)"
     if ($VerbosePreference -eq 'Continue') {
         Write-Output '::endgroup::'
         Write-Output '┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛'
