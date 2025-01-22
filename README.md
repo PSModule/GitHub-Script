@@ -74,13 +74,13 @@ The `Script` supports the following formats:
 - Inline script, although it is recommended to use a script file for better tooling support and linting capabilities.
 - Multi-line script.
 - Path to a script file.
-  - `tests/info.ps1`
-  - `.\tests\info.ps1`
-  - `./tests/info.ps1`
-  - `. .\tests\info.ps1`
-  - `. ./tests/info.ps1`
-  - `. '.\tests\info.ps1'`
-  - `. './tests/info.ps1'`
+  - `scripts/main.ps1`
+  - `.\scripts\main.ps1`
+  - `./scripts/main.ps1`
+  - `. .\scripts\main.ps1`
+  - `. ./scripts/main.ps1`
+  - `. '.\scripts\main.ps1'`
+  - `. './scripts/main.ps1'`
 
 > [!IMPORTANT]
 > Use `${{ github.action_path }}/<pathToScript.ps1>` if you are creation an action of your own using this action as a step. This will ensure that
