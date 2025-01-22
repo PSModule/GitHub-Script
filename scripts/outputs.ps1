@@ -17,8 +17,8 @@ try {
     if (-not $result) {
         return
     }
-    $title = "┏━━━━━┫ $Name ┣━━━━━┓"
-    Write-Output $title
+    $fenceStart = "┏━━━━━┫ $Name ┣━━━━━┓"
+    Write-Output $fenceStart
     LogGroup ' - Outputs' {
         if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
             Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
@@ -31,8 +31,8 @@ try {
         $result | Format-List
         Write-Host "Access outputs using `${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).<output-name> }}"
     }
-    $endingFence = '┗' + ('━' * ($title.Length - 2)) + '┛'
-    Write-Output $endingFence
+    $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
+    Write-Output $fenceEnd
 } catch {
     throw $_
 }

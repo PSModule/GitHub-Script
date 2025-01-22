@@ -34,10 +34,14 @@ inputs:
     description: Allow prerelease versions if available.
     required: false
     default: 'false'
+  ShowInfo:
+    description: Show information about the environment.
+    required: false
+    default: 'true'
   ShowOutput:
     description: Show the output of the script.
     required: false
-    default: 'false'
+    default: 'true'
   WorkingDirectory:
     description: The working directory where the script will run from.
     required: false
@@ -62,11 +66,13 @@ runs:
         GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
         GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
         GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}
+        GITHUB_ACTION_INPUT_ShowInfo: ${{ inputs.ShowInfo }}
         GITHUB_ACTION_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
+
       run: |
         # GitHub-Script
         . ${{ github.action_path }}\scripts\init.ps1
-        . ${{ github.action_path }}\scripts\boilerplate.ps1
+        . ${{ github.action_path }}\scripts\info.ps1
         ${{ inputs.Script }}
-        . ${{ github.action_path }}\scripts\outputs.ps1
+        . ${{ github.action_path }}\scripts\result.ps1
