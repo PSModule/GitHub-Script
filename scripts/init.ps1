@@ -24,8 +24,8 @@ try {
         Write-Verbose 'Filtering by prerelease'
         $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
     }
-    Write-Verbose 'Already installed:'
-    Write-Verbose ($alreadyInstalled | Format-Table)
+    Write-Verbose "Already installed:"
+    Write-Verbose "$($alreadyInstalled | Format-List)"
     if (-not $alreadyInstalled) {
         $params = @{
             Name            = $Name
@@ -54,7 +54,7 @@ try {
 
     $alreadyImported = Get-Module -Name $Name
     Write-Verbose 'Already imported:'
-    Write-Verbose ($alreadyImported | Format-Table)
+    Write-Verbose "$($alreadyImported | Format-Table)"
     if (-not $alreadyImported) {
         Write-Verbose "Importing module: $Name"
         Import-Module -Name $Name
