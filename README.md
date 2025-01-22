@@ -87,6 +87,7 @@ The `Script` supports the following formats:
 > the path to the script is from the calling action, and not the `GitHub-Script` action repo. Using `$env:GITHUB_ACTION_PATH` may have mixed results
 > when you nest actions inside one another. The context syntax will be expanded to the correct path at runtime.
 
+
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
 
