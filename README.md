@@ -69,6 +69,23 @@ jobs:
           Script: scripts/main.ps1
 ```
 
+The `Script` supports the following formats:
+
+- Inline script, although it is recommended to use a script file for better tooling support and linting capabilities.
+- Multi-line script.
+- Path to a script file.
+  - `tests/info.ps1`
+  - `.\tests\info.ps1`
+  - `./tests/info.ps1`
+  - `. .\tests\info.ps1`
+  - `. ./tests/info.ps1`
+
+If you are creation an action of your own, you should use the `${{ github.action_path }}` variable to get the path to the action.
+You should avoid using `$env:GITHUB_ACTION_PATH` as it will not be the expected value if you nest actions inside one another.
+
+> [!WARNING]
+> Using `tests\info.ps1` is PowerShells syntax for calling a function under a specific module.
+
 #### Example 2: Run a GitHub PowerShell script without a token
 
 Run a script that uses the GitHub PowerShell module.

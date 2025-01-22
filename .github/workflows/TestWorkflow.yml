@@ -62,48 +62,48 @@ jobs:
       #   if: success() || failure()
       #   uses: ./
       #   with:
-      #     Debug: true
-      #     Verbose: true
       #     Script: tests\info.ps1
 
       - name: Action-Test [tests/info.ps1]
         if: success() || failure()
         uses: ./
         with:
-          Debug: true
-          Verbose: true
           Script: tests/info.ps1
 
       - name: Action-Test [.\tests\info.ps1]
         if: success() || failure()
         uses: ./
         with:
-          Debug: true
-          Verbose: true
           Script: .\tests\info.ps1
 
       - name: Action-Test [./tests/info.ps1]
         if: success() || failure()
         uses: ./
         with:
-          Debug: true
-          Verbose: true
           Script: ./tests/info.ps1
+
+      - name: Action-Test [. .\tests\info.ps1]
+        if: success() || failure()
+        uses: ./
+        with:
+          Script: . .\tests\info.ps1
+
+      - name: Action-Test [. ./tests/info.ps1]
+        if: success() || failure()
+        uses: ./
+        with:
+          Script: . ./tests/info.ps1
 
       - name: Action-Test [. '.\tests\info.ps1']
         if: success() || failure()
         uses: ./
         with:
-          Debug: true
-          Verbose: true
           Script: . '.\tests\info.ps1'
 
       - name: Action-Test [. './tests/info.ps1']
         if: success() || failure()
         uses: ./
         with:
-          Debug: true
-          Verbose: true
           Script: . './tests/info.ps1'
 
   ActionTestCommands:
