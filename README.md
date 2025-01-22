@@ -1,34 +1,34 @@
 # GitHub-Script
 
-A GitHub Action used for running a PowerShell Script that uses the GitHub PowerShell module.
+A GitHub Action for running a PowerShell script that uses the GitHub PowerShell module.
 
-For more information on the available functions and automatic loaded variables, see the
-[GitHub PowerShell module documentation](https://psmodule.io/GitHub)
+For more information on available functions and automatically loaded variables, see the
+[GitHub PowerShell module documentation](https://psmodule.io/GitHub).
 
 ## Usage
 
 ### Inputs
 
-| Name | Description | Required | Default |
-| - | - | - | - |
-| `Script` | The script to run. Can be inline, multi-line or a path to a script file. | false | |
-| `Token` | Log in using an Installation Access Token (IAT). | false | `${{ github.token }}` |
-| `ClientID` | Log in using a GitHub App, using the App's Client ID and Private Key. | false | |
-| `PrivateKey` | Log in using a GitHub App, using the App's Client ID and Private Key. | false | |
-| `Debug` | Enable debug output. | false | `'false'` |
-| `Verbose` | Enable verbose output. | false | `'false'` |
-| `Version` | Specifies the version of the GitHub module to be installed. The value must be an exact version. | false | |
-| `Prerelease` | Allow prerelease versions if available. | false | `'false'` |
-| `ShowOutput` | Show the output of the script. | false | `'false'` |
-| `WorkingDirectory` | The working directory where the script will run from. | false | `${{ github.workspace }}` |
+| Name              | Description                                                                               | Required | Default                      |
+|-------------------|-------------------------------------------------------------------------------------------|----------|------------------------------|
+| `Script`          | The script to run. Can be inline, multi-line, or a path to a script file.                 | false    |                              |
+| `Token`           | Log in using an Installation Access Token (IAT).                                          | false    | `${{ github.token }}`        |
+| `ClientID`        | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
+| `PrivateKey`      | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
+| `Debug`           | Enable debug output.                                                                      | false    | `'false'`                    |
+| `Verbose`         | Enable verbose output.                                                                    | false    | `'false'`                    |
+| `Version`         | Specifies the exact version of the GitHub module to install.                              | false    |                              |
+| `Prerelease`      | Allow pre-release versions if available.                                                 | false    | `'false'`                    |
+| `ShowOutput`      | Show the script's output.                                                                 | false    | `'false'`                    |
+| `WorkingDirectory`| The working directory where the script runs.                                             | false    | `${{ github.workspace }}`    |
 
 ### Outputs
 
-| Name | Description |
-| - | - |
-| `result` | The output of the script as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`. |
+| Name     | Description                                                                                          |
+|----------|------------------------------------------------------------------------------------------------------|
+| `result` | The script output as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`.             |
 
-To use the outputs in a subsequent step, you can use the following syntax:
+To use the outputs in a subsequent step, reference them as follows:
 
 ```yaml
 - uses: PSModule/GitHub-Script@v1
@@ -56,7 +56,7 @@ To use the outputs in a subsequent step, you can use the following syntax:
 
 #### Example 1: Run a GitHub PowerShell script file
 
-Run a script (`scripts/main.ps1`) that uses the GitHub PowerShell module, authenticated using the `GITHUB_TOKEN`.
+Runs a script (`scripts/main.ps1`) that uses the GitHub PowerShell module, authenticated using the `GITHUB_TOKEN`.
 
 ```yaml
 jobs:
@@ -111,6 +111,7 @@ The `Script` input supports the following formats:
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
 >
+
 
 > [!TIP]
 > Use script files instead of inline scripts for better tooling support and linting capabilities. The PowerShell extension for Visual Studio Code and
