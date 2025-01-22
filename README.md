@@ -1,9 +1,8 @@
 # GitHub-Script
 
-A GitHub Action for running a PowerShell script that uses the GitHub PowerShell module.
+A GitHub Action for running a PowerShell that is integrated into GitHub using the [GitHub PowerShell module](https://psmodule.io/GitHub).
 
-For more information on available functions and automatically loaded variables, see the
-[GitHub PowerShell module documentation](https://psmodule.io/GitHub).
+To get started with your own GitHub PowerShell based action, [create a new repository from PSModule/Template-Action](https://github.com/new?template_name=Template-Action&template_owner=PSModule).
 
 ## Usage
 
