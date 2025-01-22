@@ -10,15 +10,14 @@ process {
     try {
         $env:PSMODULE_GITHUB_SCRIPT = $true
         $fenceTitle = 'GitHub-Script'
+        $showInit = $env:GITHUB_ACTION_INPUT_ShowInit -eq 'true'
 
         Write-Debug "[$scriptName] - ShowInit: $env:GITHUB_ACTION_INPUT_ShowInit"
-        if ($env:GITHUB_ACTION_INPUT_ShowInit -ne 'true') {
-        }
 
-        if ($VerbosePreference -eq 'Continue') {
+        if ($showInit) {
             $fenceStart = "┏━━┫ $fenceTitle - Init ┣━━━━━━━━┓"
             Write-Output $fenceStart
-            Write-Output '::group:: - SetupGitHub PowerShell module'
+            Write-Output '::group:: - Install GitHub PowerShell module'
         }
         $Name = 'GitHub'
         $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
@@ -33,8 +32,11 @@ process {
             Write-Verbose 'Filtering by prerelease'
             $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
         }
-        Write-Verbose 'Already installed:'
-        Write-Verbose "$($alreadyInstalled | Format-List)"
+
+        if ($showInit) {
+            Write-Output 'Already installed:'
+            $alreadyInstalled | Format-List
+        }
         if (-not $alreadyInstalled) {
             $params = @{
                 Name            = $Name
@@ -62,8 +64,10 @@ process {
         }
 
         $alreadyImported = Get-Module -Name $Name
-        Write-Verbose 'Already imported:'
-        Write-Verbose "$($alreadyImported | Format-Table)"
+        if ($showInit) {
+            Write-Output 'Already imported:'
+            $alreadyImported | Format-List
+        }
         if (-not $alreadyImported) {
             Write-Verbose "Importing module: $Name"
             Import-Module -Name $Name
@@ -82,17 +86,18 @@ process {
             'Provided ClientID'   = $providedClientID
             'Provided PrivateKey' = $providedPrivateKey
         }
-        Write-Verbose "$($moduleStatus | Format-List)"
-        if ($VerbosePreference -eq 'Continue') {
+        if ($showInit) {
+            Write-Output 'Module status:'
+            $moduleStatus | Format-List
             Write-Output '::endgroup::'
-            Write-Output '::group:: - GitHub connection'
+            Write-Output '::group:: - Connect to GitHub'
         }
         if ($providedClientID -and $providedPrivateKey) {
-            Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent
+            Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent:(-not $showInit)
         } elseif ($providedToken) {
-            Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent
+            Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent:(-not $showInit)
         }
-        if ($VerbosePreference -eq 'Continue') {
+        if ($showInit) {
             Write-Output '::endgroup::'
             $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
             Write-Output $fenceEnd
