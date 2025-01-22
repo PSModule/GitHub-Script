@@ -88,7 +88,7 @@ The `Script` supports the following formats:
 > when you nest actions inside one another. The context syntax will be expanded to the correct path at runtime.
 
 > [!WARNING]
-> Using `tests\info.ps1` is PowerShells syntax for calling a function under a specific module.
+> Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
 
 #### Example 2: Run a GitHub PowerShell script without a token
 
