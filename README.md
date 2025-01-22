@@ -92,6 +92,7 @@ jobs:
 > the path to the script is from the calling action, and not the `GitHub-Script` action repo. Using `$env:GITHUB_ACTION_PATH` may have mixed results
 > when you nest actions inside one another. The context syntax will be expanded to the correct path when the job is evaluted by GitHub before it is
 > processed by the runner.
+>
 
 The `Script` input supports the following formats:
 
@@ -109,11 +110,12 @@ The `Script` input supports the following formats:
 
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
-
+>
 
 > [!TIP]
 > Use script files instead of inline scripts for better tooling support and linting capabilities. The PowerShell extension for Visual Studio Code and
 > PowerShell linters like PSScriptAnalyzer will work natively with script files.
+>
 
 #### Example 2: Run a GitHub PowerShell script without a token
 
