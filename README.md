@@ -19,6 +19,8 @@ For more information on available functions and automatically loaded variables, 
 | `Verbose`          | Enable verbose output.                                                    | false    | `'false'`                 |
 | `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                           |
 | `Prerelease`       | Allow prerelease versions if available.                                   | false    | `'false'`                 |
+| `ShowInfo`         | Show information about the environment.                                   | false    | `'true'`                  |
+| `ShowInit`         | Show information about the initialization.                                | false    | `'false'`                 |
 | `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`                 |
 | `WorkingDirectory` | The working directory where the script runs.                              | false    | `${{ github.workspace }}` |
 
