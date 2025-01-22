@@ -70,6 +70,7 @@ runs:
         GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
         GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
         GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}
+        GITHUB_ACTION_INPUT_ShowInit: ${{ inputs.ShowInit }}
         GITHUB_ACTION_INPUT_ShowInfo: ${{ inputs.ShowInfo }}
         GITHUB_ACTION_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}

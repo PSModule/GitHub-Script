@@ -47,6 +47,13 @@ jobs:
           Debug: true
           Verbose: true
 
+      - name: Action-Test [ShowInit]
+        uses: ./
+        with:
+          Debug: true
+          Verbose: true
+          ShowInit: true
+
   ActionTestWithScript:
     name: WithScript
     runs-on: ${{ inputs.runs-on }}
@@ -121,7 +128,7 @@ jobs:
           Debug: true
           Verbose: true
           Prerelease: true
-          ShowOutput: true
+          ShowInit: true
           Script: |
             LogGroup 'Get-GitHubZen' {
               $cat = Get-GitHubOctocat
