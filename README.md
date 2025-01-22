@@ -54,7 +54,7 @@ To use the outputs in a subsequent step, you can use the following syntax:
 
 ### Examples
 
-#### Example 1: Run a GitHub PowerShell script
+#### Example 1: Run a GitHub PowerShell script file
 
 Run a script (`scripts/main.ps1`) that uses the GitHub PowerShell module, authenticated using the `GITHUB_TOKEN`.
 
@@ -63,7 +63,25 @@ jobs:
   Run-Script:
     runs-on: ubuntu-latest
     steps:
-      - name: Run script
+      - name: Run inline script - single line
+        uses: PSModule/GitHub-Script@v1
+        with:
+          Script: Get-GitHubPullRequest
+
+      - name: Run inline script - multiline
+        uses: PSModule/GitHub-Script@v1
+        with:
+          Script: |
+            LogGroup 'Get-GitHubPullRequest' {
+              Get-GitHubPullRequest
+            }
+
+      - name: Run script file - Local repository
+        uses: PSModule/GitHub-Script@v1
+        with:
+          Script: ./scripts/main.ps1
+
+      - name: Run script file - In a composite action
         uses: PSModule/GitHub-Script@v1
         with:
           Script: ${{ github.action_path }}/scripts/main.ps1
@@ -75,11 +93,12 @@ jobs:
 > when you nest actions inside one another. The context syntax will be expanded to the correct path when the job is evaluted by GitHub before it is
 > processed by the runner.
 
-The `Script` supports the following formats:
+The `Script` input supports the following formats:
 
-- Inline script, although it is recommended to use a script file for better tooling support and linting capabilities.
-- Multi-line script.
-- Path to a script file.
+- Inline script:
+  - Single-line
+  - Multi-line
+- Path to a script file. (recommended)
   - `scripts/main.ps1`
   - `.\scripts\main.ps1`
   - `./scripts/main.ps1`
@@ -90,6 +109,11 @@ The `Script` supports the following formats:
 
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
+
+
+> [!TIP]
+> Use script files instead of inline scripts for better tooling support and linting capabilities. The PowerShell extension for Visual Studio Code and
+> PowerShell linters like PSScriptAnalyzer will work natively with script files.
 
 #### Example 2: Run a GitHub PowerShell script without a token
 
