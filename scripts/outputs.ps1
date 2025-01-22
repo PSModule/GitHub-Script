@@ -1,4 +1,6 @@
-﻿[CmdletBinding()]
+﻿#Requires -Modules GitHub
+
+[CmdletBinding()]
 param()
 
 $DebugPreference = 'SilentlyContinue'
