@@ -2,7 +2,7 @@
 
 A GitHub Action for running a PowerShell that is integrated into GitHub using the [GitHub PowerShell module](https://psmodule.io/GitHub).
 
-To get started with an action that uses this action, [create a new repository from PSModule/Template-Action](https://github.com/new?template_name=Template-Action&template_owner=PSModule).
+To get started with your own GitHub PowerShell based action, [create a new repository from PSModule/Template-Action](https://github.com/new?template_name=Template-Action&template_owner=PSModule).
 
 ## Usage
 
