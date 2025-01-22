@@ -9,24 +9,24 @@ For more information on available functions and automatically loaded variables, 
 
 ### Inputs
 
-| Name               | Description                                                                               | Required | Default                      |
-|--------------------|-------------------------------------------------------------------------------------------|----------|------------------------------|
-| `Script`           | The script to run. Can be inline, multi-line, or a path to a script file.                 | false    |                              |
-| `Token`            | Log in using an Installation Access Token (IAT).                                          | false    | `${{ github.token }}`        |
-| `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
-| `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.                      | false    |                              |
-| `Debug`            | Enable debug output.                                                                      | false    | `'false'`                    |
-| `Verbose`          | Enable verbose output.                                                                    | false    | `'false'`                    |
-| `Version`          | Specifies the exact version of the GitHub module to install.                              | false    |                              |
-| `Prerelease`       | Allow pre-release versions if available.                                                 | false    | `'false'`                    |
-| `ShowOutput`       | Show the script's output.                                                                 | false    | `'false'`                    |
-| `WorkingDirectory` | The working directory where the script runs.                                             | false    | `${{ github.workspace }}`    |
+| Name               | Description                                                               | Required | Default                   |
+|--------------------|---------------------------------------------------------------------------|----------|---------------------------|
+| `Script`           | The script to run. Can be inline, multi-line, or a path to a script file. | false    |                           |
+| `Token`            | Log in using an Installation Access Token (IAT).                          | false    | `${{ github.token }}`     |
+| `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                           |
+| `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                           |
+| `Debug`            | Enable debug output.                                                      | false    | `'false'`                 |
+| `Verbose`          | Enable verbose output.                                                    | false    | `'false'`                 |
+| `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                           |
+| `Prerelease`       | Allow pre-release versions if available.                                  | false    | `'false'`                 |
+| `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`                 |
+| `WorkingDirectory` | The working directory where the script runs.                              | false    | `${{ github.workspace }}` |
 
 ### Outputs
 
-| Name     | Description                                                                                          |
-|----------|------------------------------------------------------------------------------------------------------|
-| `result` | The script output as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`.             |
+| Name     | Description                                                                             |
+|----------|---------------------------------------------------------------------------------------- |
+| `result` | The script output as a JSON object. To add outputs to `result`, use `Set-GitHubOutput`. |
 
 To use the outputs in a subsequent step, reference them as follows:
 
@@ -110,7 +110,7 @@ The `Script` input supports these formats:
 
 
 > [!TIP]
-> Use script files instead of inline scripts for better tooling support and linting. The PowerShell extension for Visual Studio Code and
+> Use script files instead of inline scripts for better support for development tools and linters. The PowerShell extension for Visual Studio Code and
 > linters like PSScriptAnalyzer work natively with script files.
 
 #### Example 2: Run a GitHub PowerShell script without a token
@@ -196,9 +196,3 @@ Runs a script that uses the GitHub PowerShell module and outputs the result.
     Set-GitHubStepSummary -Summary $result.WISECAT
     Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 ```
-
-## Related Projects
-
-- [actions/create-github-app-token](https://github.com/actions/create-github-app-token) – Functionality will be incorporated into the GitHub PowerShell module.
-- [actions/github-script](https://github.com/actions/github-script)
-- [PSModule/GitHub](https://github.com/PSModule/GitHub)
