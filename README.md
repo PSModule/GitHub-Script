@@ -66,8 +66,14 @@ jobs:
       - name: Run script
         uses: PSModule/GitHub-Script@v1
         with:
-          Script: scripts/main.ps1
+          Script: ${{ github.action_path }}/scripts/main.ps1
 ```
+
+> [!IMPORTANT]
+> Use `${{ github.action_path }}/<pathToScript.ps1>` if you are creation an action of your own using this action as a step. This will ensure that
+> the path to the script is from the calling action, and not the `GitHub-Script` action repo. Using `$env:GITHUB_ACTION_PATH` may have mixed results
+> when you nest actions inside one another. The context syntax will be expanded to the correct path when the job is evaluted by GitHub before it is
+> processed by the runner.
 
 The `Script` supports the following formats:
 
@@ -81,12 +87,6 @@ The `Script` supports the following formats:
   - `. ./scripts/main.ps1`
   - `. '.\scripts\main.ps1'`
   - `. './scripts/main.ps1'`
-
-> [!IMPORTANT]
-> Use `${{ github.action_path }}/<pathToScript.ps1>` if you are creation an action of your own using this action as a step. This will ensure that
-> the path to the script is from the calling action, and not the `GitHub-Script` action repo. Using `$env:GITHUB_ACTION_PATH` may have mixed results
-> when you nest actions inside one another. The context syntax will be expanded to the correct path at runtime.
-
 
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShell syntax for calling a function under a specific module, i.e. `Microsoft.PowerShell.Management\Get-ChildItem`.
