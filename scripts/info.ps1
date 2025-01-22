@@ -15,7 +15,7 @@ process {
             return
         }
 
-        $fenceStart = "┏━━━━━┫ $fenceTitle - Info ┣━━━━━┓"
+        $fenceStart = "┏━━┫ $fenceTitle - Info ┣━━━━━━━━┓"
         Write-Output $fenceStart
 
         LogGroup ' - Installed modules' {

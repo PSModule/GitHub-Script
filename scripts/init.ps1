@@ -16,7 +16,7 @@ process {
         }
 
         if ($VerbosePreference -eq 'Continue') {
-            $fenceStart = "┏━━━━━┫ $fenceTitle - Init ┣━━━━━┓"
+            $fenceStart = "┏━━┫ $fenceTitle - Init ┣━━━━━━━━┓"
             Write-Output $fenceStart
             Write-Output '::group:: - SetupGitHub PowerShell module'
         }

@@ -19,7 +19,7 @@ try {
     if (-not $result) {
         return
     }
-    $fenceStart = "┏━━━━━┫ $fenceTitle - Outputs ┣━━━━━┓"
+    $fenceStart = "┏━━┫ $fenceTitle - Outputs ┣━━━━━┓"
     Write-Output $fenceStart
     LogGroup ' - Outputs' {
         if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
