@@ -107,7 +107,7 @@ The `Script` input supports these formats:
 
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShell syntax for calling a function from a specific module (e.g., `Microsoft.PowerShell.Management\Get-ChildItem`).
-
+<!-- markdownlint-disable-next-line -->
 
 > [!TIP]
 > Use script files instead of inline scripts for better support for development tools and linters. The PowerShell extension for Visual Studio Code and
