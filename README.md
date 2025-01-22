@@ -82,8 +82,10 @@ The `Script` supports the following formats:
   - `. '.\tests\info.ps1'`
   - `. './tests/info.ps1'`
 
-If you are creation an action of your own, you should use the `${{ github.action_path }}` variable to get the path to the action.
-You should avoid using `$env:GITHUB_ACTION_PATH` as it will not be the expected value if you nest actions inside one another.
+> [!IMPORTANT]
+> Use `${{ github.action_path }}/<pathToScript.ps1>` if you are creation an action of your own using this action as a step. This will ensure that
+> the path to the script is from the calling action, and not the `GitHub-Script` action repo. Using `$env:GITHUB_ACTION_PATH` may have mixed results
+> when you nest actions inside one another. The context syntax will be expanded to the correct path at runtime.
 
 > [!WARNING]
 > Using `tests\info.ps1` is PowerShells syntax for calling a function under a specific module.
