@@ -79,6 +79,8 @@ The `Script` supports the following formats:
   - `./tests/info.ps1`
   - `. .\tests\info.ps1`
   - `. ./tests/info.ps1`
+  - `. '.\tests\info.ps1'`
+  - `. './tests/info.ps1'`
 
 If you are creation an action of your own, you should use the `${{ github.action_path }}` variable to get the path to the action.
 You should avoid using `$env:GITHUB_ACTION_PATH` as it will not be the expected value if you nest actions inside one another.
