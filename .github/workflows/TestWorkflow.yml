@@ -55,20 +55,34 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Action-Test
+      - name: Action-Test [.\tests\info.ps1]
         uses: ./
         with:
           Debug: true
           Verbose: true
           Script: .\tests\info.ps1
 
+      - name: Action-Test 2 [tests\info.ps1]
+        uses: ./
+        with:
+          Debug: true
+          Verbose: true
+          Script: tests\info.ps1
 
-      - name: Action-Test 2
+      - name: Action-Test 3 [tests/info.ps1]
+        uses: ./
+        with:
+          Debug: true
+          Verbose: true
+          Script: tests/info.ps1
+
+      - name: Action-Test 4 [. '.\tests\info.ps1']
         uses: ./
         with:
           Debug: true
           Verbose: true
           Script: . '.\tests\info.ps1'
+
 
   ActionTestCommands:
     name: Commands + Outputs

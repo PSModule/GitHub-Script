@@ -66,7 +66,7 @@ jobs:
       - name: Run script
         uses: PSModule/GitHub-Script@v1
         with:
-          Script: "scripts/main.ps1"
+          Script: scripts/main.ps1
 ```
 
 #### Example 2: Run a GitHub PowerShell script without a token
