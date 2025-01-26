@@ -2,30 +2,35 @@ on:
   workflow_call:
     inputs:
       runs-on:
-        description: 'The operating system to run the tests on'
+        description: The operating system to run the tests on
         required: true
         type: string
+      Prerelease:
+        description: Run the prerelease version of the action
+        required: false
+        type: boolean
+        default: false
     secrets:
       TEST_USER_PAT:
-        description: 'Personal Access Token for the test user'
+        description: Personal Access Token for the test user
         required: true
       TEST_USER_USER_FG_PAT:
-        description: 'Personal Access Token for the test user with full gists scope'
+        description: Personal Access Token for the test user with full gists scope
         required: true
       TEST_USER_ORG_FG_PAT:
-        description: 'Personal Access Token for the test user with full gists scope'
+        description: Personal Access Token for the test user with full gists scope
         required: true
       TEST_APP_ENT_CLIENT_ID:
-        description: 'Client ID for the test GitHub App for the enterprise'
+        description: Client ID for the test GitHub App for the enterprise
         required: true
       TEST_APP_ENT_PRIVATE_KEY:
-        description: 'Private Key for the test GitHub App for the enterprise'
+        description: Private Key for the test GitHub App for the enterprise
         required: true
       TEST_APP_ORG_CLIENT_ID:
-        description: 'Client ID for the test GitHub App for the organization'
+        description: Client ID for the test GitHub App for the organization
         required: true
       TEST_APP_ORG_PRIVATE_KEY:
-        description: 'Private Key for the test GitHub App for the organization'
+        description: Private Key for the test GitHub App for the organization
         required: true
 
 permissions:
@@ -44,12 +49,14 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
+          Prerelease: ${{ inputs.Prerelease }}
           Debug: true
           Verbose: true
 
       - name: Action-Test [ShowInit]
         uses: ./
         with:
+          Prerelease: ${{ inputs.Prerelease }}
           Debug: true
           Verbose: true
           ShowInit: true
@@ -76,42 +83,49 @@ jobs:
         uses: ./
         with:
           Script: tests/info.ps1
+          Prerelease: ${{ inputs.Prerelease }}
 
       - name: Action-Test [.\tests\info.ps1]
         if: success() || failure()
         uses: ./
         with:
           Script: .\tests\info.ps1
+          Prerelease: ${{ inputs.Prerelease }}
 
       - name: Action-Test [./tests/info.ps1]
         if: success() || failure()
         uses: ./
         with:
           Script: ./tests/info.ps1
+          Prerelease: ${{ inputs.Prerelease }}
 
       - name: Action-Test [. .\tests\info.ps1]
         if: success() || failure()
         uses: ./
         with:
           Script: . .\tests\info.ps1
+          Prerelease: ${{ inputs.Prerelease }}
 
       - name: Action-Test [. ./tests/info.ps1]
         if: success() || failure()
         uses: ./
         with:
           Script: . ./tests/info.ps1
+          Prerelease: ${{ inputs.Prerelease }}
 
       - name: Action-Test [. '.\tests\info.ps1']
         if: success() || failure()
         uses: ./
         with:
           Script: . '.\tests\info.ps1'
+          Prerelease: ${{ inputs.Prerelease }}
 
       - name: Action-Test [. './tests/info.ps1']
         if: success() || failure()
         uses: ./
         with:
           Script: . './tests/info.ps1'
+          Prerelease: ${{ inputs.Prerelease }}
 
   ActionTestCommands:
     name: Commands + Outputs
@@ -127,7 +141,7 @@ jobs:
         with:
           Debug: true
           Verbose: true
-          Prerelease: true
+          Prerelease: ${{ inputs.Prerelease }}
           ShowInit: true
           ShowOutput: true
           Script: |
@@ -182,6 +196,7 @@ jobs:
         uses: ./
         with:
           Token: ''
+          Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'My group' {
               'This is a group'
@@ -199,6 +214,7 @@ jobs:
         uses: ./
         with:
           Token: ${{ secrets.TEST_USER_PAT }}
+          Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize
@@ -216,6 +232,7 @@ jobs:
         uses: ./
         with:
           Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize
@@ -233,6 +250,7 @@ jobs:
         uses: ./
         with:
           Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+          Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize
@@ -251,6 +269,7 @@ jobs:
         with:
           ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
           PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+          Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp | Format-Table -AutoSize
@@ -281,6 +300,7 @@ jobs:
         with:
           ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
           PrivateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+          Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp | Format-Table -AutoSize
