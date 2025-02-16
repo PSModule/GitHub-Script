@@ -33,7 +33,7 @@ try {
         }
 
         $result | Format-List
-        Write-Host "Access outputs using `${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).<output-name> }}"
+        Write-Output "Access outputs using `${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).<output-name> }}"
     }
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
     Write-Output $fenceEnd
