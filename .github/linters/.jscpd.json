@@ -1,0 +1,12 @@
+{
+    "threshold": 0,
+    "reporters": [
+        "consoleFull"
+    ],
+    "ignore": [
+        "**/tests/**",
+        "**/.github/workflows/TestWorkflow.yml",
+        "**/.github/workflows/Action-Test*"
+    ],
+    "absolute": true
+}

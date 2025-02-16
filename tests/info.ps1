@@ -1,9 +1,9 @@
 ﻿#Requires -Modules GitHub
 
 LogGroup ' - Get-GithubEventData' {
-    Get-GithubEventData | Format-List
+    Get-GitHubEventData | Format-List
 }
 
 LogGroup ' - Get-GithubRunnerData' {
-    Get-GithubRunnerData | Format-List
+    Get-GitHubRunnerData | Format-List
 }
