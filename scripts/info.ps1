@@ -26,6 +26,9 @@ process {
 
         LogGroup ' - GitHub connection - Default' {
             Get-GitHubContext | Format-List
+
+            Write-Output 'GitHub CLI status:'
+            gh auth status
         }
 
         LogGroup ' - GitHub connection - List' {
