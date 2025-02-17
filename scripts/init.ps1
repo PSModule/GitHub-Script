@@ -98,6 +98,7 @@ process {
             Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent:(-not $showInit)
             $env:GITHUB_HOST_NAME = ($env:GITHUB_SERVER_URL ?? 'github.com') -replace '^https?://'
             $env:GITHUB_ACTION_INPUT_Token | gh auth login --with-token --hostname $env:GITHUB_HOST_NAME
+            gh auth status
         }
         if ($showInit) {
             Write-Output '::endgroup::'
