@@ -29,6 +29,7 @@ process {
 
             Write-Output 'GitHub CLI status:'
             gh auth status
+            $LASTEXITCODE = 0
         }
 
         LogGroup ' - GitHub connection - List' {
