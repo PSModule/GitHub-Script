@@ -96,12 +96,6 @@ process {
             Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent:(-not $showInit)
         } elseif ($providedToken) {
             Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent:(-not $showInit)
-            Write-Output '::endgroup::'
-            Write-Output '::group:: - Connect to GitHub (gh cli)'
-            $env:GITHUB_HOST_NAME = ($env:GITHUB_SERVER_URL ?? 'github.com') -replace '^https?://'
-            $env:GITHUB_ACTION_INPUT_Token | gh auth login --with-token --hostname $env:GITHUB_HOST_NAME
-            gh auth status
-            gh auth setup-git
         }
         if ($showInit) {
             Write-Output '::endgroup::'
