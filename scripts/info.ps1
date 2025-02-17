@@ -25,11 +25,14 @@ process {
         }
 
         LogGroup ' - GitHub connection - Default' {
-            Get-GitHubContext | Format-List
+            $context = Get-GitHubContext
+            $context | Format-List
 
-            Write-Output 'GitHub CLI status:'
-            gh auth status
-            $LASTEXITCODE = 0
+            if ($context.AuthType -eq 'IAT') {
+                Write-Output 'GitHub CLI status:'
+                gh auth status
+                $LASTEXITCODE = 0
+            }
         }
 
         LogGroup ' - GitHub connection - List' {
