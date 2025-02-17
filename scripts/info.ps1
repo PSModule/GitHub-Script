@@ -28,7 +28,7 @@ process {
             $context = Get-GitHubContext
             $context | Format-List
 
-            if ($context.AuthType -eq 'IAT') {
+            if ($context.AuthType -ne 'APP') {
                 Write-Output 'GitHub CLI status:'
                 gh auth status
                 $LASTEXITCODE = 0
