@@ -1,0 +1,1 @@
+﻿$env:PSMODULE_GITHUB_SCRIPT = $false
