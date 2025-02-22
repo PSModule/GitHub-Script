@@ -77,11 +77,11 @@ runs:
       run: |
         # GitHub-Script
         try {
-          ${{ github.action_path }}\scripts\init.ps1
-          ${{ github.action_path }}\scripts\info.ps1
+          ${{ github.action_path }}/scripts/init.ps1
+          ${{ github.action_path }}/scripts/info.ps1
           ${{ inputs.Script }}
-          ${{ github.action_path }}\scripts\outputs.ps1
+          ${{ github.action_path }}/scripts/outputs.ps1
         }
         finally {
-          ${{ github.action_path }}\scripts\clean.ps1
+          ${{ github.action_path }}/scripts/clean.ps1
         }
