@@ -76,7 +76,12 @@ runs:
         GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
-        . ${{ github.action_path }}\scripts\init.ps1
-        . ${{ github.action_path }}\scripts\info.ps1
-        ${{ inputs.Script }}
-        . ${{ github.action_path }}\scripts\outputs.ps1
+        try {
+          ${{ github.action_path }}/scripts/init.ps1
+          ${{ github.action_path }}/scripts/info.ps1
+          ${{ inputs.Script }}
+          ${{ github.action_path }}/scripts/outputs.ps1
+        }
+        finally {
+          ${{ github.action_path }}/scripts/clean.ps1
+        }
