@@ -220,10 +220,10 @@ jobs:
           result: ${{ steps.test.outputs.result }}
           WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
           Zen: ${{ fromJson(steps.test.outputs.result).Zen }}
-          Context: ${{ toJson(fromJson(steps.test.outputs.result).Context) }}
-          GitConfig: ${{ toJson(fromJson(steps.test.outputs.result).GitConfig) }}
+          Context: ${{ fromJson(steps.test.outputs.result).Context }}
+          GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
           Zen2: ${{ fromJson(steps.test.outputs.result).Zen2 }}
-          ComplexArray: ${{ toJson(fromJson(steps.test.outputs.result).ComplexArray) }}
+          ComplexArray: ${{ fromJson(steps.test.outputs.result).ComplexArray }}
           ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
         run: |
           $result = $env:result | ConvertFrom-Json
