@@ -41,164 +41,36 @@ jobs:
         with:
           Debug: true
           Verbose: true
-          Prerelease: ${{ inputs.Prerelease }}
+          Prerelease: true
           ShowInit: true
           ShowOutput: true
           Script: |
-            LogGroup 'Get-GitHubZen' {
-              $cat = Get-GitHubOctocat
-              $zen = Get-GitHubZen
-              Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
-            }
-
-            LogGroup 'Set outputs - WISECAT' {
-              Set-GitHubOutput -Name 'WISECAT' -Value $cat
-            }
-
-            LogGroup 'Set outputs - Zen' {
-              Set-GitHubOutput -Name 'Zen' -Value $zen
-            }
-
-            LogGroup 'Set outputs - Context' {
-              Set-GitHubOutput -Name 'Context' -Value (Get-GitHubContext)
-            }
-
-            LogGroup 'Set outputs - GitConfig' {
-              Set-GitHubOutput -Name 'GitConfig' -Value (Get-GitHubGitConfig -Scope system)
-            }
-
-            LogGroup 'Set outputs - Zen2' {
-              Set-GitHubOutput -Name 'Zen2' -Value $zen
-            }
-
-            LogGroup 'Set array outputs' {
-              $complexArray = @(
-                [pscustomobject]@{
-                  Name = 'Test'
-                  Value = 'Value'
-                  Cars = @(
-                    @{
-                      Make = 'Toyota'
-                      Model = 'Corolla'
-                    },
-                    @{
-                      Make = 'Ford'
-                      Model = 'Fiesta'
-                    }
-                  )
-                },
-                [pscustomobject]@{
-                  Name = 'Test2'
-                  Value = 'Value2'
-                  Cars = @(
-                    @{
-                      Make = 'Toyota'
-                      Model = 'Corolla'
-                    },
-                    @{
-                      Make = 'Ford'
-                      Model = 'Fiesta'
-                    }
-                  )
-                }
-              )
-              Set-GitHubOutput -Name 'ComplexArray' -Value $complexArray
-            }
-
-            LogGroup 'Set array outputs - JSON' {
-              $compexJson = $complexArray | ConvertTo-Json -Depth 10
-              Set-GitHubOutput -Name 'ComplexArrayJson' -Value $compexJson
-            }
-
-            LogGroup 'Set summary' {
-                Get-Content $env:GITHUB_OUTPUT -Raw | Set-GitHubStepSummary
-            }
-
             LogGroup 'MatrixTest' {
               $matrixTest = @{
+                Path   = 'test'
                 include = @(
-                  [pscustomobject]@{
+                  @{
                     Name   = 'Test'
                     RunsOn = 'ubuntu-latest'
-                    Path   = 'test'
                   },
-                  [pscustomobject]@{
+                  @{
                     Name   = 'Test2'
                     RunsOn = 'windows-latest'
-                    Path   = 'test'
                   },
-                  [pscustomobject]@{
+                  @{
                     Name   = 'Test3'
                     RunsOn = 'macos-latest'
-                    Path   = 'test'
                   }
                 )
               }
               Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
             }
 
-      - name: Run-test
-        shell: pwsh
-        env:
-          result: ${{ steps.test.outputs.result }}
-          WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
-          Zen: ${{ fromJson(steps.test.outputs.result).Zen }}
-          Zen2: ${{ fromJson(steps.test.outputs.result).Zen2 }}
-          Context: ${{ fromJson(steps.test.outputs.result).Context }}
-          GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
-          ComplexArray: ${{ fromJson(steps.test.outputs.result).ComplexArray }}
-          ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
-        run: |
-          $result = $env:result | ConvertFrom-Json
-
-          LogGroup 'Result - Json' {
-            $env:result
-          }
-
-          LogGroup 'Result - Object' {
-            $result
-          }
-
-          LogGroup "WISECAT" {
-            Write-Host $env:WISECAT
-          }
-
-          LogGroup "Zen" {
-            Write-Host $env:Zen
-          }
-
-          LogGroup "Context" {
-            $env:Context | Format-List
-          }
-
-          LogGroup "GitConfig" {
-            $env:GitConfig | Format-List
-          }
-
-          LogGroup "Zen2" {
-            Write-Host $env:Zen2
-          }
-
-          LogGroup "ComplexArray" {
-            $env:ComplexArray | Format-List
-          }
-
-          LogGroup "ComplexArrayJson" {
-            $env:ComplexArrayJson
-          }
-
-          LogGroup "Other" {
-          Set-GitHubStepSummary -Summary $env:WISECAT
-          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
-          Write-Host ($result.Zen2)
-          $result.Context | Format-List
-          $result.GitConfig | Format-List
-          }
-
   MatrixTest:
     needs: ActionTestCommands
     strategy:
-      matrix: ${{ needs.ActionTestCommands.outputs.MatrixTest }}
+      matrix:
+        config: ${{ fromJson(needs.ActionTestCommands.outputs.MatrixTest) }}
     name: Matrix Test [${{ matrix.Name }}]
     runs-on: ${{ matrix.RunsOn }}
     steps:
