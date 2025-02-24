@@ -28,7 +28,11 @@ process {
             $context = Get-GitHubContext
             $context | Format-List
 
-            if ($context.AuthType -ne 'APP' -and [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
+            Write-Output "Token?    [$([string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token))]"
+            Write-Output "AuthType? [$($context.AuthType)]"
+            Write-Output "gh auth?  [$($context.AuthType -ne 'APP' -or [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token))]"
+
+            if ($context.AuthType -ne 'APP' -or [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
                 Write-Output 'GitHub CLI status:'
                 $before = $LASTEXITCODE
                 gh auth status
