@@ -220,7 +220,7 @@ jobs:
           result: ${{ steps.test.outputs.result }}
           WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
           Zen: ${{ fromJson(steps.test.outputs.result).Zen }}
-          Context: ${{ fromJson(steps.test.outputs.result).Context }}
+          Context: ${{ fromJson(steps.test.outputs.result).Context.CLientID }}
           # GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
           Zen2: ${{ fromJson(steps.test.outputs.result).Zen2 }}
           # ComplexArray: ${{ fromJson(steps.test.outputs.result).ComplexArray }}

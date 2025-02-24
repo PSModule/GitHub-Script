@@ -28,10 +28,11 @@ process {
             $context = Get-GitHubContext
             $context | Format-List
 
-            $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
-            if ($context.AuthType -ne 'APP' -or -not $providedToken) {
+            if ($context.AuthType -ne 'APP' -or [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
                 Write-Output 'GitHub CLI status:'
+                Write-Warning "LASTEXITCODE: $LASTEXITCODE"
                 gh auth status
+                Write-Warning "LASTEXITCODE has changed [$LASTEXITCODE]"
                 $LASTEXITCODE = 0
             }
         }
