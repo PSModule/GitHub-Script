@@ -223,6 +223,14 @@ jobs:
           $result.Context | Format-List
           $result.GitConfig | Format-List
 
+          LogGroup 'Result - Json' {
+            $env:result
+          }
+
+          LogGroup 'Result - Object' {
+            $result
+          }
+
   ActionTestWithoutToken:
     name: WithoutToken
     runs-on: ${{ inputs.runs-on }}
