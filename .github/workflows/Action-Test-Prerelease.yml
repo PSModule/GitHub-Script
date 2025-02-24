@@ -69,8 +69,7 @@ jobs:
   MatrixTest:
     needs: ActionTestCommands
     strategy:
-      matrix:
-        config: ${{ fromJson(needs.ActionTestCommands.outputs.MatrixTest) }}
+      matrix: ${{ fromJson(needs.ActionTestCommands.outputs.MatrixTest) }}
     name: Matrix Test [${{ matrix.Name }}]
     runs-on: ${{ matrix.RunsOn }}
     steps:
