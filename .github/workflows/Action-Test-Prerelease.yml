@@ -77,7 +77,8 @@ jobs:
       - name: Matrix Test
         shell: pwsh
         env:
-          MatrixTest: ${{ matrix.Cars }}
+          Path: ${{ matrix.Path }}
         run: |
-          $matrixTest = $env:MatrixTest | ConvertFrom-Json
-          $matrixTest | Format-List
+          New-Item -Path $env:Path -ItemType Directory -Force
+          Write-Host "Matrix Test: $env:Path"
+
