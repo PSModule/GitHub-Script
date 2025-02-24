@@ -210,17 +210,21 @@ jobs:
               Set-GitHubOutput -Name 'ComplexArrayJson' -Value $compexJson
             }
 
+            LogGroup 'Set summary' {
+                Get-Content $env:GITHUB_OUTPUT -Raw | Set-GitHubStepSummary
+            }
+
       - name: Run-test
         shell: pwsh
         env:
           result: ${{ steps.test.outputs.result }}
           WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
           Zen: ${{ fromJson(steps.test.outputs.result).Zen }}
-          Context: ${{ fromJson(steps.test.outputs.result).Context }}
-          GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
+          # Context: ${{ fromJson(steps.test.outputs.result).Context }}
+          # GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
           Zen2: ${{ fromJson(steps.test.outputs.result).Zen2 }}
           # ComplexArray: ${{ fromJson(steps.test.outputs.result).ComplexArray }}
-          # ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
+          ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
         run: |
           $result = $env:result | ConvertFrom-Json
 
