@@ -28,12 +28,14 @@ process {
             $context = Get-GitHubContext
             $context | Format-List
 
-            if ($context.AuthType -ne 'APP' -or [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
+            if ($context.AuthType -ne 'APP' -and [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
                 Write-Output 'GitHub CLI status:'
-                Write-Warning "LASTEXITCODE: $LASTEXITCODE"
+                $before = $LASTEXITCODE
                 gh auth status
-                Write-Warning "LASTEXITCODE has changed [$LASTEXITCODE]"
-                $LASTEXITCODE = 0
+                if ($LASTEXITCODE -ne $before) {
+                    Write-Warning "LASTEXITCODE has changed [$LASTEXITCODE]"
+                    $global:LASTEXITCODE = $before
+                }
             }
         }
 
