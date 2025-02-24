@@ -4,6 +4,7 @@ run-name: "Action-Test - [${{ github.event.pull_request.title }} #${{ github.eve
 
 on:
   workflow_dispatch:
+    push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
