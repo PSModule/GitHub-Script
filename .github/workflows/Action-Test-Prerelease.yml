@@ -46,17 +46,18 @@ jobs:
           ShowOutput: true
           Script: |
             LogGroup 'MatrixTest' {
-              $matrixTest = @{
-                Path = @('tests/srcTestRepo', 'tests/srcWithManifestTestRepo')
-                RunsOn = @('ubuntu-latest','windows-latest','macos-latest')
-              Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
+                $matrixTest = @{
+                    Path   = @('tests/srcTestRepo', 'tests/srcWithManifestTestRepo')
+                    RunsOn = @('ubuntu-latest', 'windows-latest', 'macos-latest')
+                }
+                Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
             }
 
   MatrixTest:
     needs: ActionTestCommands
     strategy:
       matrix: ${{ fromJson(needs.ActionTestCommands.outputs.MatrixTest) }}
-    name: Matrix Test [${{ matrix.Name }}]
+    name: Matrix Test [${{ matrix.RunsOn }}]
     runs-on: ${{ matrix.RunsOn }}
     steps:
       - name: Matrix Test
