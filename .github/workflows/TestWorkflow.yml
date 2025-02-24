@@ -223,11 +223,6 @@ jobs:
           # ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
         run: |
           $result = $env:result | ConvertFrom-Json
-          Set-GitHubStepSummary -Summary $env:WISECAT
-          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
-          Write-Host ($result.Zen2)
-          $result.Context | Format-List
-          $result.GitConfig | Format-List
 
           LogGroup 'Result - Json' {
             $env:result
@@ -235,6 +230,42 @@ jobs:
 
           LogGroup 'Result - Object' {
             $result
+          }
+
+          LogGroup "WISECAT" {
+            Write-Host $env:WISECAT
+          }
+
+          LogGroup "Zen" {
+            Write-Host $env:Zen
+          }
+
+          LogGroup "Context" {
+            $env:Context | Format-List
+          }
+
+          LogGroup "GitConfig" {
+            $env:GitConfig | Format-List
+          }
+
+          LogGroup "Zen2" {
+            Write-Host $env:Zen2
+          }
+
+          LogGroup "ComplexArray" {
+            $env:ComplexArray | Format-List
+          }
+
+          LogGroup "ComplexArrayJson" {
+            $env:ComplexArrayJson
+          }
+
+          LogGroup "Other" {
+          Set-GitHubStepSummary -Summary $env:WISECAT
+          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+          Write-Host ($result.Zen2)
+          $result.Context | Format-List
+          $result.GitConfig | Format-List
           }
 
   ActionTestWithoutToken:
