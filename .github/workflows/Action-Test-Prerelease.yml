@@ -48,21 +48,7 @@ jobs:
             LogGroup 'MatrixTest' {
               $matrixTest = @{
                 Path = @('tests/srcTestRepo', 'tests/srcWithManifestTestRepo')
-                include = @(
-                  @{
-                    Name   = 'Test'
-                    RunsOn = 'ubuntu-latest'
-                  },
-                  @{
-                    Name   = 'Test2'
-                    RunsOn = 'windows-latest'
-                  },
-                  @{
-                    Name   = 'Test3'
-                    RunsOn = 'macos-latest'
-                  }
-                )
-              }
+                RunsOn = @('ubuntu-latest','windows-latest','macos-latest')
               Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
             }
 
