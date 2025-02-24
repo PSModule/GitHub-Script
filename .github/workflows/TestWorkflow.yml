@@ -216,28 +216,6 @@ jobs:
                 Get-Content $env:GITHUB_OUTPUT -Raw | Set-GitHubStepSummary
             }
 
-            LogGroup 'MatrixTest' {
-              $matrixTest = @{
-                include = @(
-                  [pscustomobject]@{
-                    Name   = 'Test'
-                    RunsOn = 'ubuntu-latest'
-                    Path   = 'test'
-                  },
-                  [pscustomobject]@{
-                    Name   = 'Test2'
-                    RunsOn = 'windows-latest'
-                    Path   = 'test'
-                  },
-                  [pscustomobject]@{
-                    Name   = 'Test3'
-                    RunsOn = 'macos-latest'
-                    Path   = 'test'
-                  }
-                )
-              }
-              Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
-            }
 
       - name: Run-test
         shell: pwsh
@@ -290,27 +268,55 @@ jobs:
           }
 
           LogGroup "Other" {
-          Set-GitHubStepSummary -Summary $env:WISECAT
-          Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
-          Write-Host ($result.Zen2)
-          $result.Context | Format-List
-          $result.GitConfig | Format-List
+              Set-GitHubStepSummary -Summary $env:WISECAT
+              Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+              Write-Host ($result.Zen2)
+              $result.Context | Format-List
+              $result.GitConfig | Format-List
           }
 
+  MatrixCreator:
+    name: Matrix Creator
+    runs-on: ubuntu-latest
+    outputs:
+      MatrixTest: ${{ fromJson(steps.test.outputs.result).MatrixTest }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test
+        uses: ./
+        id: test
+        with:
+          Debug: true
+          Verbose: true
+          Prerelease: true
+          ShowInit: true
+          ShowOutput: true
+          Script: |
+            LogGroup 'MatrixTest' {
+                $matrixTest = @{
+                    Path   = @('tests/srcTestRepo', 'tests/srcWithManifestTestRepo')
+                    RunsOn = @('ubuntu-latest', 'windows-latest', 'macos-latest')
+                }
+                Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
+            }
+
   MatrixTest:
-    needs: ActionTestCommands
+    needs: MatrixCreator
     strategy:
-      matrix: ${{ needs.ActionTestCommands.outputs.MatrixTest }}
-    name: Matrix Test [${{ matrix.Name }}]
+      matrix: ${{ fromJson(needs.MatrixCreator.outputs.MatrixTest) }}
+    name: Matrix Test [${{ matrix.RunsOn }}]
     runs-on: ${{ matrix.RunsOn }}
     steps:
       - name: Matrix Test
         shell: pwsh
         env:
-          MatrixTest: ${{ matrix.Cars }}
+          Path: ${{ matrix.Path }}
         run: |
-          $matrixTest = $env:MatrixTest | ConvertFrom-Json
-          $matrixTest | Format-List
+          New-Item -Path $env:Path -ItemType Directory -Force
+          Write-Host "Matrix Test: $env:Path"
 
   ActionTestWithoutToken:
     name: WithoutToken
