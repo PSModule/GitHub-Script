@@ -217,23 +217,25 @@ jobs:
             }
 
             LogGroup 'MatrixTest' {
-              $matrixTest = @(
-                [pscustomobject]@{
-                  Name   = 'Test'
-                  RunsOn = 'ubuntu-latest'
-                  Path   = 'test'
-                },
-                [pscustomobject]@{
-                  Name   = 'Test2'
-                  RunsOn = 'windows-latest'
-                  Path   = 'test'
-                },
-                [pscustomobject]@{
-                  Name   = 'Test3'
-                  RunsOn = 'macos-latest'
-                  Path   = 'test'
-                }
-              )
+              $matrixTest = @{
+                Include = @(
+                  [pscustomobject]@{
+                    Name   = 'Test'
+                    RunsOn = 'ubuntu-latest'
+                    Path   = 'test'
+                  },
+                  [pscustomobject]@{
+                    Name   = 'Test2'
+                    RunsOn = 'windows-latest'
+                    Path   = 'test'
+                  },
+                  [pscustomobject]@{
+                    Name   = 'Test3'
+                    RunsOn = 'macos-latest'
+                    Path   = 'test'
+                  }
+                )
+              }
               Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
             }
 
