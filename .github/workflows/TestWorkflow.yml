@@ -219,45 +219,19 @@ jobs:
             LogGroup 'MatrixTest' {
               $matrixTest = @(
                 [pscustomobject]@{
-                  Name = 'Test'
+                  Name   = 'Test'
                   RunsOn = 'ubuntu-latest'
-                  Cars = @(
-                    @{
-                      Make = 'Toyota'
-                      Model = 'Corolla'
-                    },
-                    @{
-                      Make = 'Ford'
-                      Model = 'Fiesta'
-                    }
-                  )
+                  Path   = 'test'
                 },
                 [pscustomobject]@{
-                  Name = 'Test2'
+                  Name   = 'Test2'
                   RunsOn = 'windows-latest'
-                  Cars = @(
-                    @{
-                      Make = 'Toyota'
-                      Model = 'Corolla'
-                    },
-                    @{
-                      Make = 'Ford'
-                      Model = 'Fiesta'
-                    }
-                  )
-                },[pscustomobject]@{
-                  Name = 'Test3'
+                  Path   = 'test'
+                },
+                [pscustomobject]@{
+                  Name   = 'Test3'
                   RunsOn = 'macos-latest'
-                  Cars = @(
-                    @{
-                      Make = 'Toyota'
-                      Model = 'Corolla'
-                    },
-                    @{
-                      Make = 'Ford'
-                      Model = 'Fiesta'
-                    }
-                  )
+                  Path   = 'test'
                 }
               )
               Set-GitHubOutput -Name 'MatrixTest' -Value $matrixTest
@@ -270,8 +244,8 @@ jobs:
           WISECAT: ${{ fromJson(steps.test.outputs.result).WISECAT }}
           Zen: ${{ fromJson(steps.test.outputs.result).Zen }}
           Zen2: ${{ fromJson(steps.test.outputs.result).Zen2 }}
-          # Context: ${{ fromJson(steps.test.outputs.result).Context }}
-          # GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
+          Context: ${{ fromJson(steps.test.outputs.result).Context }}
+          GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
           ComplexArray: ${{ fromJson(steps.test.outputs.result).ComplexArray }}
           ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
         run: |
