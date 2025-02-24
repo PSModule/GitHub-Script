@@ -218,7 +218,7 @@ jobs:
 
             LogGroup 'MatrixTest' {
               $matrixTest = @{
-                Include = @(
+                include = @(
                   [pscustomobject]@{
                     Name   = 'Test'
                     RunsOn = 'ubuntu-latest'
