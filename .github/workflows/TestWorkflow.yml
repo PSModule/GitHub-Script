@@ -224,7 +224,7 @@ jobs:
           # Context: ${{ fromJson(steps.test.outputs.result).Context }}
           # GitConfig: ${{ fromJson(steps.test.outputs.result).GitConfig }}
           # ComplexArray: ${{ fromJson(steps.test.outputs.result).ComplexArray }}
-          # ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
+          ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
         run: |
           $result = $env:result | ConvertFrom-Json
 
