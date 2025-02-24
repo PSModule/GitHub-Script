@@ -171,6 +171,45 @@ jobs:
               Set-GitHubOutput -Name 'Zen2' -Value $zen
             }
 
+            LogGroup 'Set array outputs' {
+              $complexArray = @(
+                [pscustomobject]@{
+                  Name = 'Test'
+                  Value = 'Value'
+                  Cars = @(
+                    @{
+                      Make = 'Toyota'
+                      Model = 'Corolla'
+                    },
+                    @{
+                      Make = 'Ford'
+                      Model = 'Fiesta'
+                    }
+                  )
+                },
+                [pscustomobject]@{
+                  Name = 'Test2'
+                  Value = 'Value2'
+                  Cars = @(
+                    @{
+                      Make = 'Toyota'
+                      Model = 'Corolla'
+                    },
+                    @{
+                      Make = 'Ford'
+                      Model = 'Fiesta'
+                    }
+                  )
+                }
+              )
+              Set-GitHubOutput -Name 'ComplexArray' -Value $complexArray
+            }
+
+            LogGroup 'Set array outputs - JSON' {
+              $compexJson = $complexArray | ConvertTo-Json -Depth 10
+              Set-GitHubOutput -Name 'ComplexArrayJson' -Value $compexJson
+            }
+
       - name: Run-test
         shell: pwsh
         env:
