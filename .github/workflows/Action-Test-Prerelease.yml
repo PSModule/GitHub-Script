@@ -47,7 +47,6 @@ jobs:
           Script: |
             LogGroup 'MatrixTest' {
               $matrixTest = @{
-                Path   = 'test'
                 include = @(
                   @{
                     Name   = 'Test'
