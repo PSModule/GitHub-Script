@@ -47,7 +47,7 @@ jobs:
           Script: |
             LogGroup 'MatrixTest' {
               $matrixTest = @{
-                Path = @('test', 'test2', 'test3')
+                Path = @('tests/srcTestRepo', 'tests/srcWithManifestTestRepo')
                 include = @(
                   @{
                     Name   = 'Test'
