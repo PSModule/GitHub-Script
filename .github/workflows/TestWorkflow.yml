@@ -281,13 +281,13 @@ jobs:
               Write-Host ($result.Zen2)
               $result.Context | Format-List
               $result.Context.GetType().Name
-              if ($result.GitConfig -isnot [System.Management.Automation.PSCustomObject]) {
+              if ($result.GitConfig -isnot [String]) {
                   throw "GitConfig is not a PSCustomObject"
               }
 
               $result.GitConfig | Format-List
               $result.GitConfig.GetType().Name
-              if ($result.GitConfig -isnot [System.Management.Automation.PSCustomObject]) {
+              if ($result.GitConfig -isnot [String]) {
                   throw "GitConfig is a PSCustomObject"
               }
           }
