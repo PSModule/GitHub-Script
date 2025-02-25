@@ -261,7 +261,7 @@ jobs:
 
           LogGroup "ComplexArray" {
             $env:ComplexArray
-            if (-not Test-Json -Json $env:ComplexArray) {
+            if (-not (Test-Json -Json $env:ComplexArray)) {
                 Write-Host "Item is not a JSON object"
                 exit 1
             }
@@ -269,7 +269,7 @@ jobs:
 
           LogGroup "ComplexArrayJson" {
             $env:ComplexArrayJson
-            if (-not Test-Json -Json $env:ComplexArrayJson) {
+            if (-not (Test-Json -Json $env:ComplexArrayJson)) {
                 Write-Host "Item is not a JSON object"
                 exit 1
             }
@@ -346,7 +346,7 @@ jobs:
         env:
           Item: ${{ steps.test.outputs.item }}
         run: |
-          if (-not Test-Json -Json $env:Item) {
+          if (-not (Test-Json -Json $env:Item)) {
               throw "Item is not a JSON object"
           }
 
