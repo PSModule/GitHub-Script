@@ -322,7 +322,7 @@ jobs:
               Path = $env:Path
               Exists = Test-Path -Path $env:Path
           }
-          Set-GithubOutput -Name 'Item' -Value $item
+          Set-GithubOutput -Name 'Item' -Value $item -Verbose -Debug -Confirm:$false
 
       - name: Matrix Test [Show]
         shell: pwsh
