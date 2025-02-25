@@ -316,7 +316,7 @@ jobs:
         env:
           Path: ${{ matrix.Path }}
         run: |
-          Install-PSResource -Name GitHub -TrustRepository
+          Install-PSResource -Name GitHub -TrustRepository -Prerelease
           Write-Host "PSMODULE_GITHUB_SCRIPT: $env:PSMODULE_GITHUB_SCRIPT"
           $item = [pscustomobject]@{
               Path = $env:Path
