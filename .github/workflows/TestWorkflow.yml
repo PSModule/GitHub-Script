@@ -312,11 +312,19 @@ jobs:
     steps:
       - name: Matrix Test
         shell: pwsh
+        id: test
         env:
           Path: ${{ matrix.Path }}
         run: |
-          New-Item -Path $env:Path -ItemType Directory -Force
-          Write-Host "Matrix Test: $env:Path"
+          $item = New-Item -Path $env:Path -ItemType Directory -Force
+          Set-GithubOutput -Name 'Item' -Value $item
+
+      - name: Matrix Test [Show]
+        shell: pwsh
+        env:
+          Item: ${{ steps.test.outputs.item }}
+        run: |
+          $env:Item
 
   ActionTestWithoutToken:
     name: WithoutToken
