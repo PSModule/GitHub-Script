@@ -317,6 +317,7 @@ jobs:
           Path: ${{ matrix.Path }}
         run: |
           Install-PSResource -Name GitHub -TrustRepository
+          Write-Host "PSMODULE_GITHUB_SCRIPT: $env:PSMODULE_GITHUB_SCRIPT"
           $item = [pscustomobject]@{
               Path = $env:Path
               Exists = Test-Path -Path $env:Path
@@ -328,6 +329,7 @@ jobs:
         env:
           Item: ${{ steps.test.outputs.item }}
         run: |
+          Write-Host "PSMODULE_GITHUB_SCRIPT: $env:PSMODULE_GITHUB_SCRIPT"
           $env:Item
 
   ActionTestWithoutToken:
