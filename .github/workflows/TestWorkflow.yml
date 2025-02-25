@@ -248,11 +248,11 @@ jobs:
           }
 
           LogGroup "Context" {
-            $env:Context | Format-List
+            $env:Context
           }
 
           LogGroup "GitConfig" {
-            $env:GitConfig | Format-List
+            $env:GitConfig
           }
 
           LogGroup "Zen2" {
@@ -260,11 +260,19 @@ jobs:
           }
 
           LogGroup "ComplexArray" {
-            $env:ComplexArray | Format-List
+            $env:ComplexArray
+            if (-not Test-Json -Json $env:ComplexArray) {
+                Write-Host "Item is not a JSON object"
+                exit 1
+            }
           }
 
           LogGroup "ComplexArrayJson" {
             $env:ComplexArrayJson
+            if (-not Test-Json -Json $env:ComplexArrayJson) {
+                Write-Host "Item is not a JSON object"
+                exit 1
+            }
           }
 
           LogGroup "Other" {
@@ -272,7 +280,14 @@ jobs:
               Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
               Write-Host ($result.Zen2)
               $result.Context | Format-List
+              if ($result.GitConfig -isnot [System.Management.Automation.PSCustomObject]) {
+                  throw "GitConfig is not a PSCustomObject"
+              }
+
               $result.GitConfig | Format-List
+              if ($result.GitConfig -isnot [System.Management.Automation.PSCustomObject]) {
+                  throw "GitConfig is a PSCustomObject"
+              }
           }
 
   MatrixCreator:
@@ -317,20 +332,23 @@ jobs:
           Path: ${{ matrix.Path }}
         run: |
           Install-PSResource -Name GitHub -TrustRepository -Prerelease
-          Write-Host "PSMODULE_GITHUB_SCRIPT: $env:PSMODULE_GITHUB_SCRIPT"
+          if ($PSMODULE_GITHUB_SCRIPT) {
+              throw "Is not running in GitHub-Script aciton! Failing"
+          }
           $item = [pscustomobject]@{
               Path = $env:Path
               Exists = Test-Path -Path $env:Path
           }
-          Set-GithubOutput -Name 'Item' -Value $item -Verbose -Debug -Confirm:$false
+          Set-GithubOutput -Name 'Item' -Value $item
 
       - name: Matrix Test [Show]
         shell: pwsh
         env:
           Item: ${{ steps.test.outputs.item }}
         run: |
-          Write-Host "PSMODULE_GITHUB_SCRIPT: $env:PSMODULE_GITHUB_SCRIPT"
-          $env:Item
+          if (-not Test-Json -Json $env:Item) {
+              throw "Item is not a JSON object"
+          }
 
   ActionTestWithoutToken:
     name: WithoutToken
