@@ -280,11 +280,13 @@ jobs:
               Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
               Write-Host ($result.Zen2)
               $result.Context | Format-List
+              $result.Context.GetType().Name
               if ($result.GitConfig -isnot [System.Management.Automation.PSCustomObject]) {
                   throw "GitConfig is not a PSCustomObject"
               }
 
               $result.GitConfig | Format-List
+              $result.GitConfig.GetType().Name
               if ($result.GitConfig -isnot [System.Management.Automation.PSCustomObject]) {
                   throw "GitConfig is a PSCustomObject"
               }
