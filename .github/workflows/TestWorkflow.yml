@@ -316,6 +316,7 @@ jobs:
         env:
           Path: ${{ matrix.Path }}
         run: |
+          Install-PSResource -Name GitHub -TrustRepository
           $item = New-Item -Path $env:Path -ItemType Directory -Force
           Set-GithubOutput -Name 'Item' -Value $item
 
