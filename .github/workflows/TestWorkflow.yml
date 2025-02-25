@@ -317,7 +317,10 @@ jobs:
           Path: ${{ matrix.Path }}
         run: |
           Install-PSResource -Name GitHub -TrustRepository
-          $item = New-Item -Path $env:Path -ItemType Directory -Force
+          $item = [pscustomobject]@{
+              Path = $env:Path
+              Exists = Test-Path -Path $env:Path
+          }
           Set-GithubOutput -Name 'Item' -Value $item
 
       - name: Matrix Test [Show]
