@@ -93,9 +93,18 @@ process {
             Write-Output '::group:: - Connect to GitHub'
         }
         if ($providedClientID -and $providedPrivateKey) {
-            Connect-GitHub -ClientID $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID -PrivateKey $env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey -Silent:(-not $showInit)
+            $params = @{
+                ClientID   = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID
+                PrivateKey = $env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey
+                Silent     = (-not $showInit)
+            }
+            Connect-GitHub @params
         } elseif ($providedToken) {
-            Connect-GitHub -Token $env:PSMODULE_GITHUB_SCRIPT_INPUT_Token -Silent:(-not $showInit)
+            $params = @{
+                Token  = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Token
+                Silent = (-not $showInit)
+            }
+            Connect-GitHub @params
         }
         if ($showInit) {
             Write-Output '::endgroup::'
