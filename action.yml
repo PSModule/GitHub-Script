@@ -64,16 +64,16 @@ runs:
       id: RunGitHubScript
       working-directory: ${{ inputs.WorkingDirectory }}
       env:
-        GITHUB_ACTION_INPUT_Token: ${{ inputs.Token }}
-        GITHUB_ACTION_INPUT_ClientID: ${{ inputs.ClientID }}
-        GITHUB_ACTION_INPUT_PrivateKey: ${{ inputs.PrivateKey }}
-        GITHUB_ACTION_INPUT_Debug: ${{ inputs.Debug }}
-        GITHUB_ACTION_INPUT_Verbose: ${{ inputs.Verbose }}
-        GITHUB_ACTION_INPUT_Version: ${{ inputs.Version }}
-        GITHUB_ACTION_INPUT_ShowInit: ${{ inputs.ShowInit }}
-        GITHUB_ACTION_INPUT_ShowInfo: ${{ inputs.ShowInfo }}
-        GITHUB_ACTION_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
-        GITHUB_ACTION_INPUT_Prerelease: ${{ inputs.Prerelease }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_Token: ${{ inputs.Token }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_ClientID: ${{ inputs.ClientID }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey: ${{ inputs.PrivateKey }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_Debug: ${{ inputs.Debug }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_Verbose: ${{ inputs.Verbose }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_Version: ${{ inputs.Version }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit: ${{ inputs.ShowInit }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo: ${{ inputs.ShowInfo }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
         # GitHub-Script
         try {
