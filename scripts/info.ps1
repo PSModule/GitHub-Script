@@ -12,8 +12,8 @@ process {
     try {
         $fenceTitle = 'GitHub-Script'
 
-        Write-Debug "[$scriptName] - ShowInfo: $env:GITHUB_ACTION_INPUT_ShowInfo"
-        if ($env:GITHUB_ACTION_INPUT_ShowInfo -ne 'true') {
+        Write-Debug "[$scriptName] - ShowInfo: $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo"
+        if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo -ne 'true') {
             return
         }
 
@@ -28,11 +28,11 @@ process {
             $context = Get-GitHubContext
             $context | Format-List
 
-            Write-Verbose "Token?    [$([string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token))]"
+            Write-Verbose "Token?    [$([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
             Write-Verbose "AuthType? [$($context.AuthType)] - [$($context.AuthType -ne 'APP')]"
-            Write-Verbose "gh auth?  [$($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token))]"
+            Write-Verbose "gh auth?  [$($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
 
-            if ($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)) {
+            if ($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)) {
                 Write-Output 'GitHub CLI status:'
                 $before = $LASTEXITCODE
                 gh auth status
@@ -60,6 +60,6 @@ process {
 
 end {
     Write-Debug "[$scriptName] - End"
-    $DebugPreference = $env:GITHUB_ACTION_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-    $VerbosePreference = $env:GITHUB_ACTION_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
+    $DebugPreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+    $VerbosePreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 }

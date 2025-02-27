@@ -10,9 +10,9 @@ process {
     try {
         $env:PSMODULE_GITHUB_SCRIPT = $true
         $fenceTitle = 'GitHub-Script'
-        $showInit = $env:GITHUB_ACTION_INPUT_ShowInit -eq 'true'
+        $showInit = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit -eq 'true'
 
-        Write-Debug "[$scriptName] - ShowInit: $env:GITHUB_ACTION_INPUT_ShowInit"
+        Write-Debug "[$scriptName] - ShowInit: $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit"
 
         if ($showInit) {
             $fenceStart = "┏━━┫ $fenceTitle - Init ┣━━━━━━━━┓"
@@ -20,8 +20,8 @@ process {
             Write-Output '::group:: - Install GitHub PowerShell module'
         }
         $Name = 'GitHub'
-        $Version = [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Version) ? $null : $env:GITHUB_ACTION_INPUT_Version
-        $Prerelease = $env:GITHUB_ACTION_INPUT_Prerelease -eq 'true'
+        $Version = [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Version) ? $null : $env:PSMODULE_GITHUB_SCRIPT_INPUT_Version
+        $Prerelease = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease -eq 'true'
 
         $alreadyInstalled = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
         if ($Version) {
@@ -73,9 +73,9 @@ process {
             Import-Module -Name $Name
         }
 
-        $providedToken = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_Token)
-        $providedClientID = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_ClientID)
-        $providedPrivateKey = -not [string]::IsNullOrEmpty($env:GITHUB_ACTION_INPUT_PrivateKey)
+        $providedToken = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)
+        $providedClientID = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)
+        $providedPrivateKey = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey)
         $moduleStatus = [pscustomobject]@{
             Name                  = $Name
             Version               = [string]::IsNullOrEmpty($Version) ? 'latest' : $Version
@@ -93,9 +93,18 @@ process {
             Write-Output '::group:: - Connect to GitHub'
         }
         if ($providedClientID -and $providedPrivateKey) {
-            Connect-GitHub -ClientID $env:GITHUB_ACTION_INPUT_ClientID -PrivateKey $env:GITHUB_ACTION_INPUT_PrivateKey -Silent:(-not $showInit)
+            $params = @{
+                ClientID   = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID
+                PrivateKey = $env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey
+                Silent     = (-not $showInit)
+            }
+            Connect-GitHub @params
         } elseif ($providedToken) {
-            Connect-GitHub -Token $env:GITHUB_ACTION_INPUT_Token -Silent:(-not $showInit)
+            $params = @{
+                Token  = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Token
+                Silent = (-not $showInit)
+            }
+            Connect-GitHub @params
         }
         if ($showInit) {
             Write-Output '::endgroup::'
