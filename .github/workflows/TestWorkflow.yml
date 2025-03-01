@@ -230,13 +230,14 @@ jobs:
           ComplexArrayJson: ${{ fromJson(steps.test.outputs.result).ComplexArrayJson }}
         run: |
           $result = $env:result | ConvertFrom-Json
+          $PSStyle.OutputRendering = 'Ansi'
 
           LogGroup 'Result - Json' {
-            $env:result
+            $env:result | Format-List | Out-String
           }
 
           LogGroup 'Result - Object' {
-            $result
+            $result | Format-List | Out-String
           }
 
           LogGroup "WISECAT" {
@@ -248,11 +249,11 @@ jobs:
           }
 
           LogGroup "Context" {
-            $env:Context
+            $env:Context | Format-List | Out-String
           }
 
           LogGroup "GitConfig" {
-            $env:GitConfig
+            $env:GitConfig | Format-List | Out-String
           }
 
           LogGroup "Zen2" {
@@ -279,13 +280,13 @@ jobs:
               Set-GitHubStepSummary -Summary $env:WISECAT
               Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
               Write-Host ($result.Zen2)
-              $result.Context | Format-List
+              $result.Context | Format-List | Out-String
               $result.Context.GetType().Name
               if ($result.GitConfig -isnot [String]) {
                   throw "GitConfig is not a PSCustomObject"
               }
 
-              $result.GitConfig | Format-List
+              $result.GitConfig | Format-List | Out-String
               $result.GitConfig.GetType().Name
               if ($result.GitConfig -isnot [String]) {
                   throw "GitConfig is a PSCustomObject"
@@ -348,7 +349,8 @@ jobs:
         env:
           Item: ${{ steps.test.outputs.item }}
         run: |
-          $env:Item
+          $PSStyle.OutputRendering = 'Ansi'
+          $env:Item | Format-Table | Out-String
           $env:Item | ConvertFrom-Json
 
           if (-not (Test-Json -Json $env:Item)) {
@@ -387,8 +389,9 @@ jobs:
           Token: ${{ secrets.TEST_USER_PAT }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
+            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubUser' {
-              Get-GitHubUser | Format-Table -AutoSize
+              Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
   ActionTestWithUSERFGPAT:
@@ -405,8 +408,9 @@ jobs:
           Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
+            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubUser' {
-              Get-GitHubUser | Format-Table -AutoSize
+              Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
   ActionTestWithORGFGPAT:
@@ -423,8 +427,9 @@ jobs:
           Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
+            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubUser' {
-              Get-GitHubUser | Format-Table -AutoSize
+              Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
   ActionTestWithGitHubAppEnt:
@@ -442,19 +447,20 @@ jobs:
           PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
+            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize
+              Get-GitHubApp | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
-              Get-GitHubAppInstallation | Format-Table -AutoSize
+              Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
                 Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize
-                Get-GitHubGitConfig | Format-Table -AutoSize
+                Get-GitHubContext | Format-Table -AutoSize | Out-String
+                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
               }
             }
 
@@ -474,17 +480,17 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize
+              Get-GitHubApp | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
-              Get-GitHubAppInstallation | Format-Table -AutoSize
+              Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'Do something as an installation' {
               Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
                 Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize
-                Get-GitHubGitConfig | Format-Table -AutoSize
+                Get-GitHubContext | Format-Table -AutoSize | Out-String
+                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
               }
             }
