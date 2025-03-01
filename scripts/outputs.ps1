@@ -34,9 +34,10 @@ try {
     foreach ($output in $result.PSObject.Properties) {
         $blue = $PSStyle.Foreground.Blue
         $reset = $PSStyle.Reset
-        $outputFence = ('-' * ($fenceStart.Length - 1))
         LogGroup " - $blue$($output.Name)$reset" {
-            Write-Output "Accessible via: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
+            $output = "Accessible via: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
+            $outputFence = ('-' * ($output.Length - 1))
+            Write-Output $output
             Write-Output $outputFence
             $output.Value | Format-List | Out-String
         }
