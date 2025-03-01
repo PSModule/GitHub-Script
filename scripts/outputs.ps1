@@ -33,7 +33,7 @@ try {
             Write-Warning "File not found: $env:GITHUB_OUTPUT"
         }
 
-        $result | Format-List
+        $result | Format-List | Out-String
         Write-Output "Access outputs using `${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).<output-name> }}"
     }
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
