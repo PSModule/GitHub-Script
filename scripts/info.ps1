@@ -6,6 +6,7 @@ param()
 begin {
     $scriptName = $MyInvocation.MyCommand.Name
     Write-Debug "[$scriptName] - Start"
+    $PSStyle.OutputRendering = 'Ansi'
 }
 
 process {
@@ -21,12 +22,12 @@ process {
         Write-Output $fenceStart
 
         LogGroup ' - Installed modules' {
-            Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize
+            Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize | Out-String
         }
 
         LogGroup ' - GitHub connection - Default' {
             $context = Get-GitHubContext
-            $context | Format-List
+            $context | Format-List | Out-String
 
             Write-Verbose "Token?    [$([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
             Write-Verbose "AuthType? [$($context.AuthType)] - [$($context.AuthType -ne 'APP')]"
@@ -44,11 +45,11 @@ process {
         }
 
         LogGroup ' - GitHub connection - List' {
-            Get-GitHubContext -ListAvailable | Format-Table
+            Get-GitHubContext -ListAvailable | Format-Table | Out-String
         }
 
         LogGroup ' - Configuration' {
-            Get-GitHubConfig | Format-List
+            Get-GitHubConfig | Format-List | Out-String
         }
 
         $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'

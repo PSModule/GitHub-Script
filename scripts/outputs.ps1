@@ -7,6 +7,7 @@ $DebugPreference = 'SilentlyContinue'
 $VerbosePreference = 'SilentlyContinue'
 $scriptName = $MyInvocation.MyCommand.Name
 Write-Debug "[$scriptName] - Start"
+$PSStyle.OutputRendering = 'Ansi'
 
 try {
     $fenceTitle = 'GitHub-Script'
