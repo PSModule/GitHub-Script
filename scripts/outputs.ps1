@@ -24,20 +24,18 @@ try {
     }
     $fenceStart = "┏━━┫ $fenceTitle - Outputs ┣━━━━━┓"
     Write-Output $fenceStart
-    LogGroup ' - Outputs' {
-        if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
-            Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
-        }
+    if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
+        Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
+    }
 
-        if (-not (Test-Path -Path $env:GITHUB_OUTPUT)) {
-            Write-Warning "File not found: $env:GITHUB_OUTPUT"
-        }
+    if (-not (Test-Path -Path $env:GITHUB_OUTPUT)) {
+        Write-Warning "File not found: $env:GITHUB_OUTPUT"
+    }
 
-        foreach ($output in $result.PSObject.Properties) {
-            LogGroup " - Outputs - $($output.Name)" {
-                Write-Output "`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}"
-                $output.Value | Format-List | Out-String
-            }
+    foreach ($output in $result.PSObject.Properties) {
+        LogGroup " - Outputs - $($output.Name)" {
+            Write-Output "Accessible via: [`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}]"
+            $output.Value | Format-List | Out-String
         }
     }
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
