@@ -35,9 +35,9 @@ try {
         $blue = $PSStyle.Foreground.Blue
         $reset = $PSStyle.Reset
         LogGroup " - $blue$($output.Name)$reset" {
-            $output = "Accessible via: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
+            $outputAccess = "Accessible via: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
             $outputFence = ('─' * ($output.Length - 1))
-            Write-Output $output
+            Write-Output $outputAccess
             Write-Output $outputFence
             $output.Value | Format-List | Out-String
         }
