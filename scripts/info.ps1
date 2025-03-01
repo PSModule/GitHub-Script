@@ -6,7 +6,6 @@ param()
 begin {
     $scriptName = $MyInvocation.MyCommand.Name
     Write-Debug "[$scriptName] - Start"
-    $PSStyle.OutputRendering = 'Ansi'
 }
 
 process {
