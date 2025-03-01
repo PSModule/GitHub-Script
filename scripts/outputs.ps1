@@ -23,17 +23,24 @@ try {
     }
     $fenceStart = "┏━━┫ $fenceTitle - Outputs ┣━━━━━┓"
     Write-Output $fenceStart
-    LogGroup ' - Outputs' {
-        if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
-            Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
-        }
+    if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
+        Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
+    }
 
-        if (-not (Test-Path -Path $env:GITHUB_OUTPUT)) {
-            Write-Warning "File not found: $env:GITHUB_OUTPUT"
-        }
+    if (-not (Test-Path -Path $env:GITHUB_OUTPUT)) {
+        Write-Warning "File not found: $env:GITHUB_OUTPUT"
+    }
 
-        $result | Format-List
-        Write-Output "Access outputs using `${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).<output-name> }}"
+    foreach ($output in $result.PSObject.Properties) {
+        $blue = $PSStyle.Foreground.Blue
+        $reset = $PSStyle.Reset
+        LogGroup " - $blue$($output.Name)$reset" {
+            $outputAccess = "Accessible via: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
+            $outputFence = ('─' * ($outputAccess.Length - 9))
+            Write-Output $outputAccess
+            Write-Output $outputFence
+            $output.Value | Format-List | Out-String
+        }
     }
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
     Write-Output $fenceEnd

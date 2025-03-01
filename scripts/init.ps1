@@ -4,6 +4,7 @@ param()
 begin {
     $scriptName = $MyInvocation.MyCommand.Name
     Write-Debug "[$scriptName] - Start"
+    $PSStyle.OutputRendering = 'Ansi'
 }
 
 process {
@@ -35,7 +36,7 @@ process {
 
         if ($showInit) {
             Write-Output 'Already installed:'
-            $alreadyInstalled | Format-List
+            $alreadyInstalled | Format-List | Out-String
         }
         if (-not $alreadyInstalled) {
             $params = @{
@@ -66,7 +67,7 @@ process {
         $alreadyImported = Get-Module -Name $Name
         if ($showInit) {
             Write-Output 'Already imported:'
-            $alreadyImported | Format-List
+            $alreadyImported | Format-List | Out-String
         }
         if (-not $alreadyImported) {
             Write-Verbose "Importing module: $Name"
@@ -88,7 +89,7 @@ process {
         }
         if ($showInit) {
             Write-Output 'Module status:'
-            $moduleStatus | Format-List
+            $moduleStatus | Format-List | Out-String
             Write-Output '::endgroup::'
             Write-Output '::group:: - Connect to GitHub'
         }
