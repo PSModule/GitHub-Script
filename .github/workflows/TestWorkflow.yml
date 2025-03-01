@@ -388,7 +388,6 @@ jobs:
           Token: ${{ secrets.TEST_USER_PAT }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
-            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
@@ -407,7 +406,6 @@ jobs:
           Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
-            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
@@ -426,7 +424,6 @@ jobs:
           Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
-            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
@@ -446,7 +443,6 @@ jobs:
           PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
-            $PSStyle.OutputRendering = 'Ansi'
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp | Format-Table -AutoSize | Out-String
             }
