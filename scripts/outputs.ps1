@@ -34,7 +34,7 @@ try {
     foreach ($output in $result.PSObject.Properties) {
         $blue = $PSStyle.Foreground.Blue
         $reset = $PSStyle.Reset
-        LogGroup " - Output: $blue$($output.Name)$reset" {
+        LogGroup " - $blue$($output.Name)$reset" {
             Write-Output "Accessible via: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
             $output.Value | Format-List | Out-String
         }
