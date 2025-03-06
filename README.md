@@ -8,20 +8,20 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 
 ### Inputs
 
-| Name               | Description                                                               | Required | Default                   |
-|--------------------|---------------------------------------------------------------------------|----------|---------------------------|
-| `Script`           | The script to run. Can be inline, multi-line, or a path to a script file. | false    |                           |
-| `Token`            | Log in using an Installation Access Token (IAT).                          | false    | `${{ github.token }}`     |
-| `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                           |
-| `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                           |
-| `Debug`            | Enable debug output.                                                      | false    | `'false'`                 |
-| `Verbose`          | Enable verbose output.                                                    | false    | `'false'`                 |
-| `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                           |
-| `Prerelease`       | Allow prerelease versions if available.                                   | false    | `'false'`                 |
-| `ShowInfo`         | Show information about the environment.                                   | false    | `'true'`                  |
-| `ShowInit`         | Show information about the initialization.                                | false    | `'false'`                 |
-| `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`                 |
-| `WorkingDirectory` | The working directory where the script runs.                              | false    | `${{ github.workspace }}` |
+| Name               | Description                                                               | Required | Default               |
+|--------------------|---------------------------------------------------------------------------|----------|-----------------------|
+| `Script`           | The script to run. Can be inline, multi-line, or a path to a script file. | false    |                       |
+| `Token`            | Log in using an Installation Access Token (IAT).                          | false    | `${{ github.token }}` |
+| `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |
+| `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |
+| `Debug`            | Enable debug output.                                                      | false    | `'false'`             |
+| `Verbose`          | Enable verbose output.                                                    | false    | `'false'`             |
+| `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                       |
+| `Prerelease`       | Allow prerelease versions if available.                                   | false    | `'false'`             |
+| `ShowInfo`         | Show information about the environment.                                   | false    | `'true'`              |
+| `ShowInit`         | Show information about the initialization.                                | false    | `'false'`             |
+| `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`             |
+| `WorkingDirectory` | The working directory where the script runs.                              | false    | `'.'`                 |
 
 ### Outputs
 
