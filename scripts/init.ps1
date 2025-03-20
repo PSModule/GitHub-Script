@@ -44,6 +44,8 @@ process {
                 Repository      = 'PSGallery'
                 TrustRepository = $true
                 Prerelease      = $Prerelease
+                Reinstall       = $true
+                WarningAction   = 'SilentlyContinue'
             }
             if ($Version) {
                 $params['Version'] = $Version
