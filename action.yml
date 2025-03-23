@@ -9,7 +9,7 @@ inputs:
   Name:
     description: The name of the action.
     required: false
-    default: 'GitHub-Script'
+    default: GitHub-Script
   Script:
     description: The script to run. Can be inline, multi-line or a path to a script file.
     required: false
@@ -63,7 +63,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Install GitHub
+    - name: ${{ inputs.Name }}
       shell: pwsh
       id: RunGitHubScript
       working-directory: ${{ inputs.WorkingDirectory }}
