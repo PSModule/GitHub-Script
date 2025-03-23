@@ -10,6 +10,7 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 
 | Name               | Description                                                               | Required | Default               |
 |--------------------|---------------------------------------------------------------------------|----------|-----------------------|
+| `Name`             | The name of the action.                                                   | false    | `GitHub-Script`       |
 | `Script`           | The script to run. Can be inline, multi-line, or a path to a script file. | false    |                       |
 | `Token`            | Log in using an Installation Access Token (IAT).                          | false    | `${{ github.token }}` |
 | `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |

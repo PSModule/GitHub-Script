@@ -141,6 +141,7 @@ jobs:
         uses: ./
         id: test
         with:
+          Name: Action-Test
           Debug: true
           Verbose: true
           Prerelease: ${{ inputs.Prerelease }}

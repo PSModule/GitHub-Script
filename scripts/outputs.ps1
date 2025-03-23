@@ -9,7 +9,7 @@ $scriptName = $MyInvocation.MyCommand.Name
 Write-Debug "[$scriptName] - Start"
 
 try {
-    $fenceTitle = 'GitHub-Script'
+    $fenceTitle = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
 
     Write-Debug "[$scriptName] - ShowOutput: $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput"
     if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput -ne 'true') {
