@@ -6,6 +6,10 @@ branding:
   color: white
 
 inputs:
+  Name:
+    description: The name of the action.
+    required: false
+    default: 'GitHub-Script'
   Script:
     description: The script to run. Can be inline, multi-line or a path to a script file.
     required: false
@@ -64,6 +68,7 @@ runs:
       id: RunGitHubScript
       working-directory: ${{ inputs.WorkingDirectory }}
       env:
+        PSMODULE_GITHUB_SCRIPT_INPUT_Name: ${{ inputs.Name }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Token: ${{ inputs.Token }}
         PSMODULE_GITHUB_SCRIPT_INPUT_ClientID: ${{ inputs.ClientID }}
         PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey: ${{ inputs.PrivateKey }}
@@ -75,7 +80,7 @@ runs:
         PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease: ${{ inputs.Prerelease }}
       run: |
-        # GitHub-Script
+        # ${{ inputs.Name }}
         try {
           ${{ github.action_path }}/scripts/init.ps1
           ${{ github.action_path }}/scripts/info.ps1

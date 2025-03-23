@@ -10,7 +10,7 @@ begin {
 process {
     try {
         $env:PSMODULE_GITHUB_SCRIPT = $true
-        $fenceTitle = 'GitHub-Script'
+        $fenceTitle = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
         $showInit = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit -eq 'true'
 
         Write-Debug "[$scriptName] - ShowInit: $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit"
