@@ -19,6 +19,7 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `Verbose`          | Enable verbose output.                                                    | false    | `'false'`             |
 | `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                       |
 | `Prerelease`       | Allow prerelease versions if available.                                   | false    | `'false'`             |
+| `ErrorView`        | Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials. | false    | `'NormalView'`         |
 | `ShowInfo`         | Show information about the environment.                                   | false    | `'true'`              |
 | `ShowInit`         | Show information about the initialization.                                | false    | `'false'`             |
 | `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`             |

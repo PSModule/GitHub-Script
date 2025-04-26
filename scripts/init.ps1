@@ -5,6 +5,22 @@ begin {
     $scriptName = $MyInvocation.MyCommand.Name
     Write-Debug "[$scriptName] - Start"
     $PSStyle.OutputRendering = 'Ansi'
+
+    # Configure ErrorView based on input parameter
+    if (-not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView)) {
+        $validViews = @('NormalView', 'CategoryView', 'ConciseView', 'DetailedView')
+        $errorViewSetting = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView
+
+        # Simply find the first validView that matches the input using wildcards
+        $matchedView = $validViews | Where-Object { $_ -like "*$errorViewSetting*" } | Select-Object -First 1
+
+        if ($matchedView) {
+            Write-Debug "[$scriptName] - Input [$errorViewSetting] matched with [$matchedView]"
+            $ErrorView = $matchedView
+        } else {
+            Write-Warning "[$scriptName] - Invalid ErrorView value: [$errorViewSetting]. Using default."
+        }
+    }
 }
 
 process {

@@ -50,6 +50,10 @@ inputs:
     description: Show the output of the script.
     required: false
     default: 'false'
+  ErrorView:
+    description: Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials.
+    required: false
+    default: 'NormalView'
   WorkingDirectory:
     description: The working directory where the script will run from.
     required: false
@@ -79,6 +83,7 @@ runs:
         PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo: ${{ inputs.ShowInfo }}
         PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease: ${{ inputs.Prerelease }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView: ${{ inputs.ErrorView }}
       run: |
         # ${{ inputs.Name }}
         try {
