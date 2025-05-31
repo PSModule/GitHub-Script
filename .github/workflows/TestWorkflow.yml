@@ -154,6 +154,16 @@ jobs:
               Set-GitHubEnvironmentVariable -Name 'OCTOCAT' -Value $cat
             }
 
+            LogGroup 'Write to GitHub Actions' {
+              Write-GitHubNotice -Message $zen -Title 'GitHub Zen'
+              Write-GitHubWarning -Message 'This is a warning message'
+              Write-GitHubError -Message 'This is an error message'
+              Write-GitHubDebug -Message 'This is a debug message'
+              Write-GitHubLog -Message 'This is'  -ForegroundColor Blue -NoNewLine
+              Write-GitHubLog -Message ' a ' -BackgroundColor Red -NoNewLine
+              Write-GitHubLog -Message 'log message' -ForegroundColor Green -BackgroundColor Yellow
+            }
+
             LogGroup 'Set outputs - WISECAT' {
               Set-GitHubOutput -Name 'WISECAT' -Value $cat
             }
