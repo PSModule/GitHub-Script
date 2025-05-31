@@ -24,6 +24,7 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `ShowInit`         | Show information about the initialization.                                | false    | `'false'`             |
 | `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`             |
 | `WorkingDirectory` | The working directory where the script runs.                              | false    | `'.'`                 |
+| `PreserveCredentials` | Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount. | false    | `'true'`              |
 
 ### Outputs
 
@@ -198,4 +199,18 @@ Runs a script that uses the GitHub PowerShell module and outputs the result.
     $result = $env:result | ConvertFrom-Json
     Set-GitHubStepSummary -Summary $result.WISECAT
     Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
+```
+
+#### Example 6: Run a script with credential cleanup
+
+Runs a script with `PreserveCredentials` set to `false` to automatically disconnect GitHub credentials after execution.
+
+```yaml
+- name: Run script with credential cleanup
+  uses: PSModule/GitHub-Script@v1
+  with:
+    PreserveCredentials: false
+    Script: |
+      Get-GitHubUser
+      # Credentials will be disconnected after this step
 ```

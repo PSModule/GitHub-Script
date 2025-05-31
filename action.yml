@@ -58,6 +58,10 @@ inputs:
     description: The working directory where the script will run from.
     required: false
     default: '.'
+  PreserveCredentials:
+    description: Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount.
+    required: false
+    default: 'true'
 
 outputs:
   result:
@@ -84,6 +88,7 @@ runs:
         PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease: ${{ inputs.Prerelease }}
         PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView: ${{ inputs.ErrorView }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_PreserveCredentials: ${{ inputs.PreserveCredentials }}
       run: |
         # ${{ inputs.Name }}
         try {
