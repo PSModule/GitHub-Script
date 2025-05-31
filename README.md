@@ -24,6 +24,7 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `ShowInit`         | Show information about the initialization.                                | false    | `'false'`             |
 | `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`             |
 | `WorkingDirectory` | The working directory where the script runs.                              | false    | `'.'`                 |
+| `PreserveCredentials` | Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount. | false    | `'true'`              |
 
 ### Outputs
 
