@@ -13,7 +13,7 @@ if (-not $preserveCredentials) {
         if (-not (Get-Module -Name GitHub -ErrorAction SilentlyContinue)) {
             Import-Module -Name GitHub -ErrorAction SilentlyContinue
         }
-        
+
         # Disconnect GitHub account if the module and function are available
         if (Get-Command Disconnect-GitHubAccount -ErrorAction SilentlyContinue) {
             Disconnect-GitHubAccount
