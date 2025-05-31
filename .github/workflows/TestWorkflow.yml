@@ -498,3 +498,52 @@ jobs:
                 Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
               }
             }
+
+  ActionTestPreserveCredentialsFalse:
+    name: PreserveCredentials False
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Action-Test with PreserveCredentials false
+        uses: ./
+        with:
+          Token: ${{ secrets.TEST_USER_PAT }}
+          PreserveCredentials: false
+          Prerelease: ${{ inputs.Prerelease }}
+          Script: |
+            LogGroup 'Get-GitHubUser with credentials that will be cleaned up' {
+              Get-GitHubUser | Format-Table -AutoSize | Out-String
+            }
+
+      - name: Verify credentials are cleaned up
+        shell: pwsh
+        run: |
+          try {
+            # Import GitHub module to check contexts
+            Import-Module -Name GitHub -ErrorAction SilentlyContinue
+            
+            # Check if Get-GitHubContext command is available
+            if (Get-Command Get-GitHubContext -ErrorAction SilentlyContinue) {
+              # Get available contexts
+              $contexts = Get-GitHubContext -ListAvailable
+              
+              Write-Host "Available GitHub contexts: $($contexts | ConvertTo-Json -Depth 3)"
+              
+              # Verify that no contexts are available (should be null or empty)
+              if ($null -eq $contexts -or $contexts.Count -eq 0) {
+                Write-Host "✅ SUCCESS: No GitHub contexts found after cleanup"
+              } else {
+                Write-Host "❌ FAILURE: Found $($contexts.Count) GitHub context(s) after cleanup"
+                $contexts | Format-Table -AutoSize | Out-String | Write-Host
+                exit 1
+              }
+            } else {
+              Write-Host "⚠️  WARNING: Get-GitHubContext command not available"
+            }
+          } catch {
+            Write-Host "❌ FAILURE: Error checking GitHub contexts: $($_.Exception.Message)"
+            exit 1
+          }
