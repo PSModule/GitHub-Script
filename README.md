@@ -200,3 +200,17 @@ Runs a script that uses the GitHub PowerShell module and outputs the result.
     Set-GitHubStepSummary -Summary $result.WISECAT
     Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 ```
+
+#### Example 6: Run a script with credential cleanup
+
+Runs a script with `PreserveCredentials` set to `false` to automatically disconnect GitHub credentials after execution.
+
+```yaml
+- name: Run script with credential cleanup
+  uses: PSModule/GitHub-Script@v1
+  with:
+    PreserveCredentials: false
+    Script: |
+      Get-GitHubUser
+      # Credentials will be disconnected after this step
+```
