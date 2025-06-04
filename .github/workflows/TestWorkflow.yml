@@ -469,7 +469,7 @@ jobs:
             }
 
   ActionTestWithGitHubAppOrg:
-    name: GitHubAppOrg
+    name: GitHubAppOrg + quoted inputs
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
@@ -479,8 +479,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
-          PrivateKey: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+          ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}'      # Test with quotes on input
+          PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}'  # Test with quotes on input
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
@@ -524,14 +524,14 @@ jobs:
           try {
             # Import GitHub module to check contexts
             Import-Module -Name GitHub -ErrorAction SilentlyContinue
-            
+
             # Check if Get-GitHubContext command is available
             if (Get-Command Get-GitHubContext -ErrorAction SilentlyContinue) {
               # Get available contexts
               $contexts = Get-GitHubContext -ListAvailable
-              
+
               Write-Host "Available GitHub contexts: $($contexts | ConvertTo-Json -Depth 3)"
-              
+
               # Verify that no contexts are available (should be null or empty)
               if ($null -eq $contexts -or $contexts.Count -eq 0) {
                 Write-Host "✅ SUCCESS: No GitHub contexts found after cleanup"
