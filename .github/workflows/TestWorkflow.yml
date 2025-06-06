@@ -213,7 +213,7 @@ jobs:
                   )
                 }
               )
-              Set-GitHubOutput -Name 'ComplexArray' -Value $complexArray -Debug -Confirm:$false
+              Set-GitHubOutput -Name 'ComplexArray' -Value $complexArray
             }
 
             LogGroup 'Set array outputs - JSON' {
@@ -222,6 +222,7 @@ jobs:
             }
 
             LogGroup 'Set summary' {
+                Get-Content $env:GITHUB_OUTPUT -Raw
                 Get-Content $env:GITHUB_OUTPUT -Raw | Set-GitHubStepSummary
             }
 
