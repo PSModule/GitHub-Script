@@ -225,6 +225,12 @@ jobs:
                 Get-Content $env:GITHUB_OUTPUT -Raw | Set-GitHubStepSummary
             }
 
+            LogGroup "ErrorView: $ErrorView" {
+                if ($errorView -ne 'NormalView') {
+                    throw 'ErrorView is not NormalView'
+                }
+            }
+
       - name: Run-test
         shell: pwsh
         env:
