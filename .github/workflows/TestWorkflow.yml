@@ -225,8 +225,8 @@ jobs:
                 Get-Content $env:GITHUB_OUTPUT -Raw | Set-GitHubStepSummary
             }
 
-            LogGroup "ErrorView: $ErrorView" {
-                if ($errorView -ne 'NormalView') {
+            LogGroup "ErrorView should be 'NormalView' - [$ErrorView]" {
+                if ($ErrorView -ne 'NormalView') {
                     throw 'ErrorView is not NormalView'
                 }
             }
