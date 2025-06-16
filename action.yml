@@ -91,6 +91,7 @@ runs:
         PSMODULE_GITHUB_SCRIPT_INPUT_PreserveCredentials: ${{ inputs.PreserveCredentials }}
       run: |
         # ${{ inputs.Name }}
+        $ErrorView = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView
         try {
           ${{ github.action_path }}/scripts/init.ps1
           ${{ github.action_path }}/scripts/info.ps1
