@@ -7,6 +7,9 @@ begin {
     $PSStyle.OutputRendering = 'Ansi'
 
     # Configure ErrorView based on input parameter
+    LogGroup "Inputs:" {
+        Get-ChildItem env: | Where-Object { $_ -like 'PSMODULE_GITHUB_SCRIPT_INPUT_*' } | Out-String
+    }
     if (-not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView)) {
         $validViews = @('NormalView', 'CategoryView', 'ConciseView', 'DetailedView')
         $errorViewSetting = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView
