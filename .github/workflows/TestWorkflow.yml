@@ -57,8 +57,14 @@ jobs:
           ShowInit: true
           ShowOutput: true
           Script: |
-            LogGroup "Get header from Get-GitHubUser" {
-                $results = Invoke-GithubAPI -APIEndpoint "/user" -Debug -Verbose
+            # LogGroup "Get header from Get-GitHubUser" {
+            #     $results = Invoke-GithubAPI -APIEndpoint "/user" -Debug -Verbose
+            #     $headers = $results.headers
+            #     Write-Host "$($headers | Format-List | Out-String)"
+            # }
+
+            LogGroup "Get header from Get-GitHubRepository" {
+                $results = Invoke-GithubAPI -APIEndpoint "/repos/${{ github.repository }}" -Debug -Verbose
                 $headers = $results.headers
                 Write-Host "$($headers | Format-List | Out-String)"
             }
