@@ -232,7 +232,7 @@ jobs:
             }
 
             LogGroup "Get header from Get-GitHubUser" {
-                $results = Invoke-GithubAPI -APIEndpoint "/user"
+                $results = Invoke-GithubAPI -APIEndpoint "/user" -Debug -Verbose
                 $headers = $results.headers
                 Write-Host "$($headers | Format-List | Out-String)"
             }
