@@ -75,5 +75,9 @@ jobs:
 
             LogGroup "CLI user debug" {
                 $env:GH_DEBUG = 'api'
-                gh user
+                gh api user
+            }
+
+            LogGroup "CLI repository debug" {
+                gh api repos/${{ github.repository }}
             }
