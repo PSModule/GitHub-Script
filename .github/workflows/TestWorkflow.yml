@@ -81,3 +81,7 @@ jobs:
             LogGroup "CLI repository debug" {
                 gh api repos/${{ github.repository }}
             }
+
+            LogGroup "curl test" {
+                curl -H "Authorization: Bearer $env:GITHUB_TOKEN" https://api.github.com/repos/${{ github.repository }}
+            }
