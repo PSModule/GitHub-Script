@@ -231,6 +231,12 @@ jobs:
                 }
             }
 
+            LogGroup "Get header from Get-GitHubUser" {
+                $results = Invoke-GithubAPI -APIEndpoint "/user"
+                $headers = $results.headers
+                Write-Host "$($headers | Format-List | Out-String)"
+            }
+
       - name: Run-test
         shell: pwsh
         env:
