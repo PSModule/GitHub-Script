@@ -41,8 +41,6 @@ jobs:
   ActionTestCommands:
     name: Commands + Outputs
     runs-on: ${{ inputs.runs-on }}
-    outputs:
-      MatrixTest: ${{ fromJson(steps.test.outputs.result).MatrixTest }}
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
