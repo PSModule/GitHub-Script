@@ -4,6 +4,11 @@ run-name: "Action-Test - [${{ github.event.pull_request.title }} #${{ github.eve
 
 on:
   workflow_dispatch:
+    inputs:
+      Prerelease:
+        type: boolean
+        default: false
+        description: Use the prerelease version of GitHub PowerShell module.
   pull_request:
   schedule:
     - cron: '0 0 * * *'
@@ -26,3 +31,4 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     with:
       runs-on: ${{ matrix.os }}
+      Prerelease: ${{ inputs.Prerelease }}
