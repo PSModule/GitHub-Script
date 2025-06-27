@@ -31,4 +31,4 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     with:
       runs-on: ${{ matrix.os }}
-      Prerelease: ${{ inputs.Prerelease }}
+      Prerelease: ${{ inputs.Prerelease || false }}
