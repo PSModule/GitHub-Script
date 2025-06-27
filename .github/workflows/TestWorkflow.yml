@@ -405,9 +405,10 @@ jobs:
           Script: |
             Write-Host "SupportsVirtualTerminal: $($Host.UI.SupportsVirtualTerminal)"
             Write-Host "EnvironmentType: $($script:GitHub.EnvironmentType)"
+            Write-Host "GHA? $($env:GITHUB_ACTIONS -eq 'true')"
             $printLink = $Host.UI.SupportsVirtualTerminal -and $script:GitHub.EnvironmentType -ne 'GHA'
             Write-Host "Print links: $printLink"
-            
+
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
