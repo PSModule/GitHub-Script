@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         default: false
+      Owner:
+        description: The owner of the repository
+        required: false
+        type: string
+        default: PSModule
     secrets:
       TEST_USER_PAT:
         description: Personal Access Token for the test user
@@ -412,7 +417,7 @@ jobs:
             }
 
             LogGroup 'Get-GitHubRepository' {
-                Get-GitHubRepository | Out-String
+                Get-GitHubRepository -Owner '${{ inputs.Owner }}' | Out-String
             }
 
   ActionTestWithUSERFGPAT:
@@ -438,7 +443,7 @@ jobs:
             }
 
             LogGroup 'Get-GitHubRepository' {
-                Get-GitHubRepository | Out-String
+                Get-GitHubRepository -Owner '${{ inputs.Owner }}' | Out-String
             }
 
   ActionTestWithORGFGPAT:
@@ -464,7 +469,7 @@ jobs:
             }
 
             LogGroup 'Get-GitHubRepository' {
-                Get-GitHubRepository | Out-String
+                Get-GitHubRepository -Owner '${{ inputs.Owner }}' | Out-String
             }
 
   ActionTestWithGitHubAppEnt:
