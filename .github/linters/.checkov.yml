@@ -1,3 +1,0 @@
-# Skip specific checks
-skip-check:
-  - CKV_GHA_7
