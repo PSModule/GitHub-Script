@@ -407,6 +407,14 @@ jobs:
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
+            LogGroup 'Get-GitHubOrganization' {
+                Get-GitHubOrganization | Out-String
+            }
+
+            LogGroup 'Get-GitHubRepository' {
+                Get-GitHubRepository | Out-String
+            }
+
   ActionTestWithUSERFGPAT:
     name: WithUserFGPAT
     runs-on: ${{ inputs.runs-on }}
@@ -425,6 +433,14 @@ jobs:
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
+            LogGroup 'Get-GitHubOrganization' {
+                Get-GitHubOrganization | Out-String
+            }
+
+            LogGroup 'Get-GitHubRepository' {
+                Get-GitHubRepository | Out-String
+            }
+
   ActionTestWithORGFGPAT:
     name: WithOrgFGPAT
     runs-on: ${{ inputs.runs-on }}
@@ -441,6 +457,14 @@ jobs:
           Script: |
             LogGroup 'Get-GitHubUser' {
               Get-GitHubUser | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'Get-GitHubOrganization' {
+                Get-GitHubOrganization | Out-String
+            }
+
+            LogGroup 'Get-GitHubRepository' {
+                Get-GitHubRepository | Out-String
             }
 
   ActionTestWithGitHubAppEnt:
