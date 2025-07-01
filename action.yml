@@ -92,6 +92,8 @@ runs:
       run: |
         # ${{ inputs.Name }}
         $ErrorView = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView
+        $DebugPreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
+        $VerbosePreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
         try {
           ${{ github.action_path }}/scripts/init.ps1
           ${{ github.action_path }}/scripts/info.ps1

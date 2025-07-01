@@ -3,8 +3,6 @@
 [CmdletBinding()]
 param()
 
-$DebugPreference = 'SilentlyContinue'
-$VerbosePreference = 'SilentlyContinue'
 $scriptName = $MyInvocation.MyCommand.Name
 Write-Debug "[$scriptName] - Start"
 

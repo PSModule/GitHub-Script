@@ -60,6 +60,4 @@ process {
 
 end {
     Write-Debug "[$scriptName] - End"
-    $DebugPreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-    $VerbosePreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 }
