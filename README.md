@@ -15,8 +15,8 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `Token`            | Log in using an Installation Access Token (IAT).                          | false    | `${{ github.token }}` |
 | `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |
 | `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |
-| `Debug`            | Enable debug output.                                                      | false    | `'false'`             |
-| `Verbose`          | Enable verbose output.                                                    | false    | `'false'`             |
+| `Debug`            | Enable debug output for the whole action.                                 | false    | `'false'`             |
+| `Verbose`          | Enable verbose output for the whole action.                               | false    | `'false'`             |
 | `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                       |
 | `Prerelease`       | Allow prerelease versions if available.                                   | false    | `'false'`             |
 | `ErrorView`        | Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials. | false    | `'NormalView'`         |

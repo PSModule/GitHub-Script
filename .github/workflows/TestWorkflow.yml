@@ -409,7 +409,7 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubUser' {
-              Get-GitHubUser | Format-Table -AutoSize | Out-String
+              Get-GitHubUser -Debug | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'Get-GitHubOrganization' {
