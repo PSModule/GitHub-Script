@@ -488,7 +488,7 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize | Out-String
+              Get-GitHubApp | Format-List | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
@@ -504,7 +504,7 @@ jobs:
             }
 
             LogGroup 'GitConfig' {
-                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
+                Get-GitHubConfig | Format-List | Out-String
             }
 
   ActionTestWithGitHubAppOrg:
@@ -523,7 +523,7 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize | Out-String
+              Get-GitHubApp | Format-List | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
@@ -539,7 +539,7 @@ jobs:
             }
 
             LogGroup 'GitConfig' {
-                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
+                Get-GitHubConfig | Format-List | Out-String
             }
 
   ActionTestPreserveCredentialsFalse:
