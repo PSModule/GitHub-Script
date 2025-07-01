@@ -503,7 +503,7 @@ jobs:
                 Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'GitConfig' {
+            LogGroup 'GitHubConfig' {
                 Get-GitHubConfig | Format-List | Out-String
             }
 
@@ -538,7 +538,7 @@ jobs:
                 Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'GitConfig' {
+            LogGroup 'GitHubConfig' {
                 Get-GitHubConfig | Format-List | Out-String
             }
 
