@@ -24,11 +24,11 @@ inputs:
     description: Log in using a GitHub App, using the App's Client ID and Private Key.
     required: false
   Debug:
-    description: Enable debug output.
+    description: Enable debug output for the whole action.
     required: false
     default: 'false'
   Verbose:
-    description: Enable verbose output.
+    description: Enable verbose output for the whole action.
     required: false
     default: 'false'
   Version:
