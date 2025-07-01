@@ -500,7 +500,7 @@ jobs:
             }
 
             LogGroup 'Contexts' {
-                Get-GitHubContext | Format-Table -AutoSize | Out-String
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'GitConfig' {
@@ -535,7 +535,7 @@ jobs:
             }
 
             LogGroup 'Contexts' {
-                Get-GitHubContext | Format-Table -AutoSize | Out-String
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
             }
 
             LogGroup 'GitConfig' {
