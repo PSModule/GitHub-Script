@@ -488,19 +488,23 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize | Out-String
+              Get-GitHubApp | Format-List | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
               Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize | Out-String
-                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
-              }
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
             }
 
   ActionTestWithGitHubAppOrg:
@@ -519,19 +523,23 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize | Out-String
+              Get-GitHubApp | Format-List | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
               Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize | Out-String
-                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
-              }
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
             }
 
   ActionTestPreserveCredentialsFalse:
