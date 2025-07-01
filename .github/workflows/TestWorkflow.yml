@@ -495,12 +495,16 @@ jobs:
               Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
                 Get-GitHubContext | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitConfig' {
                 Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
-              }
             }
 
   ActionTestWithGitHubAppOrg:
@@ -526,12 +530,16 @@ jobs:
               Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
                 Get-GitHubContext | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitConfig' {
                 Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
-              }
             }
 
   ActionTestPreserveCredentialsFalse:
