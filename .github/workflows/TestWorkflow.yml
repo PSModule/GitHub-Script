@@ -37,6 +37,18 @@ on:
       TEST_APP_ORG_PRIVATE_KEY:
         description: Private Key for the test GitHub App for the organization
         required: true
+      AZURE_CLIENT_ID:
+        description: Azure Client ID for KeyVault authentication
+        required: true
+      AZURE_TENANT_ID:
+        description: Azure Tenant ID for KeyVault authentication
+        required: true
+      AZURE_SUBSCRIPTION_ID:
+        description: Azure Subscription ID for KeyVault authentication
+        required: true
+      KEYVAULT_KEY_REFERENCE:
+        description: Azure KeyVault key reference URL for GitHub App authentication
+        required: true
 
 permissions:
   contents: read
@@ -520,6 +532,50 @@ jobs:
         with:
           ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}'      # Test with quotes on input
           PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}'  # Test with quotes on input
+          Prerelease: ${{ inputs.Prerelease }}
+          Script: |
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp | Format-List | Out-String
+            }
+
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
+            }
+
+  ActionTestWithKeyVaultKeyReference:
+    name: WithKeyVaultKeyReference
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Login to Azure to enable KeyVault access
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          allow-no-subscriptions: true
+
+      - name: Action-Test
+        uses: ./
+        with:
+          ClientID: ${{ secrets.AZURE_CLIENT_ID }}
+          KeyVaultKeyReference: ${{ secrets.KEYVAULT_KEY_REFERENCE }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
