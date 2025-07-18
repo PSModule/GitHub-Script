@@ -78,15 +78,28 @@ process {
         $providedToken = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)
         $providedClientID = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)
         $providedPrivateKey = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey)
+        $providedKeyVaultKeyReference = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference)
+
+        # Validate mutual exclusion of PrivateKey and KeyVaultKeyReference
+        if ($providedPrivateKey -and $providedKeyVaultKeyReference) {
+            throw 'Only one of PrivateKey or KeyVaultKeyReference can be provided.'
+        }
+
+        # Validate that if ClientID is provided, exactly one of PrivateKey or KeyVaultKeyReference is also provided
+        if ($providedClientID -and -not ($providedPrivateKey -or $providedKeyVaultKeyReference)) {
+            throw 'When ClientID is provided, either PrivateKey or KeyVaultKeyReference must also be provided.'
+        }
+
         $moduleStatus = [pscustomobject]@{
-            Name                  = $Name
-            Version               = [string]::IsNullOrEmpty($Version) ? 'latest' : $Version
-            Prerelease            = $Prerelease
-            'Already installed'   = $null -ne $alreadyInstalled
-            'Already imported'    = $null -ne $alreadyImported
-            'Provided Token'      = $providedToken
-            'Provided ClientID'   = $providedClientID
-            'Provided PrivateKey' = $providedPrivateKey
+            Name                            = $Name
+            Version                         = [string]::IsNullOrEmpty($Version) ? 'latest' : $Version
+            Prerelease                      = $Prerelease
+            'Already installed'             = $null -ne $alreadyInstalled
+            'Already imported'              = $null -ne $alreadyImported
+            'Provided Token'                = $providedToken
+            'Provided ClientID'             = $providedClientID
+            'Provided PrivateKey'           = $providedPrivateKey
+            'Provided KeyVaultKeyReference' = $providedKeyVaultKeyReference
         }
         if ($showInit) {
             Write-Output 'Module status:'
@@ -99,6 +112,13 @@ process {
                 ClientID   = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID
                 PrivateKey = $env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey
                 Silent     = (-not $showInit)
+            }
+            Connect-GitHub @params
+        } elseif ($providedClientID -and $providedKeyVaultKeyReference) {
+            $params = @{
+                ClientID             = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID
+                KeyVaultKeyReference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference
+                Silent               = (-not $showInit)
             }
             Connect-GitHub @params
         } elseif ($providedToken) {

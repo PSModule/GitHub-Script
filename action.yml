@@ -23,6 +23,9 @@ inputs:
   PrivateKey:
     description: Log in using a GitHub App, using the App's Client ID and Private Key.
     required: false
+  KeyVaultKeyReference:
+    description: Log in using a GitHub App, using the App's Client ID and KeyVault Key Reference.
+    required: false
   Debug:
     description: Enable debug output for the whole action.
     required: false
@@ -80,6 +83,7 @@ runs:
         PSMODULE_GITHUB_SCRIPT_INPUT_Token: ${{ inputs.Token }}
         PSMODULE_GITHUB_SCRIPT_INPUT_ClientID: ${{ inputs.ClientID }}
         PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey: ${{ inputs.PrivateKey }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference: ${{ inputs.KeyVaultKeyReference }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Debug: ${{ inputs.Debug }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Verbose: ${{ inputs.Verbose }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Version: ${{ inputs.Version }}
