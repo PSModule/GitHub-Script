@@ -572,7 +572,7 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Context details' {
-                Get-GitHubContext | Select-Object * | Format-Table -AutoSize | Out-String
+                Get-GitHubContext | Select-Object * | Out-String
             }
 
             LogGroup 'Get-GitHubApp' {
