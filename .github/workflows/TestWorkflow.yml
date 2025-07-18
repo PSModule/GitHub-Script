@@ -568,7 +568,56 @@ jobs:
         uses: ./
         with:
           ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
-          KeyVaultKeyReference: ${{ secrets.KEYVAULT_KEY_REFERENCE }}
+          KeyVaultKeyReference: 'https://psmodule-test-vault.vault.azure.net/keys/psmodule-org-app/569ae34250e64adca6a2b2d159d454a5'
+          Prerelease: ${{ inputs.Prerelease }}
+          Script: |
+            LogGroup 'Context details' {
+                Get-GitHubContext | Select-Object * | Out-String
+            }
+
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp | Format-List | Out-String
+            }
+
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
+            }
+
+  ActionTestWithKeyVaultKeyReferenceLatest:
+    name: WithKeyVaultKeyReferenceLatest
+    environment: azure
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Login to Azure to enable KeyVault access
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          allow-no-subscriptions: true
+
+      - name: Action-Test
+        uses: ./
+        with:
+          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          KeyVaultKeyReference: 'https://psmodule-test-vault.vault.azure.net/keys/psmodule-org-app/'
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Context details' {
