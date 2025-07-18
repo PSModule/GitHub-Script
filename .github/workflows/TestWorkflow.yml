@@ -571,6 +571,10 @@ jobs:
           KeyVaultKeyReference: ${{ secrets.KEYVAULT_KEY_REFERENCE }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
+            LogGroup 'Context details' {
+                Get-GitHubContext | Select-Object * | Format-Table -AutoSize | Out-String
+            }
+
             LogGroup 'Get-GitHubApp' {
               Get-GitHubApp | Format-List | Out-String
             }
