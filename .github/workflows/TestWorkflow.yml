@@ -37,15 +37,6 @@ on:
       TEST_APP_ORG_PRIVATE_KEY:
         description: Private Key for the test GitHub App for the organization
         required: true
-      AZURE_CLIENT_ID:
-        description: Azure Client ID for KeyVault authentication
-        required: true
-      AZURE_TENANT_ID:
-        description: Azure Tenant ID for KeyVault authentication
-        required: true
-      AZURE_SUBSCRIPTION_ID:
-        description: Azure Subscription ID for KeyVault authentication
-        required: true
       KEYVAULT_KEY_REFERENCE:
         description: Azure KeyVault key reference URL for GitHub App authentication
         required: true
@@ -567,15 +558,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           allow-no-subscriptions: true
 
       - name: Action-Test
         uses: ./
         with:
-          ClientID: ${{ secrets.AZURE_CLIENT_ID }}
+          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
           KeyVaultKeyReference: ${{ secrets.KEYVAULT_KEY_REFERENCE }}
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
