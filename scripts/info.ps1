@@ -51,6 +51,10 @@ process {
             Get-GitHubConfig | Format-List | Out-String
         }
 
+        LogGroup ' - Event Information' {
+            Get-GitHubEventData | Format-List | Out-String
+        }
+
         $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
         Write-Output $fenceEnd
     } catch {
