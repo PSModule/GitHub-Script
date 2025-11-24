@@ -53,7 +53,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -76,7 +76,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # # Not a supported way of running the action
       # # This syntax is specifically for using a function in a specific module
@@ -144,7 +144,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -324,7 +324,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -386,7 +386,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -404,7 +404,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -430,7 +430,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -456,7 +456,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -482,7 +482,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -517,7 +517,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test
         uses: ./
@@ -553,7 +553,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # Login to Azure to enable KeyVault access
       - name: Login to Azure
@@ -602,7 +602,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # Login to Azure to enable KeyVault access
       - name: Login to Azure
@@ -650,7 +650,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Action-Test with PreserveCredentials false
         uses: ./
