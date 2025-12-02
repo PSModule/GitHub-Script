@@ -568,7 +568,7 @@ jobs:
           persist-credentials: false
       # Login to Azure to enable KeyVault access
       - name: Login to Azure
-        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
@@ -618,7 +618,7 @@ jobs:
           persist-credentials: false
       # Login to Azure to enable KeyVault access
       - name: Login to Azure
-        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
         with:
           client-id: ${{ vars.AZURE_CLIENT_ID }}
           tenant-id: ${{ vars.AZURE_TENANT_ID }}
