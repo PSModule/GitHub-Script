@@ -1,0 +1,40 @@
+name: Test Composite Action
+description: >-
+  A composite action that wraps GitHub-Script for testing nested output
+  suggestions
+author: PSModule
+
+inputs:
+  Prerelease:
+    description: Allow prerelease versions if available.
+    required: false
+    default: 'false'
+
+outputs:
+  result:
+    description: The output of the script as a JSON object
+    value: ${{ steps.internal-github-script.outputs.result }}
+
+runs:
+  using: composite
+  steps:
+    - name: Run GitHub-Script internally
+      id: internal-github-script
+      uses: ./
+      with:
+        Name: Test-Composite-Internal
+        Prerelease: ${{ inputs.Prerelease }}
+        Debug: true
+        Verbose: true
+        ShowOutput: true
+        Script: |
+          LogGroup 'Set test outputs' {
+            $value = 'Value from composite action'
+            Set-GitHubOutput -Name 'TestOutput1' -Value $value
+            Set-GitHubOutput -Name 'TestOutput2' -Value @{
+              Key1 = 'Value1'
+              Key2 = 'Value2'
+            }
+            $msg = 'This output is from a nested composite action'
+            Set-GitHubOutput -Name 'CompositeMessage' -Value $msg
+          }

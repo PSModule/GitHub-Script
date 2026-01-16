@@ -319,6 +319,86 @@ jobs:
               }
           }
 
+  ActionTestCompositeOutputs:
+    name: Composite Action Outputs Test
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      # Test 1: Direct usage of GitHub-Script action
+      - name: Direct GitHub-Script Usage
+        id: direct-test
+        uses: ./
+        with:
+          Name: Direct-Usage-Test
+          Prerelease: ${{ inputs.Prerelease }}
+          ShowOutput: true
+          Script: |
+            Set-GitHubOutput -Name 'DirectOutput' -Value 'This is from direct usage'
+
+      # Test 2: Nested usage via composite action
+      - name: Composite Action Usage
+        id: composite-test
+        uses: ./.github/actions/test-composite
+        with:
+          Prerelease: ${{ inputs.Prerelease }}
+
+      # Test 3: Verify outputs work correctly
+      - name: Verify Outputs
+        shell: pwsh
+        env:
+          DIRECT_OUTPUT: >-
+            ${{ fromJson(steps.direct-test.outputs.result).DirectOutput }}
+          COMPOSITE_OUTPUT1: >-
+            ${{ fromJson(steps.composite-test.outputs.result).TestOutput1 }}
+          COMPOSITE_OUTPUT2: >-
+            ${{ fromJson(steps.composite-test.outputs.result).TestOutput2 }}
+          COMPOSITE_MESSAGE: >-
+            ${{ fromJson(steps.composite-test.outputs.result).CompositeMessage
+            }}
+        run: |
+          $PSStyle.OutputRendering = 'Ansi'
+
+          LogGroup 'Verify Direct Output' {
+            Write-Host "Direct Output: $env:DIRECT_OUTPUT"
+            if ($env:DIRECT_OUTPUT -ne 'This is from direct usage') {
+              throw "Direct output verification failed"
+            }
+            Write-Host "✅ Direct output is correct"
+          }
+
+          LogGroup 'Verify Composite Outputs' {
+            Write-Host "Composite Output 1: $env:COMPOSITE_OUTPUT1"
+            Write-Host "Composite Output 2: $env:COMPOSITE_OUTPUT2"
+            Write-Host "Composite Message: $env:COMPOSITE_MESSAGE"
+
+            if ($env:COMPOSITE_OUTPUT1 -ne 'Value from composite action') {
+              throw "Composite output 1 verification failed"
+            }
+            $expectedMsg = 'This output is from a nested composite action'
+            if ($env:COMPOSITE_MESSAGE -ne $expectedMsg) {
+              throw "Composite message verification failed"
+            }
+            Write-Host "✅ Composite outputs are correct"
+          }
+
+          LogGroup 'Test output access patterns' {
+            # Verify the patterns shown in help text work
+            $directPattern = @'
+          ${{ fromJson(steps.direct-test.outputs.result).DirectOutput }}
+          '@
+            $compositePattern = @'
+          ${{ fromJson(steps.composite-test.outputs.result).TestOutput1 }}
+          '@
+            Write-Host "Direct pattern used: $directPattern"
+            Write-Host "Composite pattern used: $compositePattern"
+            Write-Host "✅ Both access patterns work correctly"
+          }
+
   MatrixCreator:
     name: Matrix Creator
     runs-on: ubuntu-latest
