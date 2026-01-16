@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         default: false
+      Owner:
+        description: The owner of the repository
+        required: false
+        type: string
+        default: PSModule
     secrets:
       TEST_USER_PAT:
         description: Personal Access Token for the test user
@@ -32,10 +37,14 @@ on:
       TEST_APP_ORG_PRIVATE_KEY:
         description: Private Key for the test GitHub App for the organization
         required: true
+      KEYVAULT_KEY_REFERENCE:
+        description: Azure KeyVault key reference URL for GitHub App authentication
+        required: true
 
 permissions:
   contents: read
   pull-requests: read
+  id-token: write
 
 jobs:
   ActionTestBasic:
@@ -44,8 +53,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -67,8 +77,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       # # Not a supported way of running the action
       # # This syntax is specifically for using a function in a specific module
       # # i.e.: moduleName\functionName
@@ -135,8 +146,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         id: test
@@ -315,8 +327,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         id: test
@@ -377,8 +390,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -395,8 +409,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -404,7 +419,15 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubUser' {
-              Get-GitHubUser | Format-Table -AutoSize | Out-String
+              Get-GitHubUser -Debug | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'Get-GitHubOrganization' {
+                Get-GitHubOrganization | Out-String
+            }
+
+            LogGroup 'Get-GitHubRepository' {
+                Get-GitHubRepository -Owner '${{ inputs.Owner }}' | Out-String
             }
 
   ActionTestWithUSERFGPAT:
@@ -413,8 +436,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -425,14 +449,23 @@ jobs:
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
+            LogGroup 'Get-GitHubOrganization' {
+                Get-GitHubOrganization | Out-String
+            }
+
+            LogGroup 'Get-GitHubRepository' {
+                Get-GitHubRepository -Owner '${{ inputs.Owner }}' | Out-String
+            }
+
   ActionTestWithORGFGPAT:
     name: WithOrgFGPAT
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -443,14 +476,23 @@ jobs:
               Get-GitHubUser | Format-Table -AutoSize | Out-String
             }
 
+            LogGroup 'Get-GitHubOrganization' {
+                Get-GitHubOrganization | Out-String
+            }
+
+            LogGroup 'Get-GitHubRepository' {
+                Get-GitHubRepository -Owner '${{ inputs.Owner }}' | Out-String
+            }
+
   ActionTestWithGitHubAppEnt:
     name: GitHubAppEnt
     runs-on: ${{ inputs.runs-on }}
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -459,19 +501,23 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize | Out-String
+              Get-GitHubApp | Format-List | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
               Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize | Out-String
-                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
-              }
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
             }
 
   ActionTestWithGitHubAppOrg:
@@ -480,8 +526,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Action-Test
         uses: ./
         with:
@@ -490,19 +537,123 @@ jobs:
           Prerelease: ${{ inputs.Prerelease }}
           Script: |
             LogGroup 'Get-GitHubApp' {
-              Get-GitHubApp | Format-Table -AutoSize | Out-String
+              Get-GitHubApp | Format-List | Out-String
             }
 
             LogGroup 'Get-GitHubAppInstallation' {
               Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
             }
 
-            LogGroup 'Do something as an installation' {
-              Get-GithubAppInstallation | New-GitHubAppInstallationAccessToken | ForEach-Object {
-                Connect-GitHub -Token $_.token -Silent
-                Get-GitHubContext | Format-Table -AutoSize | Out-String
-                Get-GitHubGitConfig | Format-Table -AutoSize | Out-String
-              }
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
+            }
+
+  ActionTestWithKeyVaultKeyReference:
+    name: WithKeyVaultKeyReference
+    environment: azure
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      # Login to Azure to enable KeyVault access
+      - name: Login to Azure
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          allow-no-subscriptions: true
+
+      - name: Action-Test
+        uses: ./
+        with:
+          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          KeyVaultKeyReference: 'https://psmodule-test-vault.vault.azure.net/keys/psmodule-org-app/569ae34250e64adca6a2b2d159d454a5'
+          Prerelease: ${{ inputs.Prerelease }}
+          Script: |
+            LogGroup 'Context details' {
+                Get-GitHubContext | Select-Object * | Out-String
+            }
+
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp | Format-List | Out-String
+            }
+
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
+            }
+
+  ActionTestWithKeyVaultKeyReferenceLatest:
+    name: WithKeyVaultKeyReferenceLatest
+    environment: azure
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as its a local action
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      # Login to Azure to enable KeyVault access
+      - name: Login to Azure
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          allow-no-subscriptions: true
+
+      - name: Action-Test
+        uses: ./
+        with:
+          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          KeyVaultKeyReference: 'https://psmodule-test-vault.vault.azure.net/keys/psmodule-org-app/'
+          Prerelease: ${{ inputs.Prerelease }}
+          Script: |
+            LogGroup 'Context details' {
+                Get-GitHubContext | Select-Object * | Out-String
+            }
+
+            LogGroup 'Get-GitHubApp' {
+              Get-GitHubApp | Format-List | Out-String
+            }
+
+            LogGroup 'Get-GitHubAppInstallation' {
+              Get-GitHubAppInstallation | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'Connect to all installations of the app' {
+                Connect-GitHubApp
+            }
+
+            LogGroup 'Contexts' {
+                Get-GitHubContext -ListAvailable | Format-Table -AutoSize | Out-String
+            }
+
+            LogGroup 'GitHubConfig' {
+                Get-GitHubConfig | Format-List | Out-String
             }
 
   ActionTestPreserveCredentialsFalse:
@@ -511,8 +662,9 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - name: Action-Test with PreserveCredentials false
         uses: ./
         with:

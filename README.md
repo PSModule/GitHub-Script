@@ -8,23 +8,24 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 
 ### Inputs
 
-| Name               | Description                                                               | Required | Default               |
-|--------------------|---------------------------------------------------------------------------|----------|-----------------------|
-| `Name`             | The name of the action.                                                   | false    | `GitHub-Script`       |
-| `Script`           | The script to run. Can be inline, multi-line, or a path to a script file. | false    |                       |
-| `Token`            | Log in using an Installation Access Token (IAT).                          | false    | `${{ github.token }}` |
-| `ClientID`         | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |
-| `PrivateKey`       | Log in using a GitHub App, with the App's Client ID and Private Key.      | false    |                       |
-| `Debug`            | Enable debug output.                                                      | false    | `'false'`             |
-| `Verbose`          | Enable verbose output.                                                    | false    | `'false'`             |
-| `Version`          | Specifies the exact version of the GitHub module to install.              | false    |                       |
-| `Prerelease`       | Allow prerelease versions if available.                                   | false    | `'false'`             |
-| `ErrorView`        | Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials. | false    | `'NormalView'`         |
-| `ShowInfo`         | Show information about the environment.                                   | false    | `'true'`              |
-| `ShowInit`         | Show information about the initialization.                                | false    | `'false'`             |
-| `ShowOutput`       | Show the script's output.                                                 | false    | `'false'`             |
-| `WorkingDirectory` | The working directory where the script runs.                              | false    | `'.'`                 |
-| `PreserveCredentials` | Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount. | false    | `'true'`              |
+| Name                   | Description                                                                                                                                                   | Required | Default               |
+|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|-----------------------|
+| `Name`                 | The name of the action.                                                                                                                                       | false    | `GitHub-Script`       |
+| `Script`               | The script to run. Can be inline, multi-line, or a path to a script file.                                                                                     | false    |                       |
+| `Token`                | Log in using an Installation Access Token (IAT).                                                                                                              | false    | `${{ github.token }}` |
+| `ClientID`             | Log in using a GitHub App, with the App's Client ID and Private Key.                                                                                          | false    |                       |
+| `PrivateKey`           | Log in using a GitHub App, with the App's Client ID and Private Key.                                                                                          | false    |                       |
+| `KeyVaultKeyReference` | Log in using a GitHub App, with the App's Client ID and KeyVault Key Reference.                                                                               | false    |                       |
+| `Debug`                | Enable debug output for the whole action.                                                                                                                     | false    | `'false'`             |
+| `Verbose`              | Enable verbose output for the whole action.                                                                                                                   | false    | `'false'`             |
+| `Version`              | Specifies the exact version of the GitHub module to install.                                                                                                  | false    |                       |
+| `Prerelease`           | Allow prerelease versions if available.                                                                                                                       | false    | `'false'`             |
+| `ErrorView`            | Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials. | false    | `'NormalView'`        |
+| `ShowInfo`             | Show information about the environment.                                                                                                                       | false    | `'true'`              |
+| `ShowInit`             | Show information about the initialization.                                                                                                                    | false    | `'false'`             |
+| `ShowOutput`           | Show the script's output.                                                                                                                                     | false    | `'false'`             |
+| `WorkingDirectory`     | The working directory where the script runs.                                                                                                                  | false    | `'.'`                 |
+| `PreserveCredentials`  | Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount.                                    | false    | `'true'`              |
 
 ### Outputs
 
@@ -176,7 +177,35 @@ jobs:
             }
 ```
 
-#### Example 5: Using outputs from the script
+#### Example 5: Run a GitHub PowerShell script with a GitHub App using a Client ID and KeyVault Key Reference
+
+Runs a script that uses the GitHub PowerShell module with a GitHub App authenticated via Azure KeyVault. This example retrieves the GitHub App details.
+
+> [!NOTE]
+> This authentication method requires the `azure/login` action to authenticate with Azure first. The KeyVault Key Reference should be a URL pointing to the private key stored in Azure KeyVault.
+
+```yaml
+jobs:
+  Run-Script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Run script
+        uses: PSModule/GitHub-Script@v1
+        with:
+          ClientID: ${{ secrets.CLIENT_ID }}
+          KeyVaultKeyReference: ${{ secrets.KEYVAULT_KEY_REFERENCE }}
+          Script: |
+            LogGroup "Get-GitHubApp" {
+              Get-GitHubApp
+            }
+```
+
+#### Example 6: Using outputs from the script
 
 Runs a script that uses the GitHub PowerShell module and outputs the result.
 
@@ -201,7 +230,7 @@ Runs a script that uses the GitHub PowerShell module and outputs the result.
     Write-GitHubNotice -Message $result.Zen -Title 'GitHub Zen'
 ```
 
-#### Example 6: Run a script with credential cleanup
+#### Example 7: Run a script with credential cleanup
 
 Runs a script with `PreserveCredentials` set to `false` to automatically disconnect GitHub credentials after execution.
 

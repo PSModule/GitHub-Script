@@ -51,6 +51,10 @@ process {
             Get-GitHubConfig | Format-List | Out-String
         }
 
+        LogGroup ' - Event Information' {
+            Get-GitHubEventData | Format-List | Out-String
+        }
+
         $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
         Write-Output $fenceEnd
     } catch {
@@ -60,6 +64,4 @@ process {
 
 end {
     Write-Debug "[$scriptName] - End"
-    $DebugPreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
-    $VerbosePreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
 }
