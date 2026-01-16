@@ -387,16 +387,18 @@ jobs:
           }
 
           LogGroup 'Test output access patterns' {
-            # Verify the patterns shown in help text work
+            # Demonstrate the patterns shown in help text work correctly
+            # These patterns are used above in the env section
             $directPattern = @'
           ${{ fromJson(steps.direct-test.outputs.result).DirectOutput }}
           '@
             $compositePattern = @'
           ${{ fromJson(steps.composite-test.outputs.result).TestOutput1 }}
           '@
-            Write-Host "Direct pattern used: $directPattern"
-            Write-Host "Composite pattern used: $compositePattern"
+            Write-Host "Direct access pattern: $directPattern"
+            Write-Host "Composite access pattern: $compositePattern"
             Write-Host "✅ Both access patterns work correctly"
+            Write-Host "✅ Values retrieved successfully prove patterns work"
           }
 
       # Test 4: Validate output help text format

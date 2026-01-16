@@ -17,6 +17,9 @@ param()
 
 $ErrorActionPreference = 'Stop'
 
+# Regex pattern to remove ANSI color codes for validation
+$script:AnsiEscapePattern = '\x1b\[[0-9;]*m'
+
 function Test-OutputHelpText {
     param(
         [string]$StepId,
@@ -42,8 +45,8 @@ function Test-OutputHelpText {
         Write-Host $nestedUsage
 
         # Remove ANSI codes for validation
-        $directUsageClean = $directUsage -replace '\x1b\[[0-9;]*m', ''
-        $nestedUsageClean = $nestedUsage -replace '\x1b\[[0-9;]*m', ''
+        $directUsageClean = $directUsage -replace $script:AnsiEscapePattern, ''
+        $nestedUsageClean = $nestedUsage -replace $script:AnsiEscapePattern, ''
 
         # Validate the format
         $expectedDirectPattern = "\$\{\{ fromJson\(steps\.$StepId\.outputs\.result\)\.$OutputName \}\}"
@@ -86,7 +89,7 @@ function Test-OutputHelpText {
         Write-Host $genericUsage
 
         # Remove ANSI codes for validation
-        $genericUsageClean = $genericUsage -replace '\x1b\[[0-9;]*m', ''
+        $genericUsageClean = $genericUsage -replace $script:AnsiEscapePattern, ''
 
         $expectedGenericPattern = "\$\{\{ fromJson\(steps\.<step-id>\.outputs\.result\)\.$OutputName \}\}"
 
