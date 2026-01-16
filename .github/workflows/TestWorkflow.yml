@@ -399,6 +399,13 @@ jobs:
             Write-Host "✅ Both access patterns work correctly"
           }
 
+      # Test 4: Validate output help text format
+      - name: Validate Output Help Text Format
+        shell: pwsh
+        run: |
+          & ./tests/validate-output-help-text.ps1
+
+
   MatrixCreator:
     name: Matrix Creator
     runs-on: ubuntu-latest
