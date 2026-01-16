@@ -11,9 +11,15 @@ inputs:
     default: 'false'
 
 outputs:
-  result:
+  TestOutput1:
     description: The output of the script as a JSON object
-    value: ${{ steps.internal-github-script.outputs.result }}
+    value: ${{ fromJson(steps.internal-github-script.outputs.result).TestOutput1 }}
+  TestOutput2:
+    description: The output of the script as a JSON object
+    value: ${{ fromJson(steps.internal-github-script.outputs.result).TestOutput2 }}
+  CompositeMessage:
+    description: A message from the composite action
+    value: ${{ fromJson(steps.internal-github-script.outputs.result).CompositeMessage }}
 
 runs:
   using: composite

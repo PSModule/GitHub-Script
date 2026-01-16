@@ -33,20 +33,16 @@ try {
         $blue = $PSStyle.Foreground.Blue
         $reset = $PSStyle.Reset
         LogGroup " - $blue$($output.Name)$reset" {
-            # Provide help text for both direct and nested usage scenarios
-            if (-not [string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
-                $directUsage = "Direct usage: [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
-                $nestedUsage = "Nested usage: [$blue`${{ fromJson(steps.<your-step-id>.outputs.result).$($output.Name) }}$reset]"
-                Write-Output $directUsage
-                Write-Output $nestedUsage
-                $outputFence = ('─' * ([Math]::Max($directUsage.Length, $nestedUsage.Length) - 9))
-                Write-Output $outputFence
-            } else {
-                $genericUsage = "Accessible via: [$blue`${{ fromJson(steps.<step-id>.outputs.result).$($output.Name) }}$reset]"
-                Write-Output $genericUsage
-                $outputFence = ('─' * ($genericUsage.Length - 9))
-                Write-Output $outputFence
+            $outputAccessEntries = @(
+                "Accessible via: [$blue`${{ steps.$env:GITHUB_ACTION.outputs.$($output.Name) }}$reset]"
+                "Accessible via (direct): [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
+            )
+            $maxAccessLength = ($outputAccessEntries | Measure-Object -Property Length -Maximum).Maximum
+            $outputFence = ('─' * ($maxAccessLength - 9))
+            $outputAccessEntries | ForEach-Object {
+                Write-Output $_
             }
+            Write-Output $outputFence
             $output.Value | Format-List | Out-String
         }
     }
