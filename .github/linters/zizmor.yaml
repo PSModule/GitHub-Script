@@ -2,7 +2,3 @@ rules:
   template-injection:
     ignore:
       - action.yml
-  secrets-inherit:
-    ignore:
-      - .github/workflows/Action-Test-Prerelease.yml
-      - .github/workflows/Action-Test.yml
