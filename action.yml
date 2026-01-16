@@ -107,4 +107,3 @@ runs:
         finally {
           ${{ github.action_path }}/scripts/clean.ps1
         }
-        
