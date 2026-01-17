@@ -33,16 +33,6 @@ try {
         $blue = $PSStyle.Foreground.Blue
         $reset = $PSStyle.Reset
         LogGroup " - $blue$($output.Name)$reset" {
-            $outputAccessEntries = @(
-                "Accessible via: [$blue`${{ steps.$env:GITHUB_ACTION.outputs.$($output.Name) }}$reset]"
-                "Accessible via (direct): [$blue`${{ fromJson(steps.$env:GITHUB_ACTION.outputs.result).$($output.Name) }}$reset]"
-            )
-            $maxAccessLength = ($outputAccessEntries | Measure-Object -Property Length -Maximum).Maximum
-            $outputFence = ('─' * ($maxAccessLength - 9))
-            $outputAccessEntries | ForEach-Object {
-                Write-Output $_
-            }
-            Write-Output $outputFence
             $output.Value | Format-List | Out-String
         }
     }
