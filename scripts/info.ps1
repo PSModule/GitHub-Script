@@ -22,20 +22,20 @@ process {
 
         LogGroup ' - Inputs' {
             $inputs = [ordered]@{
-                Name                   = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
-                Token                  = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)) { '<not provided>' } else { '***' }
-                ClientID               = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)) { '<not provided>' } else { $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID }
-                PrivateKey             = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey)) { '<not provided>' } else { '***' }
-                KeyVaultKeyReference   = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference)) { '<not provided>' } else { $env:PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference }
-                Debug                  = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug
-                Verbose                = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose
-                Version                = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Version)) { '<not provided>' } else { $env:PSMODULE_GITHUB_SCRIPT_INPUT_Version }
-                Prerelease             = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease
-                ShowInfo               = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo
-                ShowInit               = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit
-                ShowOutput             = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput
-                ErrorView              = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView
-                PreserveCredentials    = $env:PSMODULE_GITHUB_SCRIPT_INPUT_PreserveCredentials
+                Name                 = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
+                Token                = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)) { '<not provided>' } else { '***' }
+                ClientID             = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)) { '<not provided>' } else { $env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID }
+                PrivateKey           = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_PrivateKey)) { '<not provided>' } else { '***' }
+                KeyVaultKeyReference = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference)) { '<not provided>' } else { $env:PSMODULE_GITHUB_SCRIPT_INPUT_KeyVaultKeyReference }
+                Debug                = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug
+                Verbose              = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose
+                Version              = if ([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Version)) { '<not provided>' } else { $env:PSMODULE_GITHUB_SCRIPT_INPUT_Version }
+                Prerelease           = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease
+                ShowInfo             = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo
+                ShowInit             = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInit
+                ShowOutput           = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput
+                ErrorView            = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView
+                PreserveCredentials  = $env:PSMODULE_GITHUB_SCRIPT_INPUT_PreserveCredentials
             }
             [PSCustomObject]$inputs | Format-List | Out-String
         }
