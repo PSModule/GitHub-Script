@@ -99,11 +99,11 @@ runs:
         $DebugPreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Debug -eq 'true' ? 'Continue' : 'SilentlyContinue'
         $VerbosePreference = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Verbose -eq 'true' ? 'Continue' : 'SilentlyContinue'
         try {
-          ${{ github.action_path }}/scripts/init.ps1
-          ${{ github.action_path }}/scripts/info.ps1
+          ${{ github.action_path }}/src/init.ps1
+          ${{ github.action_path }}/src/info.ps1
           ${{ inputs.Script }}
-          ${{ github.action_path }}/scripts/outputs.ps1
+          ${{ github.action_path }}/src/outputs.ps1
         }
         finally {
-          ${{ github.action_path }}/scripts/clean.ps1
+          ${{ github.action_path }}/src/clean.ps1
         }
