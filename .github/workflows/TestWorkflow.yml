@@ -363,7 +363,7 @@ jobs:
         run: |
           Install-PSResource -Name GitHub -TrustRepository -Prerelease
           if ($PSMODULE_GITHUB_SCRIPT) {
-              throw "Is not running in GitHub-Script aciton! Failing"
+              throw "Is not running in GitHub-Script action! Failing"
           }
           $item = [pscustomobject]@{
               Path = $env:Path
