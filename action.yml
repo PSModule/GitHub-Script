@@ -106,12 +106,8 @@ runs:
         try {
           ${{ github.action_path }}/src/init.ps1
           ${{ github.action_path }}/src/info.ps1
-          $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Pre'
-          ${{ github.action_path }}/src/ratelimit.ps1
           ${{ inputs.Script }}
           ${{ github.action_path }}/src/outputs.ps1
-          $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Post'
-          ${{ github.action_path }}/src/ratelimit.ps1
         }
         finally {
           ${{ github.action_path }}/src/clean.ps1

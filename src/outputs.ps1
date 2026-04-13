@@ -1,4 +1,4 @@
-﻿#Requires -Modules GitHub
+#Requires -Modules GitHub
 
 [CmdletBinding()]
 param()
@@ -9,18 +9,26 @@ Write-Debug "[$scriptName] - Start"
 try {
     $fenceTitle = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
 
-    Write-Debug "[$scriptName] - ShowOutput: $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput"
-    if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput -ne 'true') {
+    $showOutput = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput -eq 'true'
+    $showRateLimit = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowRateLimit -eq 'true'
+
+    Write-Debug "[$scriptName] - ShowOutput: $showOutput"
+    Write-Debug "[$scriptName] - ShowRateLimit: $showRateLimit"
+
+    $result = $null
+    if ($showOutput) {
+        $result = (Get-GitHubOutput).result
+        Write-Debug "[$scriptName] - Result: $(-not $result)"
+    }
+
+    if (-not $result -and -not $showRateLimit) {
         return
     }
 
-    $result = (Get-GitHubOutput).result
-    Write-Debug "[$scriptName] - Result: $(-not $result)"
-    if (-not $result) {
-        return
-    }
     $fenceStart = "┏━━┫ $fenceTitle - Outputs ┣━━━━━┓"
     Write-Output $fenceStart
+
+    if ($result) {
     if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
         Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
     }
@@ -36,6 +44,11 @@ try {
             $output.Value | Format-List | Out-String
         }
     }
+    } # end if ($result)
+
+    $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Post'
+    & "$PSScriptRoot/ratelimit.ps1"
+
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
     Write-Output $fenceEnd
 } catch {

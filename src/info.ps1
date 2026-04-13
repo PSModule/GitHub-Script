@@ -1,4 +1,4 @@
-﻿#Requires -Modules GitHub
+#Requires -Modules GitHub
 
 [CmdletBinding()]
 param()
@@ -12,14 +12,19 @@ process {
     try {
         $fenceTitle = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
 
-        Write-Debug "[$scriptName] - ShowInfo: $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo"
-        if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo -ne 'true') {
+        $showInfo = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo -eq 'true'
+        $showRateLimit = $env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowRateLimit -eq 'true'
+
+        Write-Debug "[$scriptName] - ShowInfo: $showInfo"
+        Write-Debug "[$scriptName] - ShowRateLimit: $showRateLimit"
+        if (-not $showInfo -and -not $showRateLimit) {
             return
         }
 
         $fenceStart = "┏━━┫ $fenceTitle - Info ┣━━━━━━━━┓"
         Write-Output $fenceStart
 
+        if ($showInfo) {
         LogGroup ' - Installed modules' {
             Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize | Out-String
         }
@@ -54,6 +59,10 @@ process {
         LogGroup ' - Event Information' {
             Get-GitHubEventData | Format-List | Out-String
         }
+        } # end if ($showInfo)
+
+        $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Pre'
+        & "$PSScriptRoot/ratelimit.ps1"
 
         $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
         Write-Output $fenceEnd

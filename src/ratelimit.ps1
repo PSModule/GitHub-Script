@@ -1,34 +1,18 @@
 #Requires -Modules GitHub
 
-[CmdletBinding()]
-param()
+# Helper script - called from info.ps1 and outputs.ps1 to display rate limit information.
+# Expects $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL to be set to 'Pre' or 'Post'.
 
-$scriptName = $MyInvocation.MyCommand.Name
-Write-Debug "[$scriptName] - Start"
-
-try {
-    if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowRateLimit -ne 'true') {
-        return
-    }
-
-    $fenceTitle = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Name
-    $label = $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL
-
-    $fenceStart = "┏━━┫ $fenceTitle - Rate Limit ($label) ┣━━━━━━━━┓"
-    Write-Output $fenceStart
-
-    LogGroup " - Rate Limit ($label)" {
-        try {
-            Get-GitHubRateLimit | Format-Table -AutoSize | Out-String
-        } catch {
-            Write-Warning "Could not retrieve rate limit information: $($_.Exception.Message)"
-        }
-    }
-
-    $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
-    Write-Output $fenceEnd
-} catch {
-    throw $_
+if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowRateLimit -ne 'true') {
+    return
 }
 
-Write-Debug "[$scriptName] - End"
+$label = $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL
+
+LogGroup " - Rate Limit ($label)" {
+    try {
+        Get-GitHubRateLimit | Format-Table -AutoSize | Out-String
+    } catch {
+        Write-Warning "Could not retrieve rate limit information: $($_.Exception.Message)"
+    }
+}
