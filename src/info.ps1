@@ -1,4 +1,4 @@
-#Requires -Modules GitHub
+﻿#Requires -Modules GitHub
 
 [CmdletBinding()]
 param()
@@ -25,40 +25,40 @@ process {
         Write-Output $fenceStart
 
         if ($showInfo) {
-        LogGroup ' - Installed modules' {
-            Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize | Out-String
-        }
+            LogGroup ' - Installed modules' {
+                Get-InstalledPSResource | Select-Object Name, Version, Prerelease | Sort-Object -Property Name | Format-Table -AutoSize | Out-String
+            }
 
-        LogGroup ' - GitHub connection - Default' {
-            $context = Get-GitHubContext
-            $context | Format-List | Out-String
+            LogGroup ' - GitHub connection - Default' {
+                $context = Get-GitHubContext
+                $context | Format-List | Out-String
 
-            Write-Verbose "Token?    [$([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
-            Write-Verbose "AuthType? [$($context.AuthType)] - [$($context.AuthType -ne 'APP')]"
-            Write-Verbose "gh auth?  [$($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
+                Write-Verbose "Token?    [$([string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
+                Write-Verbose "AuthType? [$($context.AuthType)] - [$($context.AuthType -ne 'APP')]"
+                Write-Verbose "gh auth?  [$($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token))]"
 
-            if ($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)) {
-                Write-Output 'GitHub CLI status:'
-                $before = $LASTEXITCODE
-                gh auth status
-                if ($LASTEXITCODE -ne $before) {
-                    Write-Warning "LASTEXITCODE has changed [$LASTEXITCODE]"
-                    $global:LASTEXITCODE = $before
+                if ($context.AuthType -ne 'APP' -and -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)) {
+                    Write-Output 'GitHub CLI status:'
+                    $before = $LASTEXITCODE
+                    gh auth status
+                    if ($LASTEXITCODE -ne $before) {
+                        Write-Warning "LASTEXITCODE has changed [$LASTEXITCODE]"
+                        $global:LASTEXITCODE = $before
+                    }
                 }
             }
-        }
 
-        LogGroup ' - GitHub connection - List' {
-            Get-GitHubContext -ListAvailable | Format-Table | Out-String
-        }
+            LogGroup ' - GitHub connection - List' {
+                Get-GitHubContext -ListAvailable | Format-Table | Out-String
+            }
 
-        LogGroup ' - Configuration' {
-            Get-GitHubConfig | Format-List | Out-String
-        }
+            LogGroup ' - Configuration' {
+                Get-GitHubConfig | Format-List | Out-String
+            }
 
-        LogGroup ' - Event Information' {
-            Get-GitHubEventData | Format-List | Out-String
-        }
+            LogGroup ' - Event Information' {
+                Get-GitHubEventData | Format-List | Out-String
+            }
         } # end if ($showInfo)
 
         $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Pre'

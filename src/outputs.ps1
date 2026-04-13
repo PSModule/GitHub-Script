@@ -1,4 +1,4 @@
-#Requires -Modules GitHub
+﻿#Requires -Modules GitHub
 
 [CmdletBinding()]
 param()
@@ -29,21 +29,21 @@ try {
     Write-Output $fenceStart
 
     if ($result) {
-    if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
-        Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
-    }
-
-    if (-not (Test-Path -Path $env:GITHUB_OUTPUT)) {
-        Write-Warning "File not found: $env:GITHUB_OUTPUT"
-    }
-
-    foreach ($output in $result.PSObject.Properties) {
-        $blue = $PSStyle.Foreground.Blue
-        $reset = $PSStyle.Reset
-        LogGroup " - $blue$($output.Name)$reset" {
-            $output.Value | Format-List | Out-String
+        if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
+            Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
         }
-    }
+
+        if (-not (Test-Path -Path $env:GITHUB_OUTPUT)) {
+            Write-Warning "File not found: $env:GITHUB_OUTPUT"
+        }
+
+        foreach ($output in $result.PSObject.Properties) {
+            $blue = $PSStyle.Foreground.Blue
+            $reset = $PSStyle.Reset
+            LogGroup " - $blue$($output.Name)$reset" {
+                $output.Value | Format-List | Out-String
+            }
+        }
     } # end if ($result)
 
     $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Post'
