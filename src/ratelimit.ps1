@@ -18,7 +18,11 @@ try {
     Write-Output $fenceStart
 
     LogGroup " - Rate Limit ($label)" {
-        Get-GitHubRateLimit | Format-Table -AutoSize | Out-String
+        try {
+            Get-GitHubRateLimit | Format-Table -AutoSize | Out-String
+        } catch {
+            Write-Warning "Could not retrieve rate limit information: $($_.Exception.Message)"
+        }
     }
 
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
