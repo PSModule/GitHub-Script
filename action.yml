@@ -53,6 +53,10 @@ inputs:
     description: Show the output of the script.
     required: false
     default: 'false'
+  ShowRateLimit:
+    description: Show GitHub API rate limit information before and after script execution.
+    required: false
+    default: 'false'
   ErrorView:
     description: Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials.
     required: false
@@ -91,6 +95,7 @@ runs:
         PSMODULE_GITHUB_SCRIPT_INPUT_ShowInfo: ${{ inputs.ShowInfo }}
         PSMODULE_GITHUB_SCRIPT_INPUT_ShowOutput: ${{ inputs.ShowOutput }}
         PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease: ${{ inputs.Prerelease }}
+        PSMODULE_GITHUB_SCRIPT_INPUT_ShowRateLimit: ${{ inputs.ShowRateLimit }}
         PSMODULE_GITHUB_SCRIPT_INPUT_ErrorView: ${{ inputs.ErrorView }}
         PSMODULE_GITHUB_SCRIPT_INPUT_PreserveCredentials: ${{ inputs.PreserveCredentials }}
       run: |
@@ -101,8 +106,12 @@ runs:
         try {
           ${{ github.action_path }}/src/init.ps1
           ${{ github.action_path }}/src/info.ps1
+          $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Pre'
+          ${{ github.action_path }}/src/ratelimit.ps1
           ${{ inputs.Script }}
           ${{ github.action_path }}/src/outputs.ps1
+          $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Post'
+          ${{ github.action_path }}/src/ratelimit.ps1
         }
         finally {
           ${{ github.action_path }}/src/clean.ps1
