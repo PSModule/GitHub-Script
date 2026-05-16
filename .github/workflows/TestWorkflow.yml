@@ -606,8 +606,10 @@ jobs:
 
       - name: Action-Test
         uses: ./
+        env:
+          CLIENTID_SECRET: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
         with:
-          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          ClientID: ${{ env.CLIENTID_SECRET }}
           KeyVaultKeyReference: 'https://psmodule-test-vault.vault.azure.net/keys/psmodule-org-app/569ae34250e64adca6a2b2d159d454a5'
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
@@ -657,8 +659,10 @@ jobs:
 
       - name: Action-Test
         uses: ./
+        env:
+          CLIENTID_SECRET: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
         with:
-          ClientID: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          ClientID: ${{ env.CLIENTID_SECRET }}
           KeyVaultKeyReference: 'https://psmodule-test-vault.vault.azure.net/keys/psmodule-org-app/'
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
