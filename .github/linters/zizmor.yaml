@@ -2,16 +2,3 @@ rules:
   template-injection:
     ignore:
       - action.yml
-
-  secrets-outside-env:
-    # These test credentials are intentionally managed as organization-level
-    # secrets for reusable test workflows across repositories.
-    config:
-      allow:
-        - TEST_USER_PAT
-        - TEST_USER_USER_FG_PAT
-        - TEST_USER_ORG_FG_PAT
-        - TEST_APP_ENT_CLIENT_ID
-        - TEST_APP_ENT_PRIVATE_KEY
-        - TEST_APP_ORG_CLIENT_ID
-        - TEST_APP_ORG_PRIVATE_KEY
