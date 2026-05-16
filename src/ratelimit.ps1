@@ -6,7 +6,7 @@ if ($env:PSMODULE_GITHUB_SCRIPT_INPUT_ShowRateLimit -ne 'true') {
     return
 }
 
-LogGroup ' - Rate Limit' {
+LogGroup ' - Rate Limits' {
     try {
         Get-GitHubRateLimit -ErrorAction Stop |
             Select-Object Name, Limit, Used, Remaining, ResetsAt, ResetsIn |
