@@ -426,8 +426,10 @@ jobs:
           persist-credentials: false
       - name: Action-Test
         uses: ./
+        env:
+          TOKEN_SECRET: ${{ secrets.TEST_USER_PAT }}
         with:
-          Token: ${{ secrets.TEST_USER_PAT }}
+          Token: ${{ env.TOKEN_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -454,8 +456,10 @@ jobs:
           persist-credentials: false
       - name: Action-Test
         uses: ./
+        env:
+          TOKEN_SECRET: ${{ secrets.TEST_USER_USER_FG_PAT }}
         with:
-          Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          Token: ${{ env.TOKEN_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -482,8 +486,10 @@ jobs:
           persist-credentials: false
       - name: Action-Test
         uses: ./
+        env:
+          TOKEN_SECRET: ${{ secrets.TEST_USER_ORG_FG_PAT }}
         with:
-          Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+          Token: ${{ env.TOKEN_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -510,9 +516,12 @@ jobs:
           persist-credentials: false
       - name: Action-Test
         uses: ./
+        env:
+          CLIENTID_SECRET: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
+          PRIVATEKEY_SECRET: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
         with:
-          ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
-          PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+          ClientID: ${{ env.CLIENTID_SECRET }}
+          PrivateKey: ${{ env.PRIVATEKEY_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -547,9 +556,12 @@ jobs:
           persist-credentials: false
       - name: Action-Test
         uses: ./
+        env:
+          CLIENTID_SECRET: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
+          PRIVATEKEY_SECRET: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
         with:
-          ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}' # Test with quotes on input
-          PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}' # Test with quotes on input
+          ClientID: '${{ env.CLIENTID_SECRET }}' # Test with quotes on input
+          PrivateKey: '${{ env.PRIVATEKEY_SECRET }}' # Test with quotes on input
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -686,8 +698,10 @@ jobs:
           persist-credentials: false
       - name: Action-Test with PreserveCredentials false
         uses: ./
+        env:
+          TOKEN_SECRET: ${{ secrets.TEST_USER_PAT }}
         with:
-          Token: ${{ secrets.TEST_USER_PAT }}
+          Token: ${{ env.TOKEN_SECRET }}
           PreserveCredentials: false
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
