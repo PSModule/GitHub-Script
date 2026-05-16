@@ -16,19 +16,21 @@ try {
     Write-Debug "[$scriptName] - ShowRateLimit: $showRateLimit"
 
     $result = $null
+    $hasResult = $false
     if ($showOutput) {
         $result = (Get-GitHubOutput).result
-        Write-Debug "[$scriptName] - Result: $(-not $result)"
+        $hasResult = [bool]$result
+        Write-Debug "[$scriptName] - ResultPresent: $hasResult"
     }
 
-    if (-not $result -and -not $showRateLimit) {
+    if (-not $hasResult -and -not $showRateLimit) {
         return
     }
 
     $fenceStart = "┏━━┫ $fenceTitle - Outputs ┣━━━━━┓"
     Write-Output $fenceStart
 
-    if ($result) {
+    if ($hasResult) {
         if ([string]::IsNullOrEmpty($env:GITHUB_ACTION)) {
             Write-GitHubWarning 'Outputs cannot be accessed as the step has no ID.'
         }
