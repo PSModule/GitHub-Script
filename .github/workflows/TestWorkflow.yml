@@ -1,4 +1,3 @@
-# zizmor:disable=[secrets-outside-env]
 on:
   workflow_call:
     inputs:
@@ -549,8 +548,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}'      # Test with quotes on input
-          PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}'  # Test with quotes on input
+          ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}' # Test with quotes on input
+          PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}' # Test with quotes on input
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
