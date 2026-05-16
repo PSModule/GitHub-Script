@@ -59,7 +59,7 @@ process {
             LogGroup ' - Event Information' {
                 Get-GitHubEventData | Format-List | Out-String
             }
-        } # end if ($showInfo)
+        }
 
         & "$PSScriptRoot/ratelimit.ps1"
 
