@@ -2,6 +2,3 @@ rules:
   template-injection:
     ignore:
       - action.yml
-  secrets-outside-env:
-    ignore:
-      - .github/workflows/TestWorkflow.yml

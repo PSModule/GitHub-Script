@@ -1,3 +1,4 @@
+# zizmor:disable=[secrets-outside-env]
 on:
   workflow_call:
     inputs:
