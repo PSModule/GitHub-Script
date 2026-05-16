@@ -46,7 +46,7 @@ try {
                 $output.Value | Format-List | Out-String
             }
         }
-    } # end if ($result)
+    }
 
     & "$PSScriptRoot/ratelimit.ps1"
 
