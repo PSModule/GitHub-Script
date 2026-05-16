@@ -61,7 +61,6 @@ process {
             }
         } # end if ($showInfo)
 
-        $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Pre'
         & "$PSScriptRoot/ratelimit.ps1"
 
         $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'

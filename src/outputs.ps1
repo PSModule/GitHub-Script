@@ -46,7 +46,6 @@ try {
         }
     } # end if ($result)
 
-    $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL = 'Post'
     & "$PSScriptRoot/ratelimit.ps1"
 
     $fenceEnd = '┗' + ('━' * ($fenceStart.Length - 2)) + '┛'
