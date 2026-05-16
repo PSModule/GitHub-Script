@@ -427,7 +427,7 @@ jobs:
       - name: Action-Test
         uses: ./
         env:
-          TOKEN_SECRET: ${{ secrets.TEST_USER_PAT }}
+          TOKEN_SECRET: ${{ secrets.TEST_USER_PAT }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
         with:
           Token: ${{ env.TOKEN_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
@@ -457,7 +457,7 @@ jobs:
       - name: Action-Test
         uses: ./
         env:
-          TOKEN_SECRET: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          TOKEN_SECRET: ${{ secrets.TEST_USER_USER_FG_PAT }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
         with:
           Token: ${{ env.TOKEN_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
@@ -487,7 +487,7 @@ jobs:
       - name: Action-Test
         uses: ./
         env:
-          TOKEN_SECRET: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+          TOKEN_SECRET: ${{ secrets.TEST_USER_ORG_FG_PAT }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
         with:
           Token: ${{ env.TOKEN_SECRET }}
           Prerelease: ${{ inputs.Prerelease }}
@@ -517,8 +517,8 @@ jobs:
       - name: Action-Test
         uses: ./
         env:
-          CLIENTID_SECRET: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
-          PRIVATEKEY_SECRET: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+          CLIENTID_SECRET: ${{ secrets.TEST_APP_ENT_CLIENT_ID }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
+          PRIVATEKEY_SECRET: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
         with:
           ClientID: ${{ env.CLIENTID_SECRET }}
           PrivateKey: ${{ env.PRIVATEKEY_SECRET }}
@@ -557,8 +557,8 @@ jobs:
       - name: Action-Test
         uses: ./
         env:
-          CLIENTID_SECRET: ${{ secrets.TEST_APP_ORG_CLIENT_ID }}
-          PRIVATEKEY_SECRET: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}
+          CLIENTID_SECRET: ${{ secrets.TEST_APP_ORG_CLIENT_ID }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
+          PRIVATEKEY_SECRET: ${{ secrets.TEST_APP_ORG_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
         with:
           ClientID: '${{ env.CLIENTID_SECRET }}' # Test with quotes on input
           PrivateKey: '${{ env.PRIVATEKEY_SECRET }}' # Test with quotes on input
@@ -703,7 +703,7 @@ jobs:
       - name: Action-Test with PreserveCredentials false
         uses: ./
         env:
-          TOKEN_SECRET: ${{ secrets.TEST_USER_PAT }}
+          TOKEN_SECRET: ${{ secrets.TEST_USER_PAT }} # zizmor: ignore[secrets-outside-env] org-level test secret is intentional
         with:
           Token: ${{ env.TOKEN_SECRET }}
           PreserveCredentials: false
