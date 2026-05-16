@@ -24,6 +24,7 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `ShowInfo`             | Show information about the environment.                                                                                                                       | false    | `'true'`              |
 | `ShowInit`             | Show information about the initialization.                                                                                                                    | false    | `'false'`             |
 | `ShowOutput`           | Show the script's output.                                                                                                                                     | false    | `'false'`             |
+| `ShowRateLimit`        | Show GitHub API rate limit information before and after script execution.                                                                                     | false    | `'false'`             |
 | `WorkingDirectory`     | The working directory where the script runs.                                                                                                                  | false    | `'.'`                 |
 | `PreserveCredentials`  | Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount.                                    | false    | `'true'`              |
 
@@ -242,4 +243,17 @@ Runs a script with `PreserveCredentials` set to `false` to automatically disconn
     Script: |
       Get-GitHubUser
       # Credentials will be disconnected after this step
+```
+
+#### Example 8: Show GitHub API rate limit usage
+
+Displays the GitHub API rate limit status before and after the script runs. The **Rate Limits** log group shows `Limit`, `Used`, `Remaining`, `ResetsAt`, and `ResetsIn` for every resource category (`core`, `search`, `graphql`, etc.), making it easy to see exactly how many API calls a workflow step consumed.
+
+```yaml
+- name: Run script with rate limit visibility
+  uses: PSModule/GitHub-Script@v1
+  with:
+    ShowRateLimit: 'true'
+    Script: |
+      Get-GitHubRepository -Owner PSModule -Name GitHub-Script
 ```
