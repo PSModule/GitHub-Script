@@ -247,7 +247,7 @@ Runs a script with `PreserveCredentials` set to `false` to automatically disconn
 
 #### Example 8: Show GitHub API rate limit usage
 
-Displays the GitHub API rate limit status before and after the script runs. The **Rate Limits** log group shows `Limit`, `Used`, `Remaining`, `ResetsAt`, and `ResetsIn` for every resource category (core, search, graphql, etc.), making it easy to see exactly how many API calls a workflow step consumed.
+Displays the GitHub API rate limit status before and after the script runs. The **Rate Limits** log group shows `Limit`, `Used`, `Remaining`, `ResetsAt`, and `ResetsIn` for every resource category (core, search, GraphQL, etc.), making it easy to see exactly how many API calls a workflow step consumed.
 
 ```yaml
 - name: Run script with rate limit visibility
