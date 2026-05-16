@@ -11,7 +11,9 @@ $label = $env:PSMODULE_GITHUB_SCRIPT_RATELIMIT_LABEL
 
 LogGroup " - Rate Limit ($label)" {
     try {
-        Get-GitHubRateLimit | Format-Table -AutoSize | Out-String
+        Get-GitHubRateLimit -ErrorAction Stop |
+            Select-Object Name, Limit, Used, Remaining, ResetsAt, ResetsIn |
+            Format-Table -AutoSize | Out-String
     } catch {
         Write-Warning "Could not retrieve rate limit information: $($_.Exception.Message)"
     }
