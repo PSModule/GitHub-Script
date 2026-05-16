@@ -427,7 +427,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ secrets.TEST_USER_PAT }}
+          Token: ${{ secrets.TEST_USER_PAT }} # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -455,7 +455,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ secrets.TEST_USER_USER_FG_PAT }}
+          Token: ${{ secrets.TEST_USER_USER_FG_PAT }} # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -483,7 +483,7 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          Token: ${{ secrets.TEST_USER_ORG_FG_PAT }}
+          Token: ${{ secrets.TEST_USER_ORG_FG_PAT }} # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -511,8 +511,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }}
-          PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }}
+          ClientID: ${{ secrets.TEST_APP_ENT_CLIENT_ID }} # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
+          PrivateKey: ${{ secrets.TEST_APP_ENT_PRIVATE_KEY }} # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -548,8 +548,8 @@ jobs:
       - name: Action-Test
         uses: ./
         with:
-          ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}'      # Test with quotes on input
-          PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}'  # Test with quotes on input
+          ClientID: '${{ secrets.TEST_APP_ORG_CLIENT_ID }}' # Test with quotes on input # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
+          PrivateKey: '${{ secrets.TEST_APP_ORG_PRIVATE_KEY }}' # Test with quotes on input # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
           Script: |
@@ -687,7 +687,7 @@ jobs:
       - name: Action-Test with PreserveCredentials false
         uses: ./
         with:
-          Token: ${{ secrets.TEST_USER_PAT }}
+          Token: ${{ secrets.TEST_USER_PAT }} # zizmor: ignore[secrets-outside-env] test workflow uses org-level test secret intentionally
           PreserveCredentials: false
           Prerelease: ${{ inputs.Prerelease }}
           ShowRateLimit: true
