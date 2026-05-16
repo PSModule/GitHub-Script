@@ -1,14 +1,14 @@
 rules:
   secrets-outside-env:
-    config:
-      # These test credentials are intentionally managed as organization-level secrets.
-      # The reusable test workflow runs across repositories and does not use per-job
-      # environments for these auth scenarios, so we suppress only this known set.
-      allow:
-        - TEST_USER_PAT
-        - TEST_USER_USER_FG_PAT
-        - TEST_USER_ORG_FG_PAT
-        - TEST_APP_ENT_CLIENT_ID
-        - TEST_APP_ENT_PRIVATE_KEY
-        - TEST_APP_ORG_CLIENT_ID
-        - TEST_APP_ORG_PRIVATE_KEY
+    # super-linter currently runs zizmor v1.23.1 in this repository.
+    # v1.23.1 does not support secrets-outside-env.config.allow (added in v1.24.0),
+    # so we use explicit file/line ignores for known test-only secrets.
+    ignore:
+      - .github/workflows/TestWorkflow.yml:430
+      - .github/workflows/TestWorkflow.yml:458
+      - .github/workflows/TestWorkflow.yml:486
+      - .github/workflows/TestWorkflow.yml:514
+      - .github/workflows/TestWorkflow.yml:515
+      - .github/workflows/TestWorkflow.yml:551
+      - .github/workflows/TestWorkflow.yml:552
+      - .github/workflows/TestWorkflow.yml:690
