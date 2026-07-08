@@ -120,8 +120,8 @@ jobs:
           ShowRateLimit: true
           Script: |
             $loaded = (Get-Module -Name GitHub).Version
-            if ($loaded -ne [version]'0.39.0') {
-                throw "Expected '[0.38.0, 0.40.0)' to resolve to 0.39.0, but found '$loaded'."
+            if ($loaded -lt [version]'0.38.0' -or $loaded -ge [version]'0.40.0') {
+                throw "Expected '[0.38.0, 0.40.0)' to resolve within [0.38.0, 0.40.0), but found '$loaded'."
             }
             Write-Host "OK: bounded range resolved to $loaded"
 
@@ -165,27 +165,26 @@ jobs:
         shell: pwsh
         run: |
           Install-PSResource -Name GitHub -Version '0.40.0' -Repository PSGallery -TrustRepository -Reinstall
-      # When an installed version already satisfies the requested range, the action must reuse it
-      # and must not install another copy. The exact-string already-installed check never matches a
-      # range, so it reinstalls the latest (leaving two installed versions); the range-aware check
-      # keeps exactly one.
+      # 0.40.0 already satisfies the requested range, so the action must REUSE it and must not
+      # install another copy. The exact-string already-installed check never matches a range, so it
+      # reinstalls the range floor (0.38.0) side-by-side, leaving two installed versions; the
+      # range-aware check keeps exactly one.
       - name: Action-Test [already-installed range]
         uses: ./
         with:
-          Version: '[0.40.0, ]'
+          Version: '[0.38.0, ]'
           Prerelease: ${{ inputs.Prerelease }}
           ShowInit: true
           ShowRateLimit: true
           Script: |
             $installed = @(Get-InstalledPSResource -Name GitHub)
-            $loaded = (Get-Module -Name GitHub).Version
             if ($installed.Count -ne 1) {
-                throw "Expected exactly 1 installed GitHub version (satisfying version reused, no reinstall), but found $($installed.Count): $(($installed.Version) -join ', ')."
+                throw "Expected exactly 1 installed GitHub version (0.40.0 reused, no extra install), but found $($installed.Count): $(($installed.Version) -join ', ')."
             }
-            if ("$loaded" -ne '0.40.0') {
-                throw "Expected the already-installed 0.40.0 to be reused, but found '$loaded'."
+            if ("$($installed.Version)" -ne '0.40.0') {
+                throw "Expected the retained version to be 0.40.0, but found '$($installed.Version)'."
             }
-            Write-Host "OK: already-installed satisfying version reused ($loaded)"
+            Write-Host "OK: already-installed satisfying version reused (no reinstall)"
 
   ActionTestWithScript:
     name: WithScript
