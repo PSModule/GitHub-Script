@@ -18,7 +18,7 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `KeyVaultKeyReference` | Log in using a GitHub App, with the App's Client ID and KeyVault Key Reference.                                                                               | false    |                       |
 | `Debug`                | Enable debug output for the whole action.                                                                                                                     | false    | `'false'`             |
 | `Verbose`              | Enable verbose output for the whole action.                                                                                                                   | false    | `'false'`             |
-| `Version`              | Specifies the exact version of the GitHub module to install.                                                                                                  | false    |                       |
+| `Version`              | The version or NuGet version range of the module to install.                                                                                                  | false    |                       |
 | `Prerelease`           | Allow prerelease versions if available.                                                                                                                       | false    | `'false'`             |
 | `ErrorView`            | Configure the PowerShell `$ErrorView` variable. You can use full names ('NormalView', 'CategoryView', 'ConciseView', 'DetailedView'). It matches on partials. | false    | `'NormalView'`        |
 | `ShowInfo`             | Show information about the environment.                                                                                                                       | false    | `'true'`              |
@@ -27,6 +27,17 @@ To get started with your own GitHub PowerShell based action, [create a new repos
 | `ShowRateLimit`        | Show GitHub API rate limit information before and after script execution.                                                                                     | false    | `'false'`             |
 | `WorkingDirectory`     | The working directory where the script runs.                                                                                                                  | false    | `'.'`                 |
 | `PreserveCredentials`  | Preserve credentials after script execution. If false, disconnects GitHub contexts and CLI using Disconnect-GitHubAccount.                                    | false    | `'true'`              |
+
+> [!NOTE]
+> The `Version` input accepts an exact version or a [NuGet version range](https://learn.microsoft.com/nuget/concepts/package-versioning#version-ranges), the same syntax used by [`Install-PSResource`](https://learn.microsoft.com/powershell/module/microsoft.powershell.psresourceget/install-psresource). A bare version such as `1.2.3` is treated as an *exact* version rather than a minimum, so pinning a single version keeps working unchanged. A version that is already installed and satisfies the request is reused instead of being reinstalled.
+
+| `Version` example | Meaning                                 |
+|-------------------|-----------------------------------------|
+| `1.2.3`           | Exactly `1.2.3`                         |
+| `[1.2.3]`         | Exactly `1.2.3`                         |
+| `[1.2.0, ]`       | `1.2.0` or newer                        |
+| `(, 2.0.0)`       | Any version lower than `2.0.0`          |
+| `[1.2.0, 2.0.0)`  | `1.2.0` up to but not including `2.0.0` |
 
 ### Outputs
 

@@ -73,6 +73,120 @@ jobs:
           ShowInit: true
           ShowRateLimit: true
 
+  ActionTestVersionExact:
+    name: Version [Exact]
+    # Version resolution is OS-independent, so these logic tests run once (on Linux) to keep CI lean.
+    if: ${{ inputs.runs-on == 'ubuntu-latest' }}
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as it's a local action
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      # A bare version must resolve to that EXACT version (not "minimum inclusive"), which
+      # guarantees backward compatibility for callers that pin an exact version today.
+      - name: Action-Test [exact version]
+        uses: ./
+        with:
+          Version: '0.40.0'
+          Prerelease: ${{ inputs.Prerelease }}
+          ShowInit: true
+          ShowRateLimit: true
+          Script: |
+            $loaded = (Get-Module -Name GitHub).Version
+            if ("$loaded" -ne '0.40.0') {
+                throw "Expected the GitHub module 0.40.0 to be loaded, but found '$loaded'."
+            }
+            Write-Host "OK: exact version resolved to $loaded"
+
+  ActionTestVersionRange:
+    name: Version [Bounded range]
+    if: ${{ inputs.runs-on == 'ubuntu-latest' }}
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as it's a local action
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      # A bounded range must resolve to a version inside the range. PSResourceGet resolves a range to
+      # the lowest satisfying version: [0.38.0, 0.40.0) -> 0.38.0.
+      - name: Action-Test [bounded range]
+        uses: ./
+        with:
+          Version: '[0.38.0, 0.40.0)'
+          Prerelease: ${{ inputs.Prerelease }}
+          ShowInit: true
+          ShowRateLimit: true
+          Script: |
+            $loaded = (Get-Module -Name GitHub).Version
+            if ($loaded -lt [version]'0.38.0' -or $loaded -ge [version]'0.40.0') {
+                throw "Expected '[0.38.0, 0.40.0)' to resolve within [0.38.0, 0.40.0), but found '$loaded'."
+            }
+            Write-Host "OK: bounded range resolved to $loaded"
+
+  ActionTestVersionMinimum:
+    name: Version [Minimum range]
+    if: ${{ inputs.runs-on == 'ubuntu-latest' }}
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as it's a local action
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      # A minimum-inclusive range must resolve to a version >= the lower bound.
+      - name: Action-Test [minimum range]
+        uses: ./
+        with:
+          Version: '[0.40.0, ]'
+          Prerelease: ${{ inputs.Prerelease }}
+          ShowInit: true
+          ShowRateLimit: true
+          Script: |
+            $loaded = (Get-Module -Name GitHub).Version
+            if ($loaded -lt [version]'0.40.0') {
+                throw "Expected '[0.40.0, ]' to resolve to >= 0.40.0, but found '$loaded'."
+            }
+            Write-Host "OK: minimum range resolved to $loaded"
+
+  ActionTestVersionAlreadyInstalled:
+    name: Version [Already installed]
+    if: ${{ inputs.runs-on == 'ubuntu-latest' }}
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      # Need to check out as part of the test, as it's a local action
+      - name: Checkout repo
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      # Pre-install a version that satisfies the range requested below.
+      - name: Pre-install GitHub 0.40.0
+        shell: pwsh
+        run: |
+          Install-PSResource -Name GitHub -Version '0.40.0' -Repository PSGallery -TrustRepository -Reinstall
+      # 0.40.0 already satisfies the requested range, so the action must REUSE it and must not
+      # install another copy. The exact-string already-installed check never matches a range, so it
+      # reinstalls the range floor (0.38.0) side-by-side, leaving two installed versions; the
+      # range-aware check keeps exactly one.
+      - name: Action-Test [already-installed range]
+        uses: ./
+        with:
+          Version: '[0.38.0, ]'
+          Prerelease: ${{ inputs.Prerelease }}
+          ShowInit: true
+          ShowRateLimit: true
+          Script: |
+            $installed = @(Get-InstalledPSResource -Name GitHub)
+            if ($installed.Count -ne 1) {
+                throw "Expected exactly 1 installed GitHub version (0.40.0 reused, no extra install), but found $($installed.Count): $(($installed.Version) -join ', ')."
+            }
+            if ("$($installed.Version)" -ne '0.40.0') {
+                throw "Expected the retained version to be 0.40.0, but found '$($installed.Version)'."
+            }
+            Write-Host "OK: already-installed satisfying version reused (no reinstall)"
+
   ActionTestWithScript:
     name: WithScript
     runs-on: ${{ inputs.runs-on }}

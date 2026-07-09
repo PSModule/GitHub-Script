@@ -23,15 +23,17 @@ process {
         $Version = [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Version) ? $null : $env:PSMODULE_GITHUB_SCRIPT_INPUT_Version
         $Prerelease = $env:PSMODULE_GITHUB_SCRIPT_INPUT_Prerelease -eq 'true'
 
-        $alreadyInstalled = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
+        $installedParams = @{
+            Name        = $Name
+            ErrorAction = 'SilentlyContinue'
+        }
         if ($Version) {
+            # Version accepts an exact version or a NuGet version range. Let PSResourceGet resolve
+            # range satisfaction instead of comparing the raw value with an exact string match.
             Write-Verbose "Filtering by version: $Version"
-            $alreadyInstalled = $alreadyInstalled | Where-Object Version -EQ $Version
+            $installedParams['Version'] = $Version
         }
-        if ($Prerelease) {
-            Write-Verbose 'Filtering by prerelease'
-            $alreadyInstalled = $alreadyInstalled | Where-Object Prerelease -EQ $Prerelease
-        }
+        $alreadyInstalled = Get-InstalledPSResource @installedParams
 
         if ($showInit) {
             Write-Output 'Already installed:'
