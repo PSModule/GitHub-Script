@@ -67,15 +67,31 @@ process {
             }
         }
 
+        # Resolve the exact installed version that satisfies the request (newest match), so the loaded
+        # module is deterministic instead of whatever PowerShell would auto-load from PSModulePath.
+        $resolveParams = @{
+            Name        = $Name
+            ErrorAction = 'SilentlyContinue'
+        }
+        if ($Version) {
+            $resolveParams['Version'] = $Version
+        }
+        $resolved = Get-InstalledPSResource @resolveParams | Sort-Object Version -Descending | Select-Object -First 1
+        if (-not $resolved) {
+            throw "No installed '$Name' version satisfies the requested version '$Version'."
+        }
+
         $alreadyImported = Get-Module -Name $Name
         if ($showInit) {
             Write-Output 'Already imported:'
             $alreadyImported | Format-List | Out-String
         }
-        if (-not $alreadyImported) {
-            Write-Verbose "Importing module: $Name"
-            Import-Module -Name $Name
-        }
+        # Remove any already-loaded versions so only the chosen version remains loaded, then import that
+        # exact version into the global session state so every subsequent command (info.ps1, the user
+        # script, clean.ps1) uses the selected version.
+        Remove-Module -Name $Name -Force -ErrorAction SilentlyContinue
+        Write-Verbose "Importing module: $Name $($resolved.Version)"
+        Import-Module -Name $Name -RequiredVersion $resolved.Version -Force -Global
 
         $providedToken = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)
         $providedClientID = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)
