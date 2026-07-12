@@ -68,7 +68,9 @@ process {
         }
 
         # Resolve the exact installed version that satisfies the request (newest match), so the loaded
-        # module is deterministic instead of whatever PowerShell would auto-load from PSModulePath.
+        # module is deterministic instead of whatever PowerShell would auto-load from PSModulePath. When
+        # prerelease versions are not requested, never resolve to one; when a stable and a prerelease share
+        # a base version, the stable one wins.
         $resolveParams = @{
             Name        = $Name
             ErrorAction = 'SilentlyContinue'
@@ -76,7 +78,14 @@ process {
         if ($Version) {
             $resolveParams['Version'] = $Version
         }
-        $resolved = Get-InstalledPSResource @resolveParams | Sort-Object Version -Descending | Select-Object -First 1
+        $candidates = @(Get-InstalledPSResource @resolveParams)
+        if (-not $Prerelease) {
+            $candidates = @($candidates | Where-Object { -not $_.IsPrerelease })
+        }
+        $resolved = $candidates | Sort-Object -Property @(
+            @{ Expression = 'Version'; Descending = $true }
+            @{ Expression = 'IsPrerelease'; Descending = $false }
+        ) | Select-Object -First 1
         if (-not $resolved) {
             throw "No installed '$Name' version satisfies the requested version '$Version'."
         }
@@ -86,10 +95,10 @@ process {
             Write-Output 'Already imported:'
             $alreadyImported | Format-List | Out-String
         }
-        # Remove any already-loaded versions so only the chosen version remains loaded, then import that
-        # exact version into the global session state so every subsequent command (info.ps1, the user
-        # script, clean.ps1) uses the selected version.
-        Remove-Module -Name $Name -Force -ErrorAction SilentlyContinue
+        # Remove every already-loaded instance (all versions, including nested) so only the chosen version
+        # remains loaded, then import that exact version into the global session state so every subsequent
+        # command (info.ps1, the user script, clean.ps1) uses the selected version.
+        Get-Module -Name $Name -All | Remove-Module -Force -ErrorAction SilentlyContinue
         Write-Verbose "Importing module: $Name $($resolved.Version)"
         Import-Module -Name $Name -RequiredVersion $resolved.Version -Force -Global
 
