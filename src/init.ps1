@@ -70,7 +70,8 @@ process {
         # Resolve the exact installed version that satisfies the request (newest match), so the loaded
         # module is deterministic instead of whatever PowerShell would auto-load from PSModulePath. When
         # prerelease versions are not requested, never resolve to one; when a stable and a prerelease share
-        # a base version, the stable one wins.
+        # a base version, the stable one wins. PSResourceGet exposes prerelease state as the 'Prerelease'
+        # string (empty for stable).
         $resolveParams = @{
             Name        = $Name
             ErrorAction = 'SilentlyContinue'
@@ -80,14 +81,15 @@ process {
         }
         $candidates = @(Get-InstalledPSResource @resolveParams)
         if (-not $Prerelease) {
-            $candidates = @($candidates | Where-Object { -not $_.IsPrerelease })
+            $candidates = @($candidates | Where-Object { [string]::IsNullOrWhiteSpace($_.Prerelease) })
         }
         $resolved = $candidates | Sort-Object -Property @(
             @{ Expression = 'Version'; Descending = $true }
-            @{ Expression = 'IsPrerelease'; Descending = $false }
+            @{ Expression = { -not [string]::IsNullOrWhiteSpace($_.Prerelease) }; Descending = $false }
         ) | Select-Object -First 1
         if (-not $resolved) {
-            throw "No installed '$Name' version satisfies the requested version '$Version'."
+            $requested = [string]::IsNullOrWhiteSpace($Version) ? 'latest' : $Version
+            throw "No installed '$Name' version satisfies the requested version '$requested'."
         }
 
         $alreadyImported = Get-Module -Name $Name
@@ -100,7 +102,7 @@ process {
         # command (info.ps1, the user script, clean.ps1) uses the selected version.
         Get-Module -Name $Name -All | Remove-Module -Force -ErrorAction SilentlyContinue
         Write-Verbose "Importing module: $Name $($resolved.Version)"
-        Import-Module -Name $Name -RequiredVersion $resolved.Version -Force -Global
+        Import-Module -Name $Name -RequiredVersion $resolved.Version -Force -Global -ErrorAction Stop
 
         $providedToken = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)
         $providedClientID = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)
