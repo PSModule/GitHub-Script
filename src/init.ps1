@@ -33,7 +33,17 @@ process {
             Write-Verbose "Filtering by version: $Version"
             $installedParams['Version'] = $Version
         }
-        $alreadyInstalled = Get-InstalledPSResource @installedParams
+        $alreadyInstalled = @(Get-InstalledPSResource @installedParams)
+        if (-not $Prerelease) {
+            # A prerelease already on disk must not count as "already installed" for a stable request,
+            # otherwise installation is skipped and resolution later fails with only a prerelease present.
+            $alreadyInstalled = @($alreadyInstalled | Where-Object { [string]::IsNullOrWhiteSpace($_.Prerelease) })
+        }
+        # Normalize to $null when nothing matches so the '-not' install guard and the '$null -ne' status
+        # check below both keep their original semantics (an empty array is not $null).
+        if ($alreadyInstalled.Count -eq 0) {
+            $alreadyInstalled = $null
+        }
 
         if ($showInit) {
             Write-Output 'Already installed:'
@@ -67,15 +77,42 @@ process {
             }
         }
 
+        # Resolve the exact installed version that satisfies the request (newest match), so the loaded
+        # module is deterministic instead of whatever PowerShell would auto-load from PSModulePath. When
+        # prerelease versions are not requested, never resolve to one; when a stable and a prerelease share
+        # a base version, the stable one wins. PSResourceGet exposes prerelease state as the 'Prerelease'
+        # string (empty for stable).
+        $resolveParams = @{
+            Name        = $Name
+            ErrorAction = 'SilentlyContinue'
+        }
+        if ($Version) {
+            $resolveParams['Version'] = $Version
+        }
+        $candidates = @(Get-InstalledPSResource @resolveParams)
+        if (-not $Prerelease) {
+            $candidates = @($candidates | Where-Object { [string]::IsNullOrWhiteSpace($_.Prerelease) })
+        }
+        $resolved = $candidates | Sort-Object -Property @(
+            @{ Expression = 'Version'; Descending = $true }
+            @{ Expression = { -not [string]::IsNullOrWhiteSpace($_.Prerelease) }; Descending = $false }
+        ) | Select-Object -First 1
+        if (-not $resolved) {
+            $requested = [string]::IsNullOrWhiteSpace($Version) ? 'latest' : $Version
+            throw "No installed '$Name' version satisfies the requested version '$requested'."
+        }
+
         $alreadyImported = Get-Module -Name $Name
         if ($showInit) {
             Write-Output 'Already imported:'
             $alreadyImported | Format-List | Out-String
         }
-        if (-not $alreadyImported) {
-            Write-Verbose "Importing module: $Name"
-            Import-Module -Name $Name
-        }
+        # Remove every already-loaded instance (all versions, including nested) so only the chosen version
+        # remains loaded, then import that exact version into the global session state so every subsequent
+        # command (info.ps1, the user script, clean.ps1) uses the selected version.
+        Get-Module -Name $Name -All | Remove-Module -Force -ErrorAction SilentlyContinue
+        Write-Verbose "Importing module: $Name $($resolved.Version)"
+        Import-Module -Name $Name -RequiredVersion $resolved.Version -Force -Global -ErrorAction Stop
 
         $providedToken = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_Token)
         $providedClientID = -not [string]::IsNullOrEmpty($env:PSMODULE_GITHUB_SCRIPT_INPUT_ClientID)
