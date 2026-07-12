@@ -33,7 +33,12 @@ process {
             Write-Verbose "Filtering by version: $Version"
             $installedParams['Version'] = $Version
         }
-        $alreadyInstalled = Get-InstalledPSResource @installedParams
+        $alreadyInstalled = @(Get-InstalledPSResource @installedParams)
+        if (-not $Prerelease) {
+            # A prerelease already on disk must not count as "already installed" for a stable request,
+            # otherwise installation is skipped and resolution later fails with only a prerelease present.
+            $alreadyInstalled = @($alreadyInstalled | Where-Object { [string]::IsNullOrWhiteSpace($_.Prerelease) })
+        }
 
         if ($showInit) {
             Write-Output 'Already installed:'
