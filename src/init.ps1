@@ -39,6 +39,11 @@ process {
             # otherwise installation is skipped and resolution later fails with only a prerelease present.
             $alreadyInstalled = @($alreadyInstalled | Where-Object { [string]::IsNullOrWhiteSpace($_.Prerelease) })
         }
+        # Normalize to $null when nothing matches so the '-not' install guard and the '$null -ne' status
+        # check below both keep their original semantics (an empty array is not $null).
+        if ($alreadyInstalled.Count -eq 0) {
+            $alreadyInstalled = $null
+        }
 
         if ($showInit) {
             Write-Output 'Already installed:'
