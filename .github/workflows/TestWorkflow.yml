@@ -53,7 +53,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -81,7 +81,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as it's a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # A bare version must resolve to that EXACT version (not "minimum inclusive"), which
@@ -107,7 +107,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as it's a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # A bounded range must resolve to a version inside the range. PSResourceGet resolves a range to
@@ -133,7 +133,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as it's a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # A minimum-inclusive range must resolve to a version >= the lower bound.
@@ -158,7 +158,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as it's a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # Pre-install a version that satisfies the range requested below.
@@ -193,7 +193,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # # Not a supported way of running the action
@@ -269,7 +269,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -451,7 +451,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -515,7 +515,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -535,7 +535,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -563,7 +563,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -591,7 +591,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -619,7 +619,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -656,7 +656,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test
@@ -694,7 +694,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # Login to Azure to enable KeyVault access
@@ -745,7 +745,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       # Login to Azure to enable KeyVault access
@@ -795,7 +795,7 @@ jobs:
     steps:
       # Need to check out as part of the test, as its a local action
       - name: Checkout repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Action-Test with PreserveCredentials false
